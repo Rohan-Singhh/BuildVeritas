@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Menu, X, Building2 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -13,15 +15,16 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
-          <a href="/" className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3">
             <div className="flex-shrink-0">
-              <Building2 className="h-8 w-8 text-yellow-500" />
+              {/* <Building2 className="h-8 w-8" /> */}
+              <img src="/BV.svg" alt="BV" className="w-20 h-16" />
             </div>
             <div className="text-2xl font-bold text-gray-800">
               <span className="text-yellow-500">Build</span>
               <span className="text-gray-800">Veritas</span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:block">
@@ -49,7 +52,10 @@ const Navbar = () => {
 
           {/* Login Button */}
           <div className="hidden md:block">
-            <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg">
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
+            >
               Login
             </button>
           </div>
@@ -95,7 +101,13 @@ const Navbar = () => {
                 Blog
               </a>
               <div className="pt-4">
-                <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg">
+                <button
+                  onClick={() => {
+                    navigate("/login");
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
+                >
                   Login
                 </button>
               </div>
