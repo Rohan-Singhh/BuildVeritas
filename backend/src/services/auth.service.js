@@ -18,13 +18,13 @@ class AuthService {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        // Create user
+        // Create user - ALWAYS as client, ignore any role sent from frontend
         const user = await this.userRepository.create({
             email,
             password: hashedPassword,
             firstName,
             lastName,
-            role: 'client' // Default role for now
+            role: 'client' // Hardcoded role, can't be overridden from frontend
         });
 
         // Generate token
@@ -64,6 +64,90 @@ class AuthService {
             throw new ApiError(404, 'User not found');
         }
         return this.sanitizeUser(user);
+    }
+
+    async getAllUsers(page = 1, limit = 10, requestingUserId) {
+        // Verify admin status again as double security
+        const adminUser = await this.userRepository.findById(requestingUserId);
+        if (!adminUser || adminUser.role !== 'admin') {
+            throw new ApiError(403, 'Access denied. Admin only.');
+        }
+
+        // Get paginated users
+        const skip = (page - 1) * limit;
+        const users = await this.userRepository.findAll(skip, limit);
+        
+        // Get total count for pagination
+        const total = await this.userRepository.count();
+        
+        // Sanitize user data and remove sensitive info
+        const sanitizedUsers = users.map(user => ({
+            id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            createdAt: user.createdAt,
+            // Only show role to admins
+            ...(adminUser.role === 'admin' ? { role: user.role } : {})
+        }));
+        
+        return {
+            users: sanitizedUsers,
+            pagination: {
+                total,
+                page,
+                limit,
+                pages: Math.ceil(total / limit)
+            }
+        };
+    }
+
+    async makeUserAdmin(email, requestingUserId) {
+        // Double-check admin status
+        const adminUser = await this.userRepository.findById(requestingUserId);
+        if (!adminUser || adminUser.role !== 'admin') {
+            throw new ApiError(403, 'Access denied. Admin only.');
+        }
+
+        // Add rate limiting for this sensitive operation
+        // You might want to add a rate limiter middleware here
+
+        const user = await this.userRepository.findByEmail(email);
+        if (!user) {
+            throw new ApiError(404, 'User not found');
+        }
+        
+        user.role = 'admin';
+        await user.save();
+        
+        return this.sanitizeUser(user);
+    }
+
+    async deleteUser(userId, requestingUserId) {
+        // Double-check admin status
+        const adminUser = await this.userRepository.findById(requestingUserId);
+        if (!adminUser || adminUser.role !== 'admin') {
+            throw new ApiError(403, 'Access denied. Admin only.');
+        }
+
+        // Get the user to be deleted
+        const userToDelete = await this.userRepository.findById(userId);
+        if (!userToDelete) {
+            throw new ApiError(404, 'User not found');
+        }
+
+        // Prevent admin from deleting themselves
+        if (userId === requestingUserId) {
+            throw new ApiError(400, 'Admins cannot delete their own account');
+        }
+
+        // Delete the user
+        await this.userRepository.deleteById(userId);
+
+        return {
+            message: 'User deleted successfully',
+            deletedUser: this.sanitizeUser(userToDelete)
+        };
     }
 
     generateToken(user) {
