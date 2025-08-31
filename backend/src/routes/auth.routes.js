@@ -13,7 +13,14 @@ const registerValidation = [
         .withMessage('Password must be at least 8 characters long')
         .matches(/\d/)
         .withMessage('Password must contain a number'),
-    body('name').notEmpty().withMessage('Name is required')
+    body('firstName').notEmpty().withMessage('First name is required')
+        .trim()
+        .isLength({ min: 2 })
+        .withMessage('First name must be at least 2 characters'),
+    body('lastName').notEmpty().withMessage('Last name is required')
+        .trim()
+        .isLength({ min: 2 })
+        .withMessage('Last name must be at least 2 characters')
 ];
 
 const loginValidation = [
