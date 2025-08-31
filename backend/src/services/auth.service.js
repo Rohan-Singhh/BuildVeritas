@@ -40,13 +40,13 @@ class AuthService {
         // Find user
         const user = await this.userRepository.findByEmail(email);
         if (!user) {
-            throw new ApiError(401, 'Invalid credentials');
+            throw new ApiError(404, 'No account found with this email. Please sign up first.');
         }
 
         // Verify password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            throw new ApiError(401, 'Invalid credentials');
+            throw new ApiError(401, 'Incorrect password. Please try again.');
         }
 
         // Generate token
