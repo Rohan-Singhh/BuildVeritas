@@ -8,7 +8,7 @@ class AuthService {
         this.userRepository = new UserRepository();
     }
 
-    async registerUser({ email, password, name }) {
+    async registerUser({ email, password, firstName, lastName }) {
         // Check if user exists
         const existingUser = await this.userRepository.findByEmail(email);
         if (existingUser) {
@@ -22,7 +22,8 @@ class AuthService {
         const user = await this.userRepository.create({
             email,
             password: hashedPassword,
-            name,
+            firstName,
+            lastName,
             role: 'client' // Default role for now
         });
 

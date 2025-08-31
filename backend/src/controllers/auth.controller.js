@@ -16,8 +16,8 @@ class AuthController {
                 throw new ApiError(400, 'Validation Error', errors.array());
             }
 
-            const { email, password, name } = req.body;
-            const userData = await this.authService.registerUser({ email, password, name });
+            const { email, password, firstName, lastName } = req.body;
+            const userData = await this.authService.registerUser({ email, password, firstName, lastName });
             
             return ApiResponse.success(res, userData, 'User registered successfully');
         } catch (error) {
