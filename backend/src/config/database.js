@@ -7,11 +7,10 @@ class Database {
         }
 
         const options = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,
-            socketTimeoutMS: 45000,
-            retryWrites: true,
-            w: 'majority',
-            retryReads: true,
+            family: 4
         };
 
         try {
