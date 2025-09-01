@@ -1,10 +1,11 @@
-import React from "react";
-import Hero from "./Hero";
+import Hero from "./home/Hero";
+import Plans from "./home/Plans";
 
 const Home = () => {
   return (
     <div className="min-h-screen">
       <Hero />
+      <Plans />
     </div>
   );
 };

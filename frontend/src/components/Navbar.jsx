@@ -15,10 +15,10 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-1 md:space-x-3">
             <div className="flex-shrink-0">
               {/* <Building2 className="h-8 w-8" /> */}
-              <img src="/BV.svg" alt="BV" className="w-20 h-16" />
+              <img src="/BV2.svg" alt="BV" className="w-9 h-9 md:w-11 md:h-10" />
             </div>
             <div className="text-2xl font-bold text-gray-800">
               <span className="text-yellow-500">Build</span>
