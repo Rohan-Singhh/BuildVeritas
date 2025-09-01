@@ -66,7 +66,7 @@ class AuthService {
         return this.sanitizeUser(user);
     }
 
-    async getAllUsers(page = 1, limit = 10, requestingUserId) {
+    async getAllUsers(page = 1, limit = 20, requestingUserId) {
         // Verify admin status again as double security
         const adminUser = await this.userRepository.findById(requestingUserId);
         if (!adminUser || adminUser.role !== 'admin') {
