@@ -1,8 +1,7 @@
 {
   "name": "buildveritas-backend",
   "engines": {
-    "node": "18.x",
-    "npm": ">=6.0.0"
+    "node": "16.x"
   },
   "version": "1.0.0",
   "main": "index.js",
@@ -27,8 +26,7 @@
     "helmet": "^7.1.0",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "4.17.1",
-    "mongoose": "6.12.3",
+    "mongoose": "5.13.7",
     "morgan": "^1.10.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"

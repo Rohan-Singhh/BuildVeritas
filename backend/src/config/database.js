@@ -9,8 +9,8 @@ class Database {
         const options = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            serverSelectionTimeoutMS: 5000,
-            family: 4
+            useCreateIndex: true,
+            useFindAndModify: false
         };
 
         try {
