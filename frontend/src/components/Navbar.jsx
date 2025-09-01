@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Menu, X, Building2 } from "lucide-react";
+import { Menu, X, Building2, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -50,14 +52,32 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Login Button */}
-          <div className="hidden md:block">
-            <button
-              onClick={() => navigate("/login")}
-              className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
-            >
-              Login
-            </button>
+          {/* Auth Buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            {isAuthenticated() ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  className="text-gray-700 hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={logout}
+                  className="flex items-center space-x-2 bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Logout</span>
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
+              >
+                Login
+              </button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -100,17 +120,39 @@ const Navbar = () => {
               >
                 Blog
               </a>
-              <div className="pt-4">
-                <button
-                  onClick={() => {
-                    navigate("/login");
-                    setIsMenuOpen(false);
-                  }}
-                  className="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
-                >
-                  Login
-                </button>
-              </div>
+              {isAuthenticated() ? (
+                <div className="pt-4 space-y-2">
+                  <Link
+                    to="/dashboard"
+                    className="block text-gray-700 hover:text-yellow-500 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center space-x-2 bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="pt-4">
+                  <button
+                    onClick={() => {
+                      navigate("/login");
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg"
+                  >
+                    Login
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}

@@ -48,11 +48,29 @@ const sidebarItems = [
   },
 ];
 
+import { useEffect } from 'react';
+import '../styles/animations.css';
+
 const Dashboard = () => {
+  useEffect(() => {
+    // Add animation class when component mounts
+    const element = document.getElementById('dashboard-container');
+    element.classList.add('page-enter');
+    
+    // Start animation after a small delay
+    setTimeout(() => {
+      element.classList.add('page-enter-active');
+    }, 10);
+
+    // Cleanup
+    return () => {
+      element.classList.remove('page-enter', 'page-enter-active');
+    };
+  }, []);
   const [selected, setSelected] = useState("Dashboard");
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div id="dashboard-container" className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200">
         <div className="py-6 px-4">
