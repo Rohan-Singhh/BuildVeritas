@@ -14,16 +14,13 @@ class AuthService {
         if (existingUser) {
             throw new ApiError(400, 'User already exists');
         }
-
         // Validate role
         const validRoles = ['client_owner', 'vendor_supplier', 'construction_firm'];
         if (!validRoles.includes(role)) {
             throw new ApiError(400, 'Invalid role specified');
         }
-
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 12);
-
         // Create user with role-specific fields
         const userData = {
             email,
@@ -32,7 +29,6 @@ class AuthService {
             lastName,
             role
         };
-
         // Add role-specific fields
         if (role === 'vendor_supplier' || role === 'construction_firm') {
             userData.phone = phone;
@@ -40,12 +36,9 @@ class AuthService {
         if (role === 'construction_firm') {
             userData.companyName = companyName;
         }
-
         const user = await this.userRepository.create(userData);
-
         // Generate token
         const token = this.generateToken(user);
-
         return {
             user: this.sanitizeUser(user),
             token

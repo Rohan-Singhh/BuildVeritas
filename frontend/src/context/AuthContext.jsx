@@ -18,13 +18,23 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email, password, role) => {
     try {
-      const response = await authService.login(email, password);
+      const response = await authService.login(email, password, role);
+      
+      // Verify response structure
+      if (!response?.user) {
+        throw new Error('Invalid response from server');
+      }
+
       setUser(response.user);
+      
+      // Use single dashboard route
       navigate('/dashboard');
+      
       return response;
     } catch (error) {
+      console.error('Login Error:', error);
       throw error;
     }
   };
@@ -32,10 +42,20 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await authService.register(userData);
+      
+      // Verify response structure
+      if (!response?.user) {
+        throw new Error('Invalid response from server');
+      }
+
       setUser(response.user);
+      
+      // Use single dashboard route
       navigate('/dashboard');
+      
       return response;
     } catch (error) {
+      console.error('Registration Error:', error);
       throw error;
     }
   };
@@ -56,7 +76,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // You can replace this with a proper loading component
+    return <div>Loading...</div>;
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -16,9 +16,18 @@ const limiter = rateLimit({
     legacyHeaders: false
 });
 
+// CORS Configuration
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Vite's default port
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
 const initializeMiddleware = (app) => {
     app.use(helmet()); // Security headers
-    app.use(cors()); // Enable CORS
+    app.use(cors(corsOptions)); // Enable CORS with specific options
     app.use(morgan('dev')); // Logging
     app.use(express.json()); // Parse JSON bodies
     app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
