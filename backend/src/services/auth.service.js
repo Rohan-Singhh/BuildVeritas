@@ -8,24 +8,40 @@ class AuthService {
         this.userRepository = new UserRepository();
     }
 
-    async registerUser({ email, password, firstName, lastName }) {
+    async registerUser({ email, password, firstName, lastName, role, phone, companyName }) {
         // Check if user exists
         const existingUser = await this.userRepository.findByEmail(email);
         if (existingUser) {
             throw new ApiError(400, 'User already exists');
         }
 
+        // Validate role
+        const validRoles = ['client_owner', 'vendor_supplier', 'construction_firm'];
+        if (!validRoles.includes(role)) {
+            throw new ApiError(400, 'Invalid role specified');
+        }
+
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        // Create user - ALWAYS as client, ignore any role sent from frontend
-        const user = await this.userRepository.create({
+        // Create user with role-specific fields
+        const userData = {
             email,
             password: hashedPassword,
             firstName,
             lastName,
-            role: 'client' // Hardcoded role, can't be overridden from frontend
-        });
+            role
+        };
+
+        // Add role-specific fields
+        if (role === 'vendor_supplier' || role === 'construction_firm') {
+            userData.phone = phone;
+        }
+        if (role === 'construction_firm') {
+            userData.companyName = companyName;
+        }
+
+        const user = await this.userRepository.create(userData);
 
         // Generate token
         const token = this.generateToken(user);
@@ -36,11 +52,16 @@ class AuthService {
         };
     }
 
-    async loginUser({ email, password }) {
+    async loginUser({ email, password, role }) {
         // Find user
         const user = await this.userRepository.findByEmail(email);
         if (!user) {
             throw new ApiError(404, 'No account found with this email. Please sign up first.');
+        }
+
+        // Verify role matches
+        if (user.role !== role) {
+            throw new ApiError(401, 'Invalid role for this account');
         }
 
         // Verify password
@@ -64,90 +85,6 @@ class AuthService {
             throw new ApiError(404, 'User not found');
         }
         return this.sanitizeUser(user);
-    }
-
-    async getAllUsers(page = 1, limit = 20, requestingUserId) {
-        // Verify admin status again as double security
-        const adminUser = await this.userRepository.findById(requestingUserId);
-        if (!adminUser || adminUser.role !== 'admin') {
-            throw new ApiError(403, 'Access denied. Admin only.');
-        }
-
-        // Get paginated users
-        const skip = (page - 1) * limit;
-        const users = await this.userRepository.findAll(skip, limit);
-        
-        // Get total count for pagination
-        const total = await this.userRepository.count();
-        
-        // Sanitize user data and remove sensitive info
-        const sanitizedUsers = users.map(user => ({
-            id: user._id,
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            createdAt: user.createdAt,
-            // Only show role to admins
-            ...(adminUser.role === 'admin' ? { role: user.role } : {})
-        }));
-        
-        return {
-            users: sanitizedUsers,
-            pagination: {
-                total,
-                page,
-                limit,
-                pages: Math.ceil(total / limit)
-            }
-        };
-    }
-
-    async makeUserAdmin(email, requestingUserId) {
-        // Double-check admin status
-        const adminUser = await this.userRepository.findById(requestingUserId);
-        if (!adminUser || adminUser.role !== 'admin') {
-            throw new ApiError(403, 'Access denied. Admin only.');
-        }
-
-        // Add rate limiting for this sensitive operation
-        // You might want to add a rate limiter middleware here
-
-        const user = await this.userRepository.findByEmail(email);
-        if (!user) {
-            throw new ApiError(404, 'User not found');
-        }
-        
-        user.role = 'admin';
-        await user.save();
-        
-        return this.sanitizeUser(user);
-    }
-
-    async deleteUser(userId, requestingUserId) {
-        // Double-check admin status
-        const adminUser = await this.userRepository.findById(requestingUserId);
-        if (!adminUser || adminUser.role !== 'admin') {
-            throw new ApiError(403, 'Access denied. Admin only.');
-        }
-
-        // Get the user to be deleted
-        const userToDelete = await this.userRepository.findById(userId);
-        if (!userToDelete) {
-            throw new ApiError(404, 'User not found');
-        }
-
-        // Prevent admin from deleting themselves
-        if (userId === requestingUserId) {
-            throw new ApiError(400, 'Admins cannot delete their own account');
-        }
-
-        // Delete the user
-        await this.userRepository.deleteById(userId);
-
-        return {
-            message: 'User deleted successfully',
-            deletedUser: this.sanitizeUser(userToDelete)
-        };
     }
 
     generateToken(user) {
