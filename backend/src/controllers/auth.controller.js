@@ -16,13 +16,60 @@ class AuthController {
                 throw new ApiError(400, 'Validation Error', errors.array());
             }
 
-            // Only accept allowed fields, ignore role if sent
-            const { email, password, firstName, lastName } = req.body;
+            const { 
+                email, 
+                password, 
+                firstName, 
+                lastName, 
+                role,
+                phone,
+                companyName
+            } = req.body;
+
+            // Basic validation for required fields
+            if (!email || !password || !firstName || !lastName || !role) {
+                throw new ApiError(400, 'Email, password, first name, last name, and role are required');
+            }
+
+            // Role-specific validation
+            switch (role) {
+                case 'client_owner':
+                    // Client only needs basic fields
+                    break;
+
+                case 'vendor_supplier':
+                    if (!phone) {
+                        throw new ApiError(400, 'Phone number is required for vendors/suppliers');
+                    }
+                    if (!/^[0-9]{10}$/.test(phone)) {
+                        throw new ApiError(400, 'Please provide a valid 10-digit phone number');
+                    }
+                    break;
+
+                case 'construction_firm':
+                    if (!phone) {
+                        throw new ApiError(400, 'Phone number is required for construction firms');
+                    }
+                    if (!/^[0-9]{10}$/.test(phone)) {
+                        throw new ApiError(400, 'Please provide a valid 10-digit phone number');
+                    }
+                    if (!companyName) {
+                        throw new ApiError(400, 'Company name is required for construction firms');
+                    }
+                    break;
+
+                default:
+                    throw new ApiError(400, 'Invalid role specified');
+            }
+
             const userData = await this.authService.registerUser({ 
                 email, 
                 password, 
                 firstName, 
-                lastName
+                lastName,
+                role,
+                phone,
+                companyName
             });
             
             return ApiResponse.success(res, userData, 'User registered successfully');
@@ -38,8 +85,14 @@ class AuthController {
                 throw new ApiError(400, 'Validation Error', errors.array());
             }
 
-            const { email, password } = req.body;
-            const authData = await this.authService.loginUser({ email, password });
+            const { email, password, role } = req.body;
+
+            // Validate required fields
+            if (!email || !password || !role) {
+                throw new ApiError(400, 'Email, password, and role are required');
+            }
+
+            const authData = await this.authService.loginUser({ email, password, role });
             
             return ApiResponse.success(res, authData, 'Login successful');
         } catch (error) {
@@ -53,63 +106,6 @@ class AuthController {
             const userProfile = await this.authService.getUserProfile(userId);
             
             return ApiResponse.success(res, userProfile, 'Profile retrieved successfully');
-        } catch (error) {
-            next(error);
-        }
-    };
-
-    getAllUsers = async (req, res, next) => {
-        try {
-            // Check if user is admin
-            if (req.user.role !== 'admin') {
-                throw new ApiError(403, 'Access denied. Admin only.');
-            }
-
-            // Get pagination parameters
-            const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
-
-            // Get users with requesting user's ID for double security
-            const usersData = await this.authService.getAllUsers(page, limit, req.user.id);
-            
-            return ApiResponse.success(res, usersData, 'Users retrieved successfully');
-        } catch (error) {
-            next(error);
-        }
-    };
-
-    makeUserAdmin = async (req, res, next) => {
-        try {
-            // Check if user is admin
-            if (req.user.role !== 'admin') {
-                throw new ApiError(403, 'Access denied. Admin only.');
-            }
-
-            const { email } = req.body;
-            const updatedUser = await this.authService.makeUserAdmin(email, req.user.id);
-            
-            return ApiResponse.success(res, updatedUser, 'User role updated to admin successfully');
-        } catch (error) {
-            next(error);
-        }
-    };
-
-    deleteUser = async (req, res, next) => {
-        try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                throw new ApiError(400, 'Validation Error', errors.array());
-            }
-
-            // Check if user is admin
-            if (req.user.role !== 'admin') {
-                throw new ApiError(403, 'Access denied. Admin only.');
-            }
-
-            const { userId } = req.params;
-            const result = await this.authService.deleteUser(userId, req.user.id);
-            
-            return ApiResponse.success(res, result, 'User deleted successfully');
         } catch (error) {
             next(error);
         }

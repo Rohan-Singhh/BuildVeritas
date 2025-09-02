@@ -1,5 +1,6 @@
 import axios from 'axios';
-// Get API URL from environment variables or fallback to local development
+
+// API URL configuration
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Create axios instance
@@ -17,28 +18,74 @@ api.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+        // Log request for debugging
+        console.log('API Request:', {
+            url: config.url,
+            method: config.method,
+            data: config.data
+        });
         return config;
     },
     (error) => {
+        console.error('Request Error:', error);
         return Promise.reject(error);
     }
 );
 
 // Response interceptor for handling errors
 api.interceptors.response.use(
-    (response) => response.data,
+    (response) => {
+        // Log successful response
+        console.log('API Success Response:', response);
+        return response;
+    },
     (error) => {
-        const message = error.response?.data?.message || error.message;
-        return Promise.reject(message);
+        // Log error in detail
+        console.error('API Error Response:', {
+            status: error.response?.status,
+            data: error.response?.data,
+            message: error.message
+        });
+
+        if (!error.response) {
+            return Promise.reject(new Error('Network error. Please check your connection.'));
+        }
+
+        // Return the error response data
+        return Promise.reject(error.response.data);
     }
 );
 
 // Auth API endpoints
 export const authAPI = {
-    login: (credentials) => api.post('/auth/login', credentials),
-    register: (userData) => api.post('/auth/register', userData),
-    getProfile: () => api.get('/auth/profile'),
+    login: async (credentials) => {
+        try {
+            const response = await api.post('/auth/login', credentials);
+            console.log('Login Response:', response);
+            return response.data;
+        } catch (error) {
+            console.error('Login Error:', error);
+            throw error;
+        }
+    },
+    register: async (userData) => {
+        try {
+            const response = await api.post('/auth/register', userData);
+            return response.data;
+        } catch (error) {
+            console.error('Register Error:', error);
+            throw error;
+        }
+    },
+    getProfile: async () => {
+        try {
+            const response = await api.get('/auth/profile');
+            return response.data;
+        } catch (error) {
+            console.error('Get Profile Error:', error);
+            throw error;
+        }
+    }
 };
 
-// Export the api instance for other services
 export default api;

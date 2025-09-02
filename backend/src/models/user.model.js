@@ -26,15 +26,23 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['client', 'admin'],
-        default: 'client'
+        enum: ['client_owner', 'vendor_supplier', 'construction_firm'],
+        required: [true, 'Role is required']
     },
-    isActive: {
-        type: Boolean,
-        default: true
+    // Optional fields based on role
+    phone: {
+        type: String,
+        required: function() {
+            return this.role === 'vendor_supplier' || this.role === 'construction_firm';
+        },
+        match: [/^[0-9]{10}$/, 'Please enter a valid 10-digit phone number']
     },
-    lastLogin: {
-        type: Date
+    companyName: {
+        type: String,
+        required: function() {
+            return this.role === 'construction_firm';
+        },
+        trim: true
     }
 }, {
     timestamps: true,

@@ -8,11 +8,18 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    role: "client_owner", // Default role
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const roles = [
+    { id: 'client_owner', label: 'Client/Owner' },
+    { id: 'vendor_supplier', label: 'Vendor/Supplier' },
+    { id: 'construction_firm', label: 'Construction Firm' }
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +47,10 @@ const Login = () => {
       newErrors.password = "Password is required";
     }
 
+    if (!formData.role) {
+      newErrors.role = "Please select your role";
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -47,9 +58,9 @@ const Login = () => {
 
     setIsLoading(true);
     try {
-      await login(formData.email, formData.password);
+      await login(formData.email, formData.password, formData.role);
     } catch (error) {
-      setGeneralError(error);
+      setGeneralError(error.message || "Login failed. Please check your credentials.");
       setErrors({
         email: true,
         password: true,
@@ -78,11 +89,35 @@ const Login = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10 border border-gray-200">
+          {/* Role Selection Toggle */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Select your role
+            </label>
+            <div className="grid grid-cols-3 gap-2 p-1 bg-gray-100 rounded-lg">
+              {roles.map((role) => (
+                <button
+                  key={role.id}
+                  type="button"
+                  className={`py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 ${
+                    formData.role === role.id
+                      ? 'bg-white text-yellow-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-900'
+                  }`}
+                  onClick={() => handleChange({ target: { name: 'role', value: role.id } })}
+                >
+                  {role.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {generalError && (
             <div className="mb-4 p-4 rounded-md bg-red-50 border border-red-200">
               <p className="text-sm text-red-600">{generalError}</p>
             </div>
           )}
+
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
@@ -109,7 +144,9 @@ const Login = () => {
                   placeholder="Enter your email"
                 />
               </div>
-
+              {errors.email && typeof errors.email === 'string' && (
+                <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+              )}
             </div>
 
             <div>
@@ -148,7 +185,9 @@ const Login = () => {
                   )}
                 </button>
               </div>
-
+              {errors.password && typeof errors.password === 'string' && (
+                <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+              )}
             </div>
 
             <div className="flex items-center justify-between">

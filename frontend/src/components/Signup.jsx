@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, Mail, Lock, User, UserCheck } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, UserCheck, Phone, Building } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const Signup = () => {
@@ -11,7 +11,17 @@ const Signup = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "client_owner", // Default role
+    phone: "",
+    companyName: "",
   });
+
+  const roles = [
+    { id: 'client_owner', label: 'Client/Owner' },
+    { id: 'vendor_supplier', label: 'Vendor/Supplier' },
+    { id: 'construction_firm', label: 'Construction Firm' }
+  ];
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
@@ -36,7 +46,7 @@ const Signup = () => {
     e.preventDefault();
     const newErrors = {};
 
-    // Validation
+    // Basic validation
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required";
     }
@@ -53,14 +63,27 @@ const Signup = () => {
 
     if (!formData.password) {
       newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters";
     }
 
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    // Role-specific validation
+    if (formData.role === 'vendor_supplier' || formData.role === 'construction_firm') {
+      if (!formData.phone) {
+        newErrors.phone = "Phone number is required";
+      } else if (!/^[0-9]{10}$/.test(formData.phone)) {
+        newErrors.phone = "Please enter a valid 10-digit phone number";
+      }
+    }
+
+    if (formData.role === 'construction_firm' && !formData.companyName.trim()) {
+      newErrors.companyName = "Company name is required";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -74,7 +97,7 @@ const Signup = () => {
       await register(userData);
     } catch (error) {
       setErrors({
-        email: error,
+        email: error.message || "Registration failed. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -100,13 +123,33 @@ const Signup = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10 border border-gray-200">
+          {/* Role Selection Toggle */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Select your role
+            </label>
+            <div className="grid grid-cols-3 gap-2 p-1 bg-gray-100 rounded-lg">
+              {roles.map((role) => (
+                <button
+                  key={role.id}
+                  type="button"
+                  className={`py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 ${
+                    formData.role === role.id
+                      ? 'bg-white text-yellow-600 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-900'
+                  }`}
+                  onClick={() => handleChange({ target: { name: 'role', value: role.id } })}
+                >
+                  {role.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <div>
-                <label
-                  htmlFor="firstName"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label className="block text-sm font-medium text-gray-700">
                   First name
                 </label>
                 <div className="mt-1 relative">
@@ -114,31 +157,24 @@ const Signup = () => {
                     <User className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    id="firstName"
                     name="firstName"
                     type="text"
-                    autoComplete="given-name"
                     required
                     value={formData.firstName}
                     onChange={handleChange}
                     className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
                       errors.firstName ? "border-red-300" : "border-gray-300"
                     }`}
-                    placeholder="Enter your first name"
+                    placeholder="First name"
                   />
                 </div>
                 {errors.firstName && (
-                  <p className="mt-2 text-sm text-red-600">
-                    {errors.firstName}
-                  </p>
+                  <p className="mt-2 text-sm text-red-600">{errors.firstName}</p>
                 )}
               </div>
 
               <div>
-                <label
-                  htmlFor="lastName"
-                  className="block text-sm font-medium text-gray-700"
-                >
+                <label className="block text-sm font-medium text-gray-700">
                   Last name
                 </label>
                 <div className="mt-1 relative">
@@ -146,17 +182,15 @@ const Signup = () => {
                     <UserCheck className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    id="lastName"
                     name="lastName"
                     type="text"
-                    autoComplete="family-name"
                     required
                     value={formData.lastName}
                     onChange={handleChange}
                     className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
                       errors.lastName ? "border-red-300" : "border-gray-300"
                     }`}
-                    placeholder="Enter your last name"
+                    placeholder="Last name"
                   />
                 </div>
                 {errors.lastName && (
@@ -166,10 +200,7 @@ const Signup = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700">
                 Email address
               </label>
               <div className="mt-1 relative">
@@ -177,17 +208,15 @@ const Signup = () => {
                   <Mail className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="email"
                   name="email"
                   type="email"
-                  autoComplete="email"
                   required
                   value={formData.email}
                   onChange={handleChange}
                   className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
                     errors.email ? "border-red-300" : "border-gray-300"
                   }`}
-                  placeholder="Enter your email"
+                  placeholder="Email address"
                 />
               </div>
               {errors.email && (
@@ -195,11 +224,64 @@ const Signup = () => {
               )}
             </div>
 
+            {/* Conditional Fields Based on Role */}
+            {(formData.role === 'vendor_supplier' || formData.role === 'construction_firm') && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Phone Number
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Phone className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    name="phone"
+                    type="tel"
+                    pattern="[0-9]{10}"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
+                      errors.phone ? "border-red-300" : "border-gray-300"
+                    }`}
+                    placeholder="10-digit phone number"
+                  />
+                </div>
+                {errors.phone && (
+                  <p className="mt-2 text-sm text-red-600">{errors.phone}</p>
+                )}
+              </div>
+            )}
+
+            {formData.role === 'construction_firm' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Company Name
+                </label>
+                <div className="mt-1 relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Building className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    name="companyName"
+                    type="text"
+                    required
+                    value={formData.companyName}
+                    onChange={handleChange}
+                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
+                      errors.companyName ? "border-red-300" : "border-gray-300"
+                    }`}
+                    placeholder="Company name"
+                  />
+                </div>
+                {errors.companyName && (
+                  <p className="mt-2 text-sm text-red-600">{errors.companyName}</p>
+                )}
+              </div>
+            )}
+
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700">
                 Password
               </label>
               <div className="mt-1 relative">
@@ -207,17 +289,15 @@ const Signup = () => {
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  autoComplete="new-password"
                   required
                   value={formData.password}
                   onChange={handleChange}
                   className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
                     errors.password ? "border-red-300" : "border-gray-300"
                   }`}
-                  placeholder="Create a password"
+                  placeholder="Create password"
                 />
                 <button
                   type="button"
@@ -237,10 +317,7 @@ const Signup = () => {
             </div>
 
             <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label className="block text-sm font-medium text-gray-700">
                 Confirm Password
               </label>
               <div className="mt-1 relative">
@@ -248,19 +325,15 @@ const Signup = () => {
                   <Lock className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  id="confirmPassword"
                   name="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
-                  autoComplete="new-password"
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
-                    errors.confirmPassword
-                      ? "border-red-300"
-                      : "border-gray-300"
+                    errors.confirmPassword ? "border-red-300" : "border-gray-300"
                   }`}
-                  placeholder="Confirm your password"
+                  placeholder="Confirm password"
                 />
                 <button
                   type="button"
@@ -275,9 +348,7 @@ const Signup = () => {
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="mt-2 text-sm text-red-600">
-                  {errors.confirmPassword}
-                </p>
+                <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
               )}
             </div>
 
@@ -289,10 +360,7 @@ const Signup = () => {
                 required
                 className="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded"
               />
-              <label
-                htmlFor="agree-terms"
-                className="ml-2 block text-sm text-gray-900"
-              >
+              <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-900">
                 I agree to the{" "}
                 <a
                   href="#"
@@ -306,8 +374,8 @@ const Signup = () => {
             <div>
               <button
                 type="submit"
-                className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all duration-200 shadow-md hover:shadow-lg ${
-                  isLoading ? 'opacity-75 cursor-not-allowed' : ''
+                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 ${
+                  isLoading ? "opacity-75 cursor-not-allowed" : ""
                 }`}
                 disabled={isLoading}
               >
@@ -320,7 +388,7 @@ const Signup = () => {
                     Creating account...
                   </div>
                 ) : (
-                  'Create account'
+                  "Create account"
                 )}
               </button>
             </div>
@@ -341,7 +409,7 @@ const Signup = () => {
             <div className="mt-6">
               <Link
                 to="/login"
-                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200"
+                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
               >
                 Sign in
               </Link>
