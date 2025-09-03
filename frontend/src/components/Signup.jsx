@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, Mail, Lock, User, UserCheck, Phone, Building } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  User,
+  UserCheck,
+  Phone,
+  Building,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const Signup = () => {
@@ -17,9 +26,9 @@ const Signup = () => {
   });
 
   const roles = [
-    { id: 'client_owner', label: 'Client/Owner' },
-    { id: 'vendor_supplier', label: 'Vendor/Supplier' },
-    { id: 'construction_firm', label: 'Construction Firm' }
+    { id: "client_owner", label: "Client/Owner" },
+    { id: "vendor_supplier", label: "Vendor/Supplier" },
+    { id: "construction_firm", label: "Construction Firm" },
   ];
 
   const [showPassword, setShowPassword] = useState(false);
@@ -74,7 +83,10 @@ const Signup = () => {
     }
 
     // Role-specific validation
-    if (formData.role === 'vendor_supplier' || formData.role === 'construction_firm') {
+    if (
+      formData.role === "vendor_supplier" ||
+      formData.role === "construction_firm"
+    ) {
       if (!formData.phone) {
         newErrors.phone = "Phone number is required";
       } else if (!/^[0-9]{10}$/.test(formData.phone)) {
@@ -82,7 +94,7 @@ const Signup = () => {
       }
     }
 
-    if (formData.role === 'construction_firm' && !formData.companyName.trim()) {
+    if (formData.role === "construction_firm" && !formData.companyName.trim()) {
       newErrors.companyName = "Company name is required";
     }
 
@@ -121,24 +133,26 @@ const Signup = () => {
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
         <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10 border border-gray-200">
           {/* Role Selection Toggle */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Select your role
             </label>
-            <div className="grid grid-cols-3 gap-2 p-1 bg-gray-100 rounded-lg">
+            <div className="grid grid-cols-3 gap-2 p-2 bg-gray-100 rounded-lg">
               {roles.map((role) => (
                 <button
                   key={role.id}
                   type="button"
                   className={`py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 ${
                     formData.role === role.id
-                      ? 'bg-white text-yellow-600 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-900'
+                      ? "bg-white text-yellow-600 shadow-sm"
+                      : "text-gray-500 hover:text-gray-900"
                   }`}
-                  onClick={() => handleChange({ target: { name: 'role', value: role.id } })}
+                  onClick={() =>
+                    handleChange({ target: { name: "role", value: role.id } })
+                  }
                 >
                   {role.label}
                 </button>
@@ -169,7 +183,9 @@ const Signup = () => {
                   />
                 </div>
                 {errors.firstName && (
-                  <p className="mt-2 text-sm text-red-600">{errors.firstName}</p>
+                  <p className="mt-2 text-sm text-red-600">
+                    {errors.firstName}
+                  </p>
                 )}
               </div>
 
@@ -225,7 +241,8 @@ const Signup = () => {
             </div>
 
             {/* Conditional Fields Based on Role */}
-            {(formData.role === 'vendor_supplier' || formData.role === 'construction_firm') && (
+            {(formData.role === "vendor_supplier" ||
+              formData.role === "construction_firm") && (
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Phone Number
@@ -253,7 +270,7 @@ const Signup = () => {
               </div>
             )}
 
-            {formData.role === 'construction_firm' && (
+            {formData.role === "construction_firm" && (
               <div>
                 <label className="block text-sm font-medium text-gray-700">
                   Company Name
@@ -275,7 +292,9 @@ const Signup = () => {
                   />
                 </div>
                 {errors.companyName && (
-                  <p className="mt-2 text-sm text-red-600">{errors.companyName}</p>
+                  <p className="mt-2 text-sm text-red-600">
+                    {errors.companyName}
+                  </p>
                 )}
               </div>
             )}
@@ -331,7 +350,9 @@ const Signup = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
-                    errors.confirmPassword ? "border-red-300" : "border-gray-300"
+                    errors.confirmPassword
+                      ? "border-red-300"
+                      : "border-gray-300"
                   }`}
                   placeholder="Confirm password"
                 />
@@ -348,7 +369,9 @@ const Signup = () => {
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.confirmPassword}
+                </p>
               )}
             </div>
 
@@ -360,7 +383,10 @@ const Signup = () => {
                 required
                 className="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded"
               />
-              <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-900">
+              <label
+                htmlFor="agree-terms"
+                className="ml-2 block text-sm text-gray-900"
+              >
                 I agree to the{" "}
                 <a
                   href="#"
@@ -381,9 +407,25 @@ const Signup = () => {
               >
                 {isLoading ? (
                   <div className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Creating account...
                   </div>

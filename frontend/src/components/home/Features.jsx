@@ -1,0 +1,93 @@
+import { sections } from "../../constants/FeatureSection";
+
+const Features = () => {
+  return (
+    <div className="min-h-screen">
+      {/* Hero Header Section */}
+      <div className="mx-auto px-4 sm:px-6 lg:px-0 pt-16 sm:pt-20 lg:pt-24">
+        <div className="text-center max-w-7xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight tracking-tight">
+            Powerful Features for{" "}
+            <span className=" text-yellow-600 mt-2">Modern Construction</span>
+          </h1>
+          <p className="text-lg sm:text-xl md:text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed font-light">
+            Everything you need to manage construction projects efficiently and
+            profitably with cutting-edge technology.
+          </p>
+        </div>
+      </div>
+
+      {/* Features Sections */}
+      <div className="relative">
+        {sections.map((section, index) => (
+          <div key={section.id} className="relative">
+            {/* Background Pattern */}
+            <div
+              className={`absolute inset-0 ${
+                index % 2 === 0 ? "bg-white" : "bg-yellow-25"
+              }`}
+            ></div>
+
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+              <div
+                className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16 items-center`}
+              >
+                {/* Text Content */}
+                <div
+                  className={`lg:col-span-6 space-y-6 sm:space-y-8 ${
+                    section.reverse
+                      ? "lg:order-2 lg:col-start-7"
+                      : "lg:order-1 lg:col-start-1"
+                  }`}
+                >
+                  {/* Icon */}
+                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-2xl shadow-lg">
+                    <section.icon className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600" />
+                  </div>
+
+                  {/* Text Content */}
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="space-y-3">
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
+                        {section.heading}
+                      </h2>
+                      <h3 className="text-lg sm:text-xl md:text-2xl text-yellow-600 font-semibold leading-tight">
+                        {section.subheading}
+                      </h3>
+                    </div>
+                    <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed font-light max-w-2xl">
+                      {section.description}
+                    </p>
+                  </div>
+
+                  {/* CTA Button */}
+                </div>
+
+                {/* Image */}
+                <div
+                  className={`lg:col-span-6 ${
+                    section.reverse
+                      ? "lg:order-1 lg:col-start-1"
+                      : "lg:order-2 lg:col-start-7"
+                  }`}
+                >
+                  <div className="relative group">
+                    <div className="relative rounded-2xl shadow-lg sm:shadow-2xl shadow-yellow-400">
+                      <img
+                        src={section.imageUrl}
+                        alt={section.heading}
+                        className="w-full h-48 sm:h-56 md:h-68 lg:h-[300px] xl:h-[350px] object-cover rounded-xl transition-all duration-700 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+export default Features;

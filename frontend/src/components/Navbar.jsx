@@ -32,7 +32,7 @@ const Navbar = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               <a
-                href="#features"
+                href="/features"
                 className="text-gray-700 hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-bold transition-colors duration-200"
               >
                 Features
