@@ -48,7 +48,7 @@ const Hero = () => {
           {/* Main heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
             <span className="block">Build Smarter with</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-400">
               AI Intelligence
             </span>
           </h1>
@@ -58,8 +58,8 @@ const Hero = () => {
             Transform your construction projects with real-time tracking,
             AI-powered budget estimation, and intelligent site verification.
             Join thousands of construction professionals already using{" "}
-            <span className="font-semibold text-yellow-300">
-              BuildBridge AI
+            <span className="font-semibold text-yellow-400">
+              BuildVeritas AI
             </span>
             .
           </p>

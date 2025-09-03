@@ -5,7 +5,6 @@ import {
   FaChartBar,
   FaPlus,
   FaUpload,
-  FaUser,
   FaBuilding,
   FaCog,
   FaUsers,
