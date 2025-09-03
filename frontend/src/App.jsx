@@ -7,29 +7,34 @@ import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";
 import Features from "./components/Features";
 import { AuthProvider } from "./context/AuthContext";
+import { TransitionProvider } from "./context/TransitionContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CustomCursor from "./components/CustomCursor";
 
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="App">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/features" element={<Features />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </div>
+        <TransitionProvider>
+          <div className="App cursor-none">
+            <CustomCursor />
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/features" element={<Features />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </div>
+        </TransitionProvider>
       </AuthProvider>
     </Router>
   );

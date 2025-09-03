@@ -8,7 +8,7 @@ const Features = () => {
         <div className="text-center max-w-7xl mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight tracking-tight">
             Powerful Features for{" "}
-            <span className=" text-yellow-600 mt-2">Modern Construction</span>
+            <span className="text-blue-400 mt-2">Modern Construction</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-xl text-gray-700 max-w-2xl mx-auto leading-relaxed font-light">
             Everything you need to manage construction projects efficiently and
@@ -24,7 +24,7 @@ const Features = () => {
             {/* Background Pattern */}
             <div
               className={`absolute inset-0 ${
-                index % 2 === 0 ? "bg-white" : "bg-yellow-25"
+                index % 2 === 0 ? "bg-white" : "bg-blue-50/30"
               }`}
             ></div>
 
@@ -41,8 +41,8 @@ const Features = () => {
                   }`}
                 >
                   {/* Icon */}
-                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-2xl shadow-lg">
-                    <section.icon className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600" />
+                  <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg">
+                    <section.icon className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
                   </div>
 
                   {/* Text Content */}
@@ -51,7 +51,7 @@ const Features = () => {
                       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
                         {section.heading}
                       </h2>
-                      <h3 className="text-lg sm:text-xl md:text-2xl text-yellow-600 font-semibold leading-tight">
+                      <h3 className="text-lg sm:text-xl md:text-2xl text-blue-400 font-semibold leading-tight">
                         {section.subheading}
                       </h3>
                     </div>
@@ -72,7 +72,7 @@ const Features = () => {
                   }`}
                 >
                   <div className="relative group">
-                    <div className="relative rounded-2xl shadow-lg sm:shadow-2xl shadow-yellow-400">
+                    <div className="relative rounded-2xl shadow-lg sm:shadow-2xl shadow-blue-300">
                       <img
                         src={section.imageUrl}
                         alt={section.heading}

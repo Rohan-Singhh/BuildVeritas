@@ -7,7 +7,7 @@ const CallSection = () => {
         <div className="space-y-6 sm:space-y-4">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight">
             Ready to Transform Your
-            <span className="block text-yellow-500">
+            <span className="block text-blue-400">
               Construction Projects?
             </span>
           </h2>

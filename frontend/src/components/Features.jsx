@@ -10,7 +10,7 @@ function App() {
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
               Powerful Features for
-              <span className="block text-yellow-600 mt-2">
+              <span className="block text-blue-400 mt-2">
                 Modern Construction
               </span>
             </h1>
@@ -29,7 +29,7 @@ function App() {
             {/* Background Pattern */}
             <div
               className={`absolute inset-0 ${
-                index % 2 === 0 ? "bg-white" : "bg-yellow-25"
+                index % 2 === 0 ? "bg-white" : "bg-blue-50/30"
               }`}
             ></div>
 
@@ -46,8 +46,8 @@ function App() {
                   }`}
                 >
                   {/* Icon */}
-                  <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-2xl shadow-lg">
-                    <section.icon className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-600" />
+                  <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg">
+                    <section.icon className="w-8 h-8 sm:w-10 sm:h-10 text-blue-400" />
                   </div>
 
                   {/* Text Content */}
@@ -56,7 +56,7 @@ function App() {
                       <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight tracking-tight">
                         {section.heading}
                       </h2>
-                      <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-yellow-600 font-semibold leading-tight">
+                      <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-blue-400 font-semibold leading-tight">
                         {section.subheading}
                       </h3>
                     </div>
@@ -78,7 +78,7 @@ function App() {
                 >
                   <div className="relative group">
                     {/* <div className="absolute -inset-4 bg-gradient-to-r from-yellow-200 to-amber-200 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 blur-xl"></div> */}
-                    <div className="relative rounded-2xl shadow-lg sm:shadow-2xl shadow-yellow-300">
+                    <div className="relative rounded-2xl shadow-lg sm:shadow-2xl shadow-blue-200">
                       <img
                         src={section.imageUrl}
                         alt={section.heading}
@@ -106,7 +106,7 @@ function App() {
               { number: "24/7", label: "Expert Support" },
             ].map((stat, index) => (
               <div key={index} className="text-center group">
-                <div className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-6 sm:p-8 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-6 sm:p-8 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
                   <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
                     {stat.number}
                   </div>

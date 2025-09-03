@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Building2, Package, HardHat, Check } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
@@ -82,7 +82,7 @@ const Login = () => {
           Or{" "}
           <Link
             to="/signup"
-            className="font-medium text-yellow-600 hover:text-yellow-500 transition-colors duration-200"
+            className="font-medium text-blue-400 hover:text-blue-500 transition-colors duration-200"
           >
             create a new account
           </Link>
@@ -92,25 +92,44 @@ const Login = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
         <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:px-10 border border-gray-200">
           {/* Role Selection Toggle */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="mb-8">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
               Select your role
             </label>
-            <div className="grid grid-cols-3 gap-2 p-2 bg-gray-100 rounded-lg">
+            <div className="flex flex-col space-y-3">
               {roles.map((role) => (
                 <button
                   key={role.id}
                   type="button"
-                  className={`py-2 px-3 text-sm font-medium rounded-md transition-all duration-200 ${
+                  className={`group relative overflow-hidden py-3 px-4 text-sm font-medium rounded-xl transition-all duration-300 ease-out ${
                     formData.role === role.id
-                      ? "bg-white text-yellow-600 shadow-sm"
-                      : "text-gray-500 hover:text-gray-900"
+                      ? "bg-gradient-to-r from-blue-400 to-blue-500 text-white shadow-lg"
+                      : "bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 border border-gray-200 hover:border-blue-200"
                   }`}
                   onClick={() =>
                     handleChange({ target: { name: "role", value: role.id } })
                   }
                 >
-                  {role.label}
+                  <div className="relative flex items-center justify-between">
+                    <span className="flex items-center">
+                      {role.id === "client_owner" && (
+                        <Building2 className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                      )}
+                      {role.id === "vendor_supplier" && (
+                        <Package className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                      )}
+                      {role.id === "construction_firm" && (
+                        <HardHat className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                      )}
+                      {role.label}
+                    </span>
+                    <div className={`transform transition-transform duration-300 ${formData.role === role.id ? "translate-x-0 opacity-100" : "translate-x-2 opacity-0"}`}>
+                      <Check className="w-4 h-4" />
+                    </div>
+                  </div>
+                  {formData.role === role.id && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-blue-500/10 animate-pulse"></div>
+                  )}
                 </button>
               ))}
             </div>
@@ -142,7 +161,7 @@ const Login = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
+                  className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm ${
                     errors.email ? "border-red-300" : "border-gray-300"
                   }`}
                   placeholder="Enter your email"
@@ -172,7 +191,7 @@ const Login = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm ${
+                  className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm ${
                     errors.password ? "border-red-300" : "border-gray-300"
                   }`}
                   placeholder="Enter your password"
@@ -200,7 +219,7 @@ const Login = () => {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-blue-400 focus:ring-blue-400 border-gray-300 rounded"
                 />
                 <label
                   htmlFor="remember-me"
@@ -213,7 +232,7 @@ const Login = () => {
               <div className="text-sm">
                 <a
                   href="#"
-                  className="font-medium text-yellow-600 hover:text-yellow-500 transition-colors duration-200"
+                  className="font-medium text-blue-400 hover:text-blue-500 transition-colors duration-200"
                 >
                   Forgot your password?
                 </a>
@@ -223,7 +242,7 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-all duration-200 shadow-md hover:shadow-lg ${
+                className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 transition-all duration-200 shadow-md hover:shadow-lg ${
                   isLoading ? "opacity-75 cursor-not-allowed" : ""
                 }`}
                 disabled={isLoading}
@@ -272,7 +291,7 @@ const Login = () => {
             <div className="mt-6">
               <Link
                 to="/signup"
-                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 transition-colors duration-200"
+                className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 transition-colors duration-200"
               >
                 Sign up
               </Link>
