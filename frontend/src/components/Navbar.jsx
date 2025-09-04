@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Menu, X, Building2, LogOut, Users, LifeBuoy, Rocket } from "lucide-react";
+import { Menu, X, Building2, LogOut, Users, LifeBuoy, Rocket, BookOpen, Star } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { usePageTransition } from "../hooks/usePageTransition";
@@ -90,7 +90,7 @@ const Navbar = () => {
                 to="/about"
                 className="group inline-flex items-center text-gray-700 hover:text-blue-400 px-3 py-2 text-sm font-bold transition-all duration-200"
               >
-                <Users className="w-4 h-4 mr-2" />
+                <Users className="w-4 h-4 mr-2 transition-transform group-hover:-rotate-12" />
                 About
               </Link>
 
@@ -98,9 +98,25 @@ const Navbar = () => {
                 to="/contact"
                 className="group inline-flex items-center text-gray-700 hover:text-blue-400 px-3 py-2 text-sm font-bold transition-all duration-200"
               >
-                <LifeBuoy className="w-4 h-4 mr-2" />
+                <LifeBuoy className="w-4 h-4 mr-2 transition-transform group-hover:-rotate-12" />
                 Contact
               </Link>
+
+              <Link
+                to="/blogs"
+                className="group inline-flex items-center text-gray-700 hover:text-blue-400 px-3 py-2 text-sm font-bold transition-all duration-200"
+              >
+                <BookOpen className="w-4 h-4 mr-2 transition-transform group-hover:-rotate-12" />
+                Blogs
+              </Link>
+
+              <button
+                onClick={() => scrollToSection('testimonials')}
+                className="group inline-flex items-center text-gray-700 hover:text-blue-400 px-3 py-2 text-sm font-bold transition-all duration-200"
+              >
+                <Star className="w-4 h-4 mr-2 transition-transform group-hover:-rotate-12" />
+                Testimonials
+              </button>
             </div>
           </div>
 
@@ -175,7 +191,7 @@ const Navbar = () => {
                   className="group flex items-center text-gray-700 hover:text-blue-400 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Users className="w-5 h-5 mr-3" />
+                  <Users className="w-5 h-5 mr-3 transition-transform group-hover:-rotate-12" />
                   About
                 </Link>
 
@@ -184,9 +200,29 @@ const Navbar = () => {
                   className="group flex items-center text-gray-700 hover:text-blue-400 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <LifeBuoy className="w-5 h-5 mr-3" />
+                  <LifeBuoy className="w-5 h-5 mr-3 transition-transform group-hover:-rotate-12" />
                   Contact
                 </Link>
+
+                <Link
+                  to="/blogs"
+                  className="group flex items-center text-gray-700 hover:text-blue-400 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <BookOpen className="w-5 h-5 mr-3 transition-transform group-hover:-rotate-12" />
+                  Blogs
+                </Link>
+
+                <button
+                  className="group flex items-center text-gray-700 hover:text-blue-400 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 w-full text-left"
+                  onClick={() => {
+                    scrollToSection('testimonials');
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <Star className="w-5 h-5 mr-3 transition-transform group-hover:-rotate-12" />
+                  Testimonials
+                </button>
               {isAuthenticated() ? (
                 <div className="pt-4 space-y-2">
                   <Link

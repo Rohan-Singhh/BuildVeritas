@@ -13,6 +13,7 @@ import {
   Package,
   HardHat,
   Check,
+  Receipt,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -27,6 +28,7 @@ const Signup = () => {
     role: "client_owner", // Default role
     phone: "",
     companyName: "",
+    gstNumber: "",
   });
 
   const roles = [
@@ -78,6 +80,8 @@ const Signup = () => {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
+    } else if (!/\d/.test(formData.password)) {
+      newErrors.password = "Password must contain at least one number";
     }
 
     if (!formData.confirmPassword) {
@@ -98,8 +102,15 @@ const Signup = () => {
       }
     }
 
-    if (formData.role === "construction_firm" && !formData.companyName.trim()) {
-      newErrors.companyName = "Company name is required";
+    if (formData.role === "construction_firm") {
+      if (!formData.companyName.trim()) {
+        newErrors.companyName = "Company name is required";
+      }
+      if (!formData.gstNumber.trim()) {
+        newErrors.gstNumber = "GST number is required";
+      } else if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(formData.gstNumber)) {
+        newErrors.gstNumber = "Please enter a valid GST number";
+      }
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -109,12 +120,28 @@ const Signup = () => {
 
     setIsLoading(true);
     try {
+      // Ensure GST number is properly formatted
       const { confirmPassword, ...userData } = formData;
+      if (userData.role === 'construction_firm' && userData.gstNumber) {
+        userData.gstNumber = userData.gstNumber.trim().toUpperCase();
+        console.log('GST number before submission:', `[${userData.gstNumber}]`);
+      }
+      console.log('Submitting registration data:', userData); // Debug log
       await register(userData);
     } catch (error) {
-      setErrors({
-        email: error.message || "Registration failed. Please try again.",
-      });
+      // Handle specific validation errors from backend
+      if (error.errors) {
+        const newErrors = {};
+        Object.entries(error.errors).forEach(([field, error]) => {
+          newErrors[field] = error.message || "Invalid value";
+        });
+        setErrors(newErrors);
+      } else {
+        // Handle general error
+        setErrors({
+          general: error.message || "Registration failed. Please try again.",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -294,37 +321,69 @@ const Signup = () => {
             )}
 
             {formData.role === "construction_firm" && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Company Name
-                </label>
-                <div className="mt-1 relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Building className="h-5 w-5 text-gray-400" />
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Company Name
+                  </label>
+                  <div className="mt-1 relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Building className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      name="companyName"
+                      type="text"
+                      required
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm ${
+                        errors.companyName ? "border-red-300" : "border-gray-300"
+                      }`}
+                      placeholder="Company name"
+                    />
                   </div>
-                  <input
-                    name="companyName"
-                    type="text"
-                    required
-                    value={formData.companyName}
-                    onChange={handleChange}
-                    className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm ${
-                      errors.companyName ? "border-red-300" : "border-gray-300"
-                    }`}
-                    placeholder="Company name"
-                  />
+                  {errors.companyName && (
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.companyName}
+                    </p>
+                  )}
                 </div>
-                {errors.companyName && (
-                  <p className="mt-2 text-sm text-red-600">
-                    {errors.companyName}
-                  </p>
-                )}
-              </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    GST Number
+                  </label>
+                  <div className="mt-1 relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Receipt className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      name="gstNumber"
+                      type="text"
+                      required
+                      value={formData.gstNumber}
+                      onChange={handleChange}
+                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm ${
+                        errors.gstNumber ? "border-red-300" : "border-gray-300"
+                      }`}
+                      placeholder="Enter GST number (e.g., 29ABCDE1234F1Z5)"
+                    />
+                  </div>
+                  {errors.gstNumber && (
+                    <p className="mt-2 text-sm text-red-600">
+                      {errors.gstNumber}
+                    </p>
+                  )}
+                </div>
+              </>
             )}
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Password
+                <span className="ml-1 text-sm text-gray-500">
+                  (min. 8 characters, must include a number)
+                </span>
               </label>
               <div className="mt-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -419,6 +478,21 @@ const Signup = () => {
                 </a>
               </label>
             </div>
+
+            {errors.general && (
+              <div className="rounded-md bg-red-50 p-4 mb-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-red-700">{errors.general}</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div>
               <button

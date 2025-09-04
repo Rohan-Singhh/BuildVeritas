@@ -16,18 +16,15 @@ class AuthController {
                 throw new ApiError(400, 'Validation Error', errors.array());
             }
 
-            const { 
-                email, 
-                password, 
-                firstName, 
-                lastName, 
-                role,
-                phone,
-                companyName
-            } = req.body;
+            console.log('Request body:', {
+                ...req.body,
+                gstNumber: req.body.gstNumber ? `[${req.body.gstNumber}]` : undefined
+            });
 
             // Basic validation for required fields
-            if (!email || !password || !firstName || !lastName || !role) {
+            const { email, password, firstName, lastName, role, phone, companyName, gstNumber } = req.body;
+            
+            if (!email?.trim() || !password || !firstName?.trim() || !lastName?.trim() || !role) {
                 throw new ApiError(400, 'Email, password, first name, last name, and role are required');
             }
 
@@ -38,23 +35,21 @@ class AuthController {
                     break;
 
                 case 'vendor_supplier':
-                    if (!phone) {
-                        throw new ApiError(400, 'Phone number is required for vendors/suppliers');
-                    }
-                    if (!/^[0-9]{10}$/.test(phone)) {
-                        throw new ApiError(400, 'Please provide a valid 10-digit phone number');
-                    }
-                    break;
-
                 case 'construction_firm':
                     if (!phone) {
-                        throw new ApiError(400, 'Phone number is required for construction firms');
+                        throw new ApiError(400, `Phone number is required for ${role === 'vendor_supplier' ? 'vendors/suppliers' : 'construction firms'}`);
                     }
                     if (!/^[0-9]{10}$/.test(phone)) {
                         throw new ApiError(400, 'Please provide a valid 10-digit phone number');
                     }
-                    if (!companyName) {
-                        throw new ApiError(400, 'Company name is required for construction firms');
+
+                    if (role === 'construction_firm') {
+                        if (!companyName?.trim()) {
+                            throw new ApiError(400, 'Company name is required for construction firms');
+                        }
+                        if (!gstNumber?.trim()) {
+                            throw new ApiError(400, 'GST number is required for construction firms');
+                        }
                     }
                     break;
 
@@ -62,15 +57,8 @@ class AuthController {
                     throw new ApiError(400, 'Invalid role specified');
             }
 
-            const userData = await this.authService.registerUser({ 
-                email, 
-                password, 
-                firstName, 
-                lastName,
-                role,
-                phone,
-                companyName
-            });
+            // Pass the complete body to service for processing
+            const userData = await this.authService.registerUser(req.body);
             
             return ApiResponse.success(res, userData, 'User registered successfully');
         } catch (error) {

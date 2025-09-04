@@ -35,7 +35,15 @@ const registerValidation = [
     body('companyName')
         .if(body('role').equals('construction_firm'))
         .notEmpty()
-        .withMessage('Company name is required for construction firms')
+        .withMessage('Company name is required for construction firms'),
+    body('gstNumber')
+        .if(body('role').equals('construction_firm'))
+        .notEmpty()
+        .withMessage('GST number is required for construction firms')
+        .trim()
+        .toUpperCase()
+        .matches(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/)
+        .withMessage('Please provide a valid GST number in format: 27ABCDE1234F1Z5')
 ];
 
 const loginValidation = [

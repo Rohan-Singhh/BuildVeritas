@@ -70,7 +70,16 @@ export const authAPI = {
     },
     register: async (userData) => {
         try {
-            const response = await api.post('/auth/register', userData);
+            // Ensure all data is properly formatted
+            // Send the data as is, let backend handle cleaning
+            const formattedData = userData;
+            console.log('Sending registration data:', {
+                ...formattedData,
+                gstNumber: formattedData.gstNumber ? `[${formattedData.gstNumber}]` : undefined
+            });
+            console.log('Sending registration request:', formattedData); // Debug log
+            const response = await api.post('/auth/register', formattedData);
+            console.log('Registration response:', response.data); // Debug log
             return response.data;
         } catch (error) {
             console.error('Register Error:', error);

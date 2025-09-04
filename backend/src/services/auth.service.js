@@ -8,33 +8,70 @@ class AuthService {
         this.userRepository = new UserRepository();
     }
 
-    async registerUser({ email, password, firstName, lastName, role, phone, companyName }) {
+    async registerUser(data) {
+        console.log('Raw registration data:', {
+            ...data,
+            gstNumber: data.gstNumber ? `[${data.gstNumber}]` : undefined
+        });
+
+        // Clean and validate the data
+        const cleanData = {
+            ...data,
+            email: data.email?.trim().toLowerCase(),
+            firstName: data.firstName?.trim(),
+            lastName: data.lastName?.trim(),
+            companyName: data.companyName?.trim(),
+            // Handle GST number specially for construction firms
+            gstNumber: data.role === 'construction_firm' ? data.gstNumber?.trim().toUpperCase() : undefined
+        };
+
+        console.log('Processing registration data:', {
+            email: cleanData.email,
+            role: cleanData.role,
+            companyName: cleanData.companyName,
+            gstNumber: cleanData.gstNumber ? `[${cleanData.gstNumber}]` : undefined,
+            hasGST: Boolean(cleanData.gstNumber)
+        });
+        
         // Check if user exists
-        const existingUser = await this.userRepository.findByEmail(email);
+        const existingUser = await this.userRepository.findByEmail(cleanData.email);
         if (existingUser) {
             throw new ApiError(400, 'User already exists');
         }
         // Validate role
         const validRoles = ['client_owner', 'vendor_supplier', 'construction_firm'];
-        if (!validRoles.includes(role)) {
+        if (!validRoles.includes(cleanData.role)) {
             throw new ApiError(400, 'Invalid role specified');
         }
         // Hash password
-        const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcrypt.hash(cleanData.password, 12);
         // Create user with role-specific fields
         const userData = {
-            email,
+            email: cleanData.email,
             password: hashedPassword,
-            firstName,
-            lastName,
-            role
+            firstName: cleanData.firstName,
+            lastName: cleanData.lastName,
+            role: cleanData.role
         };
         // Add role-specific fields
-        if (role === 'vendor_supplier' || role === 'construction_firm') {
-            userData.phone = phone;
+        if (cleanData.role === 'vendor_supplier' || cleanData.role === 'construction_firm') {
+            userData.phone = cleanData.phone;
         }
-        if (role === 'construction_firm') {
-            userData.companyName = companyName;
+        if (cleanData.role === 'construction_firm') {
+            if (!cleanData.companyName?.trim()) {
+                throw new ApiError(400, 'Company name is required for construction firms');
+            }
+            if (!cleanData.gstNumber?.trim()) {
+                throw new ApiError(400, 'GST number is required for construction firms');
+            }
+            // Validate GST format
+            const gstPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+            if (!gstPattern.test(cleanData.gstNumber)) {
+                throw new ApiError(400, 'Invalid GST number format. Example: 27ABCDE1234F1Z5');
+            }
+            userData.companyName = cleanData.companyName;
+            userData.gstNumber = cleanData.gstNumber;
+            console.log('Construction firm data:', { companyName: userData.companyName, gstNumber: userData.gstNumber });
         }
         const user = await this.userRepository.create(userData);
         // Generate token
