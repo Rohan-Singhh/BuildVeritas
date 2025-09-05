@@ -1,0 +1,39 @@
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import Home from "./Home";
+import Login from "./Login";
+import Signup from "./Signup";
+import Dashboard from "./Dashboard";
+import Features from "./Features";
+import About from "./About";
+import Blogs from "./Blogs";
+import HowItWorks from "./HowItWorks";
+import ProtectedRoute from "./ProtectedRoute";
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes key={location.pathname}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
+export default AnimatedRoutes;

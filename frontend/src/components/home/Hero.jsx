@@ -1,7 +1,10 @@
 import React from "react";
 import { Brain, Play, ArrowRight, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { usePageTransition } from "../../hooks/usePageTransition";
 
 const Hero = () => {
+  const { navigateWithTransition } = usePageTransition();
   return (
     <div className="relative min-h-[85vh] pt-16">
       {/* Video Background */}
@@ -68,7 +71,10 @@ const Hero = () => {
             </button>
 
             {/* Watch Demo Button */}
-            <button className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white px-8 py-3 rounded-xl font-semibold text-lg border-2 border-white/20 hover:border-white/30 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center space-x-2">
+            <button 
+              onClick={() => navigateWithTransition('/how-it-works')}
+              className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white px-8 py-3 rounded-xl font-semibold text-lg border-2 border-white/20 hover:border-white/30 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center space-x-2"
+            >
               <div className="w-5 h-5 bg-blue-400 rounded-full flex items-center justify-center">
                 <Play className="h-3 w-3 text-white ml-0.5" />
               </div>

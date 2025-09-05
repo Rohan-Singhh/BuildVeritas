@@ -1,16 +1,10 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
+import { BrowserRouter as Router } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import Dashboard from "./components/Dashboard";
-import Features from "./components/Features";
-import Blogs from "./components/Blogs";
 import { AuthProvider } from "./context/AuthContext";
 import { TransitionProvider } from "./context/TransitionContext";
-import ProtectedRoute from "./components/ProtectedRoute";
 import CustomCursor from "./components/CustomCursor";
+import AnimatedRoutes from "./components/AnimatedRoutes";
 
 function App() {
   return (
@@ -20,21 +14,7 @@ function App() {
           <div className="App cursor-none">
             <CustomCursor />
             <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/features" element={<Features />} />
-              <Route path="/blogs" element={<Blogs />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
+            <AnimatedRoutes />
           </div>
         </TransitionProvider>
       </AuthProvider>
