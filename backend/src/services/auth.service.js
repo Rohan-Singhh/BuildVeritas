@@ -53,10 +53,8 @@ class AuthService {
             lastName: cleanData.lastName,
             role: cleanData.role
         };
-        // Add role-specific fields
-        if (cleanData.role === 'vendor_supplier' || cleanData.role === 'construction_firm') {
-            userData.phone = cleanData.phone;
-        }
+        // Add phone number for all users
+        userData.phone = cleanData.phone;
         if (cleanData.role === 'construction_firm') {
             if (!cleanData.companyName?.trim()) {
                 throw new ApiError(400, 'Company name is required for construction firms');

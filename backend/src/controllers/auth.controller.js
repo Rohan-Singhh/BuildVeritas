@@ -24,8 +24,13 @@ class AuthController {
             // Basic validation for required fields
             const { email, password, firstName, lastName, role, phone, companyName, gstNumber } = req.body;
             
-            if (!email?.trim() || !password || !firstName?.trim() || !lastName?.trim() || !role) {
-                throw new ApiError(400, 'Email, password, first name, last name, and role are required');
+            if (!email?.trim() || !password || !firstName?.trim() || !lastName?.trim() || !role || !phone) {
+                throw new ApiError(400, 'Email, password, first name, last name, role, and phone number are required');
+            }
+
+            // Validate phone number format
+            if (!/^[0-9]{10}$/.test(phone)) {
+                throw new ApiError(400, 'Please provide a valid 10-digit phone number');
             }
 
             // Role-specific validation
