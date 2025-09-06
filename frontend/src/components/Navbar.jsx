@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Menu, X, LogOut } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { usePageTransition } from "../hooks/usePageTransition";
 import { NAV_ITEMS } from "../constants/navigation";
@@ -37,7 +37,7 @@ const NavItem = ({ item, onClick, isMobile }) => {
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { navigateWithTransition } = usePageTransition();
   const location = useLocation();
   const { user, logout, isAuthenticated } = useAuth();

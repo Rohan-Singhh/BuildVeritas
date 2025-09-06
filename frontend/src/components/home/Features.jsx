@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { sections } from "../../constants/FeatureSection";
 
 const Features = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen">
       {/* Hero Header Section */}
@@ -34,7 +36,7 @@ const Features = () => {
               >
                 {/* Text Content */}
                 <div
-                  className={`lg:col-span-6 space-y-6 sm:space-y-8 ${
+                  className={`lg:col-span-6 space-y-6 sm:space-y-5 ${
                     section.reverse
                       ? "lg:order-2 lg:col-start-7"
                       : "lg:order-1 lg:col-start-1"
@@ -46,7 +48,7 @@ const Features = () => {
                   </div>
 
                   {/* Text Content */}
-                  <div className="space-y-4 sm:space-y-6">
+                  <div className="space-y-4 sm:space-y-5">
                     <div className="space-y-3">
                       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
                         {section.heading}
@@ -58,6 +60,39 @@ const Features = () => {
                     <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed font-light max-w-2xl">
                       {section.description}
                     </p>
+                    {/* CTA Button */}
+                    {section.id === 1 && (
+                      <button
+                        className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
+                        onClick={() => navigate("/project-management")}
+                      >
+                        Live Project Dashboard
+                      </button>
+                    )}
+                    {section.id === 2 && (
+                      <button
+                        className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
+                        onClick={() => navigate("/project-management")}
+                      >
+                        Vendor Marketplace
+                      </button>
+                    )}
+                    {section.id === 3 && (
+                      <button
+                        className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
+                        onClick={() => navigate("/project-management")}
+                      >
+                        AI Analytics
+                      </button>
+                    )}
+                    {section.id === 4 && (
+                      <button
+                        className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
+                        onClick={() => navigate("/project-management")}
+                      >
+                        Site Verification
+                      </button>
+                    )}
                   </div>
 
                   {/* CTA Button */}

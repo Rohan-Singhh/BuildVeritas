@@ -9,12 +9,15 @@ import About from "./About";
 import Blogs from "./Blogs";
 import HowItWorks from "./HowItWorks";
 import ProtectedRoute from "./ProtectedRoute";
+import ProjectManagement from "./ProjectManagement";
+import ScrollToTop from "./ScrollToTop";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
+      <ScrollToTop />
       <Routes key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -23,6 +26,7 @@ const AnimatedRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/project-management" element={<ProjectManagement />} />
         <Route
           path="/dashboard"
           element={

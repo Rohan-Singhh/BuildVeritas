@@ -9,7 +9,6 @@ import {
   BrainCircuit,
   Clock,
   ArrowRight,
-  Shield,
   Cpu
 } from "lucide-react";
 
@@ -63,8 +62,17 @@ const HowItWorks = () => {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 to-white py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-28">
+        {/* Full background image */}
+        <img
+          src="/how-it-works-hero.jpg"
+          alt="How BuildVeritas Works"
+          className="absolute inset-0 w-full h-full object-cover object-center z-0"
+          style={{ pointerEvents: "none" }}
+        />
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 z-10" />
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="text-center"
             variants={containerVariants}
@@ -78,7 +86,7 @@ const HowItWorks = () => {
               How <span className="text-blue-400">BuildVeritas</span> Works
             </motion.h1>
             <motion.p 
-              className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-12"
+              className="text-xl sm:text-xl text-white max-w-3xl mx-auto mb-12"
               variants={itemVariants}
             >
               Discover how our AI-powered platform revolutionizes construction management
