@@ -51,8 +51,7 @@ const Hero = () => {
             Transform your construction projects with real-time tracking,
             AI-powered budget estimation, and intelligent site verification.
             Join thousands of construction professionals already using{" "}
-            <span className="font-semibold text-blue-300">BuildVeritas AI</span>
-            .
+            <span className="font-semibold text-blue-300">BuildVeritas</span>
           </p>
         </div>
       </div>

@@ -72,7 +72,7 @@ const Features = () => {
                     {section.id === 2 && (
                       <button
                         className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
-                        onClick={() => navigate("/project-management")}
+                        onClick={() => navigate("/marketplace")}
                       >
                         Vendor Marketplace
                       </button>
@@ -80,7 +80,7 @@ const Features = () => {
                     {section.id === 3 && (
                       <button
                         className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
-                        onClick={() => navigate("/project-management")}
+                        onClick={() => navigate("/#")}
                       >
                         AI Analytics
                       </button>
@@ -88,7 +88,7 @@ const Features = () => {
                     {section.id === 4 && (
                       <button
                         className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
-                        onClick={() => navigate("/project-management")}
+                        onClick={() => navigate("/#")}
                       >
                         Site Verification
                       </button>

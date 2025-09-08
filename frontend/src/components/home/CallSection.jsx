@@ -12,7 +12,7 @@ const CallSection = () => {
             </span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
-            Join thousands of construction professionals using BuildBridge AI to
+            Join thousands of construction professionals using BuildVeritas to
             build smarter and faster.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center pt-4">
