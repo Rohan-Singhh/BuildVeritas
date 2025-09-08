@@ -11,6 +11,7 @@ import HowItWorks from "./HowItWorks";
 import ProtectedRoute from "./ProtectedRoute";
 import ProjectManagement from "./ProjectManagement";
 import ScrollToTop from "./ScrollToTop";
+import Marketplace from "./Marketplace";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -27,6 +28,7 @@ const AnimatedRoutes = () => {
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/project-management" element={<ProjectManagement />} />
+        <Route path="/marketplace" element={<Marketplace />} />
         <Route
           path="/dashboard"
           element={

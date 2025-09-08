@@ -42,7 +42,7 @@
 //           <div className="bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up animation-delay-600">
 //             <p className="text-xl text-gray-800 leading-relaxed">
 //               The{" "}
-//               <span className="font-bold text-blue-600">BuildVeritas.ai</span>{" "}
+//               <span className="font-bold text-blue-600">BuildVeritas</span>{" "}
 //               Live Project Dashboard is your{" "}
 //               <span className="font-bold text-blue-600">
 //                 single source of truth
@@ -143,7 +143,7 @@ export const ProblemSection = () => {
           <div className="bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up animation-delay-600">
             <p className="text-xl text-gray-800 leading-relaxed">
               The{" "}
-              <span className="font-bold text-blue-600">BuildVeritas.ai</span>{" "}
+              <span className="font-bold text-blue-600">BuildVeritas</span>{" "}
               Live Project Dashboard is your{" "}
               <span className="font-bold text-blue-600">
                 single source of truth
