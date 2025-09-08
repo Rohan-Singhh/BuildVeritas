@@ -1,6 +1,6 @@
 import React from "react";
 import { Brain, Play, ArrowRight, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { usePageTransition } from "../../hooks/usePageTransition";
 
 const Hero = () => {
@@ -26,7 +26,7 @@ const Hero = () => {
       </div>
 
       {/* Content Section */}
-      <div className="relative z-10 h-full flex items-center justify-center py-20">
+      <div className="relative z-10 h-full flex items-center justify-center pt-24 pb-8">
         <div className="text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           {/* Small heading with icon */}
           <div className="flex items-center justify-center space-x-2 mb-3">
@@ -39,7 +39,7 @@ const Hero = () => {
           </div>
 
           {/* Main heading */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
             <span className="block">Build Smarter with</span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-300">
               AI Intelligence
@@ -47,20 +47,18 @@ const Hero = () => {
           </h1>
 
           {/* Description */}
-          <p className="text-base sm:text-lg text-gray-200 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-gray-200 max-w-4xl mx-auto leading-loose">
             Transform your construction projects with real-time tracking,
             AI-powered budget estimation, and intelligent site verification.
             Join thousands of construction professionals already using{" "}
-            <span className="font-semibold text-blue-300">
-              BuildVeritas AI
-            </span>
+            <span className="font-semibold text-blue-300">BuildVeritas AI</span>
             .
           </p>
         </div>
       </div>
 
       {/* Action Buttons and Stats */}
-      <div className="relative z-10 bg-gradient-to-b from-transparent to-gray-900/90 mt-8 py-12">
+      <div className="relative z-10 bg-gradient-to-b from-transparent to-gray-900/90 mt-4 py-7">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
@@ -71,8 +69,8 @@ const Hero = () => {
             </button>
 
             {/* Watch Demo Button */}
-            <button 
-              onClick={() => navigateWithTransition('/how-it-works')}
+            <button
+              onClick={() => navigateWithTransition("/how-it-works")}
               className="bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white px-8 py-3 rounded-xl font-semibold text-lg border-2 border-white/20 hover:border-white/30 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center space-x-2"
             >
               <div className="w-5 h-5 bg-blue-400 rounded-full flex items-center justify-center">
