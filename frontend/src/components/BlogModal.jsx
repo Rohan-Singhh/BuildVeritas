@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { X, Clock, User, Calendar } from "lucide-react";
 
 const BlogModal = ({ blog, onClose }) => {
   if (!blog) return null;
 
   // Handle escape key press
-  React.useEffect(() => {
+  useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') onClose();
     };
@@ -23,7 +23,7 @@ const BlogModal = ({ blog, onClose }) => {
 
       {/* Modal */}
       <div className="relative min-h-screen flex items-center justify-center p-4">
-        <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-gray-100 animate-slideUp">
+        <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl border border-gray-100 animate-slide-up">
           {/* Close button */}
           <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
             <button
