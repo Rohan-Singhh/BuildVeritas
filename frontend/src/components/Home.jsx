@@ -5,17 +5,21 @@ import Plans from "./home/Plans";
 import BlogSlider from "./home/BlogSlider";
 import Testimonials from "./home/Testimonials";
 import ContactSection from "./home/ContactSection";
+import Footer from "./common/Footer";
 
 const Home = () => {
   return (
-    <div className="min-h-screen">
-      <Hero />
-      <Features />
-      <Plans />
-      <BlogSlider />
-      <Testimonials />
-      <ContactSection />
-      <CallSection />
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-grow">
+        <Hero />
+        <Features />
+        <Plans />
+        <BlogSlider />
+        <Testimonials />
+        <ContactSection />
+        <CallSection />
+      </div>
+      <Footer />
     </div>
   );
 };

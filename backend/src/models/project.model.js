@@ -8,7 +8,7 @@ const projectSchema = new mongoose.Schema({
     },
     project_type: {
         type: String,
-        required: [true, 'Project type is required'],
+        required:[true, 'Project type is required'],
         trim: true
     },
     location: {
