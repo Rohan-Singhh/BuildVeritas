@@ -46,10 +46,10 @@ export const HeroSection = () => {
 
           {/* Headline */}
           <h1 className="font-display text-5xl md:text-7xl font-bold text-white leading-[0.9] tracking-tight space-y-2">
-            <span className="block animate-[fadeIn_2s_ease-in-out]">
+            <span className="block animate-[fade-in_1.3s_ease-in-out]">
               Don't Just Hire a Builder
             </span>
-            <span className="block animate-[fadeIn_1s_ease-in-out] delay-500 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-400">
+            <span className="block animate-[fade-in_1s_ease-in-out] delay-500 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-400">
               Assemble Your
             </span>
             <span className="block animate-fade-in delay-700 text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-300 to-yellow-400">

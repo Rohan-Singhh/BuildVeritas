@@ -1,12 +1,14 @@
 import { sections } from "../constants/FeatureSection";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen">
       {/* Hero Header Section */}
       <div className="relative overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
               Powerful Features for
@@ -66,6 +68,38 @@ function App() {
                   </div>
 
                   {/* CTA Button */}
+                  {section.id === 1 && (
+                    <button
+                      className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold rounded-lg shadow transition duration-200"
+                      onClick={() => navigate("/project-management")}
+                    >
+                      Live Project Dashboard
+                    </button>
+                  )}
+                  {section.id === 2 && (
+                    <button
+                      className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold rounded-lg shadow transition duration-200"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Vendor Marketplace
+                    </button>
+                  )}
+                  {section.id === 3 && (
+                    <button
+                      className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold rounded-lg shadow transition duration-200"
+                      onClick={() => navigate("/analytics")}
+                    >
+                      AI Analytics
+                    </button>
+                  )}
+                  {section.id === 4 && (
+                    <button
+                      className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold rounded-lg shadow transition duration-200"
+                      onClick={() => navigate("/#")}
+                    >
+                      Site Verification
+                    </button>
+                  )}
                 </div>
 
                 {/* Image */}
