@@ -108,7 +108,11 @@ const Signup = () => {
       }
       if (!formData.gstNumber.trim()) {
         newErrors.gstNumber = "GST number is required";
-      } else if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(formData.gstNumber)) {
+      } else if (
+        !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
+          formData.gstNumber
+        )
+      ) {
         newErrors.gstNumber = "Please enter a valid GST number";
       }
     }
@@ -122,11 +126,11 @@ const Signup = () => {
     try {
       // Ensure GST number is properly formatted
       const { confirmPassword, ...userData } = formData;
-      if (userData.role === 'construction_firm' && userData.gstNumber) {
+      if (userData.role === "construction_firm" && userData.gstNumber) {
         userData.gstNumber = userData.gstNumber.trim().toUpperCase();
-        console.log('GST number before submission:', `[${userData.gstNumber}]`);
+        console.log("GST number before submission:", `[${userData.gstNumber}]`);
       }
-      console.log('Submitting registration data:', userData); // Debug log
+      console.log("Submitting registration data:", userData); // Debug log
       await register(userData);
     } catch (error) {
       // Handle specific validation errors from backend
@@ -148,7 +152,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-start py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-start py-20 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="text-center text-3xl font-extrabold text-gray-900">
           Create your account
@@ -157,10 +161,11 @@ const Signup = () => {
           Or{" "}
           <Link
             to="/login"
-            className="font-medium text-blue-400 hover:text-blue-500 transition-colors duration-200"
+            className="font-bold text-blue-400 hover:text-blue-500 transition-colors duration-200"
           >
-            sign in to your existing account
-          </Link>
+            sign in
+          </Link>{" "}
+          to your existing account
         </p>
       </div>
 
@@ -188,17 +193,41 @@ const Signup = () => {
                   <div className="relative flex items-center justify-between">
                     <span className="flex items-center">
                       {role.id === "client_owner" && (
-                        <Building2 className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                        <Building2
+                          className={`w-4 h-4 mr-2 ${
+                            formData.role === role.id
+                              ? "text-white"
+                              : "text-blue-400"
+                          }`}
+                        />
                       )}
                       {role.id === "vendor_supplier" && (
-                        <Package className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                        <Package
+                          className={`w-4 h-4 mr-2 ${
+                            formData.role === role.id
+                              ? "text-white"
+                              : "text-blue-400"
+                          }`}
+                        />
                       )}
                       {role.id === "construction_firm" && (
-                        <HardHat className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                        <HardHat
+                          className={`w-4 h-4 mr-2 ${
+                            formData.role === role.id
+                              ? "text-white"
+                              : "text-blue-400"
+                          }`}
+                        />
                       )}
                       {role.label}
                     </span>
-                    <div className={`transform transition-transform duration-300 ${formData.role === role.id ? "translate-x-0 opacity-100" : "translate-x-2 opacity-0"}`}>
+                    <div
+                      className={`transform transition-transform duration-300 ${
+                        formData.role === role.id
+                          ? "translate-x-0 opacity-100"
+                          : "translate-x-2 opacity-0"
+                      }`}
+                    >
                       <Check className="w-4 h-4" />
                     </div>
                   </div>
@@ -337,7 +366,9 @@ const Signup = () => {
                       value={formData.companyName}
                       onChange={handleChange}
                       className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm ${
-                        errors.companyName ? "border-red-300" : "border-gray-300"
+                        errors.companyName
+                          ? "border-red-300"
+                          : "border-gray-300"
                       }`}
                       placeholder="Company name"
                     />
@@ -483,8 +514,16 @@ const Signup = () => {
               <div className="rounded-md bg-red-50 p-4 mb-4">
                 <div className="flex">
                   <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    <svg
+                      className="h-5 w-5 text-red-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                   </div>
                   <div className="ml-3">

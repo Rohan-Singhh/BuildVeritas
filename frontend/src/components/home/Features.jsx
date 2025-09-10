@@ -3,6 +3,7 @@ import { sections } from "../../constants/FeatureSection";
 
 const Features = () => {
   const navigate = useNavigate();
+
   return (
     <div className="min-h-screen">
       {/* Hero Header Section */}
@@ -80,7 +81,7 @@ const Features = () => {
                     {section.id === 3 && (
                       <button
                         className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
-                        onClick={() => navigate("/#")}
+                        onClick={() => navigate("/analytics")}
                       >
                         AI Analytics
                       </button>

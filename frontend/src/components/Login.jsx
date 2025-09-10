@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Eye, EyeOff, Mail, Lock, Building2, Package, HardHat, Check } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  Mail,
+  Lock,
+  Building2,
+  Package,
+  HardHat,
+  Check,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
@@ -73,7 +82,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-start py-6 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-start py-20 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="text-center text-3xl font-extrabold text-gray-900">
           Sign in to your account
@@ -113,17 +122,41 @@ const Login = () => {
                   <div className="relative flex items-center justify-between">
                     <span className="flex items-center">
                       {role.id === "client_owner" && (
-                        <Building2 className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                        <Building2
+                          className={`w-4 h-4 mr-2 ${
+                            formData.role === role.id
+                              ? "text-white"
+                              : "text-blue-400"
+                          }`}
+                        />
                       )}
                       {role.id === "vendor_supplier" && (
-                        <Package className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                        <Package
+                          className={`w-4 h-4 mr-2 ${
+                            formData.role === role.id
+                              ? "text-white"
+                              : "text-blue-400"
+                          }`}
+                        />
                       )}
                       {role.id === "construction_firm" && (
-                        <HardHat className={`w-4 h-4 mr-2 ${formData.role === role.id ? "text-white" : "text-blue-400"}`} />
+                        <HardHat
+                          className={`w-4 h-4 mr-2 ${
+                            formData.role === role.id
+                              ? "text-white"
+                              : "text-blue-400"
+                          }`}
+                        />
                       )}
                       {role.label}
                     </span>
-                    <div className={`transform transition-transform duration-300 ${formData.role === role.id ? "translate-x-0 opacity-100" : "translate-x-2 opacity-0"}`}>
+                    <div
+                      className={`transform transition-transform duration-300 ${
+                        formData.role === role.id
+                          ? "translate-x-0 opacity-100"
+                          : "translate-x-2 opacity-0"
+                      }`}
+                    >
                       <Check className="w-4 h-4" />
                     </div>
                   </div>

@@ -12,13 +12,14 @@ import ProtectedRoute from "./ProtectedRoute";
 import ProjectManagement from "./ProjectManagement";
 import ScrollToTop from "./ScrollToTop";
 import Marketplace from "./Marketplace";
+import Analytics from "./Analytics";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
       <Routes key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -29,6 +30,7 @@ const AnimatedRoutes = () => {
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/project-management" element={<ProjectManagement />} />
         <Route path="/marketplace" element={<Marketplace />} />
+        <Route path="/analytics" element={<Analytics />} />
         <Route
           path="/dashboard"
           element={

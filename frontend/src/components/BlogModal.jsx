@@ -1,25 +1,12 @@
-import React, { useEffect } from "react";
 import { X, Clock, User, Calendar } from "lucide-react";
 
 const BlogModal = ({ blog, onClose }) => {
   if (!blog) return null;
 
-  // Handle escape key press
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [onClose]);
-
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-900/20 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-900/20 backdrop-blur-sm animate-fade-in">
       {/* Backdrop */}
-      <div
-        className="fixed inset-0 transition-opacity"
-        onClick={onClose}
-      ></div>
+      <div className="fixed inset-0 transition-opacity" onClick={onClose}></div>
 
       {/* Modal */}
       <div className="relative min-h-screen flex items-center justify-center p-4">
@@ -67,7 +54,9 @@ const BlogModal = ({ blog, onClose }) => {
             </div>
 
             {/* Title */}
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{blog.title}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              {blog.title}
+            </h2>
 
             {/* Full content */}
             <div className="prose prose-blue max-w-none">
@@ -78,24 +67,46 @@ const BlogModal = ({ blog, onClose }) => {
               <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
                 {blog.category === "Technology" && (
                   <>
-                    <li>AI-driven project management is revolutionizing construction efficiency</li>
-                    <li>Real-time monitoring and predictive analytics reduce delays and costs</li>
-                    <li>Machine learning algorithms optimize resource allocation</li>
-                    <li>Integration with existing systems enhances workflow automation</li>
+                    <li>
+                      AI-driven project management is revolutionizing
+                      construction efficiency
+                    </li>
+                    <li>
+                      Real-time monitoring and predictive analytics reduce
+                      delays and costs
+                    </li>
+                    <li>
+                      Machine learning algorithms optimize resource allocation
+                    </li>
+                    <li>
+                      Integration with existing systems enhances workflow
+                      automation
+                    </li>
                   </>
                 )}
                 {blog.category === "Sustainability" && (
                   <>
-                    <li>Green building practices reduce environmental impact</li>
-                    <li>Sustainable materials improve long-term cost efficiency</li>
-                    <li>Energy-efficient designs meet modern environmental standards</li>
+                    <li>
+                      Green building practices reduce environmental impact
+                    </li>
+                    <li>
+                      Sustainable materials improve long-term cost efficiency
+                    </li>
+                    <li>
+                      Energy-efficient designs meet modern environmental
+                      standards
+                    </li>
                     <li>Innovation in eco-friendly construction methods</li>
                   </>
                 )}
                 {blog.category === "Digital" && (
                   <>
-                    <li>Digital transformation streamlines construction processes</li>
-                    <li>BIM technology enhances project visualization and planning</li>
+                    <li>
+                      Digital transformation streamlines construction processes
+                    </li>
+                    <li>
+                      BIM technology enhances project visualization and planning
+                    </li>
                     <li>Cloud solutions improve team collaboration</li>
                     <li>Mobile apps increase on-site productivity</li>
                   </>
@@ -104,7 +115,9 @@ const BlogModal = ({ blog, onClose }) => {
                   <>
                     <li>AI monitoring systems enhance site safety</li>
                     <li>Real-time hazard detection prevents accidents</li>
-                    <li>Automated compliance checks ensure regulatory adherence</li>
+                    <li>
+                      Automated compliance checks ensure regulatory adherence
+                    </li>
                     <li>Data analytics improve safety protocols</li>
                   </>
                 )}
