@@ -239,18 +239,109 @@ const About = () => {
 
           {/* Vision */}
           <motion.div 
-            className="max-w-4xl mx-auto mt-16 bg-white rounded-2xl shadow-xl p-8"
+            className="relative max-w-4xl mx-auto mt-24"
             variants={containerVariants}
           >
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 text-center">Our Vision</h2>
-            <p className="text-lg text-gray-600 mb-6">
-              We envision a construction industry where truth is non-negotiable. An industry where data, 
-              technology, and AI replace guesswork, mistrust, and manual inefficiencies.
-            </p>
-            <p className="text-lg text-gray-600">
-              Our long-term vision is to become the global standard for verification and compliance in 
-              construction - a trusted platform used by developers, governments, and investors worldwide.
-            </p>
+            {/* Background decoration */}
+            <motion.div 
+              className="absolute -top-10 -left-10 w-40 h-40 bg-blue-50 rounded-full blur-3xl opacity-60"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.6, 0.8, 0.6],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            <motion.div 
+              className="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-50 rounded-full blur-3xl opacity-60"
+              animate={{
+                scale: [1.2, 1, 1.2],
+                opacity: [0.8, 0.6, 0.8],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+
+            <motion.div 
+              className="relative bg-white rounded-3xl shadow-2xl p-12 border border-gray-100 overflow-hidden"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Decorative elements */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-indigo-400/10 to-purple-400/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-10"
+              >
+                <span className="inline-block px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold mb-4">
+                  Our Vision
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                  Transforming Construction
+                </h2>
+              </motion.div>
+
+              <motion.div 
+                className="space-y-8"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="relative p-6 bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-2xl">
+                  <div className="absolute inset-0 bg-white/40 rounded-2xl backdrop-blur-sm" />
+                  <p className="relative text-xl text-gray-700 leading-relaxed">
+                    We envision a construction industry where <span className="font-semibold text-blue-700">truth is non-negotiable</span>. 
+                    An industry where <span className="font-semibold text-purple-700">data, technology, and AI</span> replace 
+                    guesswork, mistrust, and manual inefficiencies.
+                  </p>
+                </div>
+
+                <div className="relative p-6 bg-gradient-to-br from-purple-50 to-blue-50/50 rounded-2xl">
+                  <div className="absolute inset-0 bg-white/40 rounded-2xl backdrop-blur-sm" />
+                  <p className="relative text-xl text-gray-700 leading-relaxed">
+                    Our long-term vision is to become the <span className="font-semibold text-purple-700">global standard</span> for 
+                    verification and compliance in construction - a trusted platform used by 
+                    <span className="font-semibold text-blue-700"> developers, governments, and investors</span> worldwide.
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Vision highlights */}
+              <motion.div 
+                className="grid grid-cols-3 gap-6 mt-10"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+              >
+                {[
+                  { value: "100%", label: "Truth-Based" },
+                  { value: "Global", label: "Coverage" },
+                  { value: "AI-Driven", label: "Verification" }
+                ].map((stat, index) => (
+                  <div key={index} className="text-center">
+                    <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-gray-600 font-medium">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </motion.div>
           </motion.div>
 
           {/* Industry Challenges */}
