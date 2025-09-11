@@ -26,8 +26,8 @@ export const NAV_ITEMS = [
     id: 'contact',
     label: 'Contact',
     icon: LifeBuoy,
-    type: 'scroll',
-    scrollTo: 'contact'
+    type: 'link',
+    path: '/contact'
   },
   {
     id: 'blogs',

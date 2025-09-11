@@ -13,6 +13,7 @@ import ProjectManagement from "./ProjectManagement";
 import ScrollToTop from "./ScrollToTop";
 import Marketplace from "./Marketplace";
 import Analytics from "./Analytics";
+import Contact from "./Contact";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -31,6 +32,7 @@ const AnimatedRoutes = () => {
         <Route path="/project-management" element={<ProjectManagement />} />
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/analytics" element={<Analytics />} />
+        <Route path="/contact" element={<Contact />} />
         <Route
           path="/dashboard"
           element={
