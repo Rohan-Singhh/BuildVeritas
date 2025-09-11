@@ -40,7 +40,7 @@ export const NAV_ITEMS = [
     id: 'testimonials',
     label: 'Testimonials',
     icon: Star,
-    type: 'scroll',
-    scrollTo: 'testimonials'
+    type: 'link',
+    path: '/testimonials'
   }
 ];
