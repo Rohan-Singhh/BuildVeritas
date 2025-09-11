@@ -99,7 +99,11 @@ const Navbar = () => {
           {/* Logo and Brand */}
           <Link to="/" className="flex items-center space-x-1 md:space-x-3">
             <div className="flex-shrink-0">
-              <img src="/BV2.svg" alt="BV" className="w-9 h-9 md:w-11 md:h-10" />
+              <img
+                src="/BV_Logo_4.png"
+                alt="BV"
+                className="w-10 h-9 md:w-15 md:h-13"
+              />
             </div>
             <div className="text-2xl font-bold text-gray-800">
               <span className="text-blue-400">Build</span>

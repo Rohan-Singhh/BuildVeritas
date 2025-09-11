@@ -4,7 +4,7 @@ import Hero from "./home/Hero";
 import Plans from "./home/Plans";
 import BlogSlider from "./home/BlogSlider";
 import Testimonials from "./home/Testimonials";
-import Footer from "./common/Footer";
+import ContactSection from "./home/ContactSection";
 
 const Home = () => {
   return (
@@ -17,7 +17,6 @@ const Home = () => {
         <Testimonials />
         <CallSection />
       </div>
-      <Footer />
     </div>
   );
 };

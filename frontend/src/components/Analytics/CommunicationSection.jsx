@@ -330,8 +330,8 @@ export const CommunicationSection = () => {
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.7 }} // delay-700
           viewport={{ once: true, amount: 0.1 }}
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full transform translate-x-32 -translate-y-32 animate-float"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full transform -translate-x-24 translate-y-24 animate-float-delayed"></div>
+          <div className="absolute top-10 right-10 w-64 h-64 bg-white/10 rounded-full transform translate-x-32 -translate-y-32 animate-float"></div>
+          <div className="absolute bottom-20 left-20 w-48 h-48 bg-white/5 rounded-full transform -translate-x-24 translate-y-24 animate-float-delayed"></div>
 
           <div className="text-center mb-8">
             <h3 className="text-2xl lg:text-3xl font-bold mb-4">
