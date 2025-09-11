@@ -4,7 +4,6 @@ import Hero from "./home/Hero";
 import Plans from "./home/Plans";
 import BlogSlider from "./home/BlogSlider";
 import Testimonials from "./home/Testimonials";
-import ContactSection from "./home/ContactSection";
 import Footer from "./common/Footer";
 
 const Home = () => {
@@ -16,7 +15,6 @@ const Home = () => {
         <Plans />
         <BlogSlider />
         <Testimonials />
-        <ContactSection />
         <CallSection />
       </div>
       <Footer />
