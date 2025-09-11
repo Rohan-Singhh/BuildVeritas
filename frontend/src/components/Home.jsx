@@ -5,7 +5,6 @@ import Plans from "./home/Plans";
 import BlogSlider from "./home/BlogSlider";
 import Testimonials from "./home/Testimonials";
 import ContactSection from "./home/ContactSection";
-import Footer from "./common/Footer";
 
 const Home = () => {
   return (
@@ -19,7 +18,6 @@ const Home = () => {
         <ContactSection />
         <CallSection />
       </div>
-      <Footer />
     </div>
   );
 };

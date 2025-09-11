@@ -4,6 +4,7 @@ import { ProblemSection } from "./Analytics/ProblemSection";
 import { ProgressVerification } from "./Analytics/ProgressVerification";
 import { ValueBoxes } from "./Analytics/ValueBoxes";
 import { CommunicationSection } from "./Analytics/CommunicationSection";
+import { CallSection } from "./Analytics/CallSection";
 
 const Analytics = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -42,6 +43,7 @@ const Analytics = () => {
       <ProgressVerification />
       <ValueBoxes />
       <CommunicationSection />
+      <CallSection />
     </div>
   );
 };
