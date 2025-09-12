@@ -73,7 +73,7 @@ export const FeaturesSection = () => {
             Every Detail, Every Day:{" "}
             <span className="text-blue-500">Inside the Dashboard</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up animation-delay-300">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in-up delay-300">
             We've designed the dashboard to give you instant clarity, with all
             your critical information beautifully organized and always
             up-to-date.

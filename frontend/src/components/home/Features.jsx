@@ -89,7 +89,7 @@ const Features = () => {
                     {section.id === 4 && (
                       <button
                         className="mt-2 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow transition duration-200"
-                        onClick={() => navigate("/#")}
+                        onClick={() => navigate("/budget-estimator")}
                       >
                         AI-Powered Budget Estimator
                       </button>

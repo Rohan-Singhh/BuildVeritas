@@ -26,7 +26,7 @@ const Hero = () => {
       </div>
 
       {/* Content Section */}
-      <div className="relative z-10 h-full flex items-center justify-center pt-24 pb-8">
+      <div className="relative z-10 h-full flex items-center justify-center pt-22 pb-8">
         <div className="text-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           {/* Small heading with icon */}
           <div className="flex items-center justify-center space-x-2 mb-3">
@@ -57,7 +57,7 @@ const Hero = () => {
       </div>
 
       {/* Action Buttons and Stats */}
-      <div className="relative z-10 bg-gradient-to-b from-transparent to-gray-900/90 mt-4 py-7">
+      <div className="relative z-10 bg-gradient-to-b from-transparent to-gray-900/90 mt-4 py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
