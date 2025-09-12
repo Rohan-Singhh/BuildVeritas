@@ -1,46 +1,53 @@
-import { Rocket, Users, LifeBuoy, BookOpen, Star, DollarSign } from "lucide-react";
+import {
+  Rocket,
+  Users,
+  LifeBuoy,
+  BookOpen,
+  Star,
+  DollarSign,
+} from "lucide-react";
 
 export const NAV_ITEMS = [
   {
-    id: 'features',
-    label: 'Features',
+    id: "features",
+    label: "Features",
     icon: Rocket,
-    path: '/features',
-    type: 'link'
+    path: "/features",
+    type: "link",
   },
   {
-    id: 'pricing',
-    label: 'Pricing',
+    id: "pricing",
+    label: "Pricing",
     icon: DollarSign,
-    type: 'scroll',
-    scrollTo: 'pricing'
+    path: "/pricing",
+    type: "link",
   },
   {
-    id: 'about',
-    label: 'About',
+    id: "about",
+    label: "About",
     icon: Users,
-    path: '/about',
-    type: 'link'
+    path: "/about",
+    type: "link",
   },
   {
-    id: 'contact',
-    label: 'Contact',
+    id: "contact",
+    label: "Contact",
     icon: LifeBuoy,
-    type: 'link',
-    path: '/contact'
+    type: "link",
+    path: "/contact",
   },
   {
-    id: 'blogs',
-    label: 'Blogs',
+    id: "blogs",
+    label: "Blogs",
     icon: BookOpen,
-    path: '/blogs',
-    type: 'link'
+    path: "/blogs",
+    type: "link",
   },
   {
-    id: 'testimonials',
-    label: 'Testimonials',
+    id: "testimonials",
+    label: "Testimonials",
     icon: Star,
-    type: 'link',
-    path: '/testimonials'
-  }
+    type: "link",
+    path: "/testimonials",
+  },
 ];

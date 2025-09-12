@@ -97,16 +97,15 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
-          <Link to="/" className="flex items-center space-x-1 sm:space-x-2 lg:space-x-3">
+          <Link
+            to="/"
+            className="flex items-center space-x-1 sm:space-x-2 lg:space-x-3"
+          >
             <div className="flex-shrink-0">
               <img
                 src="/BV_Logo_4.png"
                 alt="BV"
-<<<<<<< Updated upstream
-                className="w-8 h-7 sm:w-9 sm:h-8 lg:w-10 lg:h-9"
-=======
                 className="w-9 h-8 md:w-13 md:h-11"
->>>>>>> Stashed changes
               />
             </div>
             <div className="text-xl sm:text-xl lg:text-2xl font-bold text-gray-800">
@@ -116,7 +115,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop and Tablet Navigation Links */}
-          <div className="hidden sm:block">
+          <div className="hidden md:block">
             <div className="ml-4 lg:ml-10 flex items-baseline space-x-3 lg:space-x-6">
               {NAV_ITEMS.map((item) => (
                 <NavItem
