@@ -34,7 +34,7 @@ export const BottomSection = () => {
         </div>
 
         {/* Trust Indicators */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fade-in-up animation-delay-600">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fade-in-up delay-600">
           <div className="flex flex-col items-center">
             <Shield className="w-7 h-7 text-blue-600 mb-2" />
             <span className="text-sm text-gray-600">Bank-Level Security</span>

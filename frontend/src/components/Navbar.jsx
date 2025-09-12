@@ -102,7 +102,11 @@ const Navbar = () => {
               <img
                 src="/BV_Logo_4.png"
                 alt="BV"
+<<<<<<< Updated upstream
                 className="w-8 h-7 sm:w-9 sm:h-8 lg:w-10 lg:h-9"
+=======
+                className="w-9 h-8 md:w-13 md:h-11"
+>>>>>>> Stashed changes
               />
             </div>
             <div className="text-xl sm:text-xl lg:text-2xl font-bold text-gray-800">

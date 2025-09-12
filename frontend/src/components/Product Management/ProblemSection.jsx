@@ -39,7 +39,7 @@
 //         </div>
 
 //         <div className="mt-16 text-center">
-//           <div className="bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up animation-delay-600">
+//           <div className="bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up delay-600">
 //             <p className="text-xl text-gray-800 leading-relaxed">
 //               The{" "}
 //               <span className="font-bold text-blue-600">BuildVeritas</span>{" "}
@@ -140,10 +140,9 @@ export const ProblemSection = () => {
 
         {/* Solution Teaser */}
         <div className="mt-16 text-center">
-          <div className="bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up animation-delay-600">
+          <div className="bg-white rounded-2xl shadow-lg p-8 animate-fade-in-up delay-600">
             <p className="text-xl text-gray-800 leading-relaxed">
-              The{" "}
-              <span className="font-bold text-blue-600">BuildVeritas</span>{" "}
+              The <span className="font-bold text-blue-600">BuildVeritas</span>{" "}
               Live Project Dashboard is your{" "}
               <span className="font-bold text-blue-600">
                 single source of truth

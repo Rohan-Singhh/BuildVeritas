@@ -139,7 +139,7 @@ export const FeaturesSection = () => {
                       </div>
                     </div>
 
-                    <div className="bg-white rounded-xl p-4 shadow-md opacity-75">
+                    <div className="bg-white rounded-xl p-4 shadow-md opacity-75 hover:shadow-lg transition-shadow">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
                           <Briefcase className="w-6 h-6 text-white" />
