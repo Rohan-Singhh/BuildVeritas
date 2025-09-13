@@ -41,10 +41,12 @@ console.log('Environment Variables:', {
 const api = axios.create({
     baseURL: API_URL,
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
     },
+    withCredentials: true, // Important for CORS
     // Add timeout and other options
-    timeout: 10000,
+    timeout: 30000, // Increased timeout for slower connections
     validateStatus: function (status) {
         return status >= 200 && status < 500; // Handle all responses
     }
@@ -152,17 +154,57 @@ export const authAPI = {
     },
     register: async (userData) => {
         try {
-            // Ensure all data is properly formatted
-            // Send the data as is, let backend handle cleaning
-            const formattedData = userData;
-            console.log('Sending registration data:', {
-                ...formattedData,
-                gstNumber: formattedData.gstNumber ? `[${formattedData.gstNumber}]` : undefined
-            });
-            console.log('Sending registration request:', formattedData); // Debug log
-            const response = await api.post('/auth/register', formattedData);
-            console.log('Registration response:', response.data); // Debug log
-            return response.data;
+            // Clean and format the data
+            // Clean and format the data based on role
+            const formattedData = {
+                email: userData.email.toLowerCase().trim(),
+                firstName: userData.firstName.trim(),
+                lastName: userData.lastName.trim(),
+                password: userData.password,
+                role: userData.role
+            };
+
+            // Add phone number for vendor_supplier and construction_firm
+            if (userData.role === 'vendor_supplier' || userData.role === 'construction_firm') {
+                formattedData.phone = userData.phone ? userData.phone.trim() : undefined;
+            }
+
+            // Add company details for construction_firm
+            if (userData.role === 'construction_firm') {
+                formattedData.companyName = userData.companyName ? userData.companyName.trim() : undefined;
+                formattedData.gstNumber = userData.gstNumber ? userData.gstNumber.trim().toUpperCase() : undefined;
+            }
+
+            console.log('Sending registration request:', formattedData);
+            
+            try {
+                const response = await api.post('/auth/register', formattedData);
+                console.log('Registration success:', response.data);
+                return response.data;
+            } catch (apiError) {
+                console.error('API Registration Error:', apiError);
+                
+                // Handle CORS errors
+                if (apiError.message === 'Network Error') {
+                    throw new Error('Unable to connect to the server. Please check your internet connection or try again later.');
+                }
+                
+                // Handle backend validation errors
+                if (apiError.response?.data?.errors) {
+                    const errorMessage = apiError.response.data.errors
+                        .map(err => err.message)
+                        .join(', ');
+                    throw new Error(errorMessage);
+                }
+                
+                // Handle general backend errors
+                if (apiError.response?.data?.message) {
+                    throw new Error(apiError.response.data.message);
+                }
+                
+                // Handle unexpected errors
+                throw new Error('Registration failed. Please try again later.');
+            }
         } catch (error) {
             console.error('Register Error:', error);
             throw error;

@@ -31,7 +31,9 @@ const userSchema = new mongoose.Schema({
     },
     phone: {
         type: String,
-        required: [true, 'Phone number is required'],
+        required: function() {
+            return this.role === 'vendor_supplier' || this.role === 'construction_firm';
+        },
         match: [/^[0-9]{10}$/, 'Please enter a valid 10-digit phone number']
     },
     companyName: {

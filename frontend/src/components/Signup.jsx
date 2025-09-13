@@ -152,16 +152,19 @@ const Signup = () => {
       if (error) newErrors[field] = error;
     });
 
-    // Additional role-specific validation
+    // Additional role-specific validation and data cleaning
     if (formData.role === 'client_owner') {
-      // Clear unnecessary fields for client_owner
-      formData.phone = '';
-      formData.companyName = '';
-      formData.gstNumber = '';
+      // Remove unnecessary fields for client_owner
+      delete formData.phone;
+      delete formData.companyName;
+      delete formData.gstNumber;
     } else if (formData.role === 'vendor_supplier') {
-      // Clear construction firm specific fields
-      formData.companyName = '';
-      formData.gstNumber = '';
+      // For vendor_supplier, keep phone but remove construction firm fields
+      if (!formData.phone?.trim()) {
+        newErrors.phone = "Phone number is required for vendors";
+      }
+      delete formData.companyName;
+      delete formData.gstNumber;
     }
 
     if (Object.keys(newErrors).length > 0) {
