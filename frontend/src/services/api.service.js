@@ -1,13 +1,28 @@
 import axios from 'axios';
 
 // API URL configuration
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = `${BASE_URL}/api`;
+
+// Log the API URL being used
+console.log('Using API URL:', API_URL);
+console.log('Environment Variables:', {
+    VITE_API_URL: import.meta.env.VITE_API_URL,
+    MODE: import.meta.env.MODE,
+    DEV: import.meta.env.DEV,
+    PROD: import.meta.env.PROD
+});
 
 // Create axios instance
 const api = axios.create({
     baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json'
+    },
+    // Add timeout and other options
+    timeout: 10000,
+    validateStatus: function (status) {
+        return status >= 200 && status < 500; // Handle all responses
     }
 });
 
@@ -40,19 +55,34 @@ api.interceptors.response.use(
         return response;
     },
     (error) => {
-        // Log error in detail
-        console.error('API Error Response:', {
+        // Enhanced error logging
+        console.error('API Error Details:', {
             status: error.response?.status,
             data: error.response?.data,
-            message: error.message
+            message: error.message,
+            config: {
+                url: error.config?.url,
+                baseURL: error.config?.baseURL,
+                method: error.config?.method,
+                headers: error.config?.headers
+            }
         });
 
-        if (!error.response) {
-            return Promise.reject(new Error('Network error. Please check your connection.'));
+        if (error.code === 'ECONNABORTED') {
+            return Promise.reject(new Error('Request timed out. Please try again.'));
         }
 
-        // Return the error response data
-        return Promise.reject(error.response.data);
+        if (!error.response) {
+            return Promise.reject(new Error(`Network error. API URL: ${API_URL}. Please check your connection and API URL.`));
+        }
+
+        // Return the error response data with more context
+        const errorMessage = error.response.data?.message || error.message || 'Unknown error occurred';
+        return Promise.reject({
+            message: errorMessage,
+            status: error.response.status,
+            data: error.response.data
+        });
     }
 );
 
