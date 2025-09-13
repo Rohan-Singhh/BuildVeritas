@@ -1,6 +1,8 @@
 import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const CallSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white relative overflow-hidden">
       {/* Background Elements */}
@@ -33,8 +35,11 @@ export const CallSection = () => {
                 <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
-            <button className="px-10 py-4 border-2 border-white/30 text-white rounded-2xl font-bold text-xl hover:bg-white/10 hover:border-white transition-all duration-300 backdrop-blur-sm">
-              Contact Sales
+            <button
+              onClick={() => navigate("/contact")}
+              className="px-10 py-4 border-2 border-white/30 text-white rounded-2xl font-bold text-xl hover:bg-white/10 hover:border-white transition-all duration-300 backdrop-blur-sm"
+            >
+              Contact Now
             </button>
           </div>
 

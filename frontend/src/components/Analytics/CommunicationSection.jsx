@@ -128,7 +128,7 @@ export const CommunicationSection = () => {
                     <div className="bg-white rounded-full h-2 mb-3 overflow-hidden">
                       <div
                         className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full animate-progress-bar"
-                        style={{ "--progress-width": "73%" }}
+                        style={{ "--progress": "73%" }}
                       ></div>
                     </div>
                     <div className="grid grid-cols-3 gap-4 text-center">
@@ -178,7 +178,7 @@ export const CommunicationSection = () => {
                       <div className="bg-white rounded-full h-2 overflow-hidden">
                         <div
                           className="bg-gradient-to-r from-green-500 to-emerald-600 h-full animate-progress-bar"
-                          style={{ "--progress-width": "67%" }}
+                          style={{ "--progress": "67%" }}
                         ></div>
                       </div>
                       <div className="text-xs text-gray-500">

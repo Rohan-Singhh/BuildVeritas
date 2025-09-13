@@ -41,8 +41,8 @@ export const HeroSection = () => {
               to see the true cost of your vision in minutes
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-500">
-              <button className="group relative px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden">
+            <div className="flex gap-4 animate-fade-in-up delay-500">
+              <button className="group relative px-18 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative flex items-center">
                   Get Your Free AI Estimate
@@ -50,9 +50,9 @@ export const HeroSection = () => {
                 </span>
               </button>
 
-              <button className="px-8 py-3 border-2 border-white/20 text-white rounded-2xl font-semibold text-lg backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
+              {/* <button className="px-8 py-3 border-2 border-white/20 text-white rounded-2xl font-semibold text-lg backdrop-blur-sm hover:bg-white/10 transition-all duration-300">
                 Watch Demo
-              </button>
+              </button> */}
             </div>
 
             {/* Stats */}

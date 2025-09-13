@@ -155,7 +155,7 @@ export const ProgressVerification = () => {
                   <div className="bg-white/20 rounded-full h-2">
                     <div
                       className="bg-green-400 h-2 rounded-full animate-progress-bar"
-                      style={{ "--progress-width": "100%" }}
+                      style={{ "--progress": "100%" }}
                     ></div>
                   </div>
                 </div>
@@ -168,7 +168,7 @@ export const ProgressVerification = () => {
                   <div className="bg-white/20 rounded-full h-2">
                     <div
                       className="bg-yellow-400 h-2 rounded-full animate-progress-bar"
-                      style={{ "--progress-width": "75%" }}
+                      style={{ "--progress": "75%" }}
                     ></div>
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export const ProgressVerification = () => {
                   <div className="bg-white/20 rounded-full h-2">
                     <div
                       className="bg-orange-400 h-2 rounded-full animate-progress-bar"
-                      style={{ "--progress-width": "45%" }}
+                      style={{ "--progress": "45%" }}
                     ></div>
                   </div>
                 </div>

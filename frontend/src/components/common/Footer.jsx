@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
-import { Brain, Building2, Mail, Phone } from "lucide-react";
+import { Building2, Mail, Phone } from "lucide-react";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="bg-gradient-to-r from-blue-900 via-blue-900 to-blue-950 text-white relative overflow-hidden border-t border-gray-100">
       {/* Subtle Gradient Overlay */}
@@ -33,7 +31,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/ai-estimation"
+                  to="/budget-estimator"
                   className="text-sm hover:text-gray-900 transition-colors flex items-center space-x-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-gray-600 transition-all"></span>
@@ -42,16 +40,16 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/site-monitoring"
+                  to="/marketplace"
                   className="text-sm hover:text-gray-900 transition-colors flex items-center space-x-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-gray-600 transition-all"></span>
-                  <span>Site Monitoring</span>
+                  <span>Marketplace</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/project-analytics"
+                  to="/analytics"
                   className="text-sm hover:text-gray-900 transition-colors flex items-center space-x-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-gray-600 transition-all"></span>
@@ -60,7 +58,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/resource-management"
+                  to="/project-management"
                   className="text-sm hover:text-gray-900 transition-colors flex items-center space-x-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-300 rounded-full group-hover:bg-gray-600 transition-all"></span>
@@ -155,27 +153,26 @@ const Footer = () => {
         <div className="pt-4 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm">
-              © {currentYear}{" "}
-              <span className="text-blue-300">BuildVeritas</span>. All rights
-              reserved.
+              © 2025 <span className="text-blue-300">BuildVeritas</span>. All
+              rights reserved.
             </p>
             <div className="flex items-center space-x-6">
               <Link
-                to="/privacy"
+                to="/#"
                 className="text-sm hover:text-gray-900 transition-colors"
               >
                 Privacy
               </Link>
               <span className="w-1.5 h-1.5 bg-gray-300 rounded-full"></span>
               <Link
-                to="/terms"
+                to="/#"
                 className="text-sm hover:text-gray-900 transition-colors"
               >
                 Terms
               </Link>
               <span className="w-1.5 h-1.5 bg-gray-300 rounded-full"></span>
               <Link
-                to="/cookies"
+                to="/#"
                 className="text-sm hover:text-gray-900 transition-colors"
               >
                 Cookies

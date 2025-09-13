@@ -1,6 +1,8 @@
 import { ArrowRight, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const CallSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-12 bg-white relative overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
@@ -25,9 +27,12 @@ export const CallSection = () => {
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
 
-            <button className="group bg-transparent px-8 py-4 rounded-xl font-semibold border-2 border-gray-300 hover:border-blue-500 hover:bg-white/10 transition-all duration-300 flex items-center justify-center backdrop-blur-sm">
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="group bg-transparent px-8 py-4 rounded-xl font-semibold border-2 border-gray-300 hover:border-blue-500 hover:bg-white/10 transition-all duration-300 flex items-center justify-center backdrop-blur-sm"
+            >
               <Play className="mr-2 w-5 h-5" />
-              Watch Technology Demo
+              Watch Demo
             </button>
           </div>
 

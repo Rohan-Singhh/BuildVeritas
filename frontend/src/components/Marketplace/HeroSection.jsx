@@ -1,7 +1,9 @@
 import { Button } from "../ui/button";
 import { ArrowRight, Users, Shield, Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
       {/* Background Image with Overlay */}
@@ -83,10 +85,13 @@ export const HeroSection = () => {
             >
               <span className="absolute inset-0 rounded-sm bg-gradient-to-r from-blue-500 to-blue-600 translate-x-1.5 translate-y-1.5 opacity-80 group-hover:translate-x-0 group-hover:-translate-y-0 transition-all duration-300 ease-in-out delay-75"></span>
               <span className="absolute inset-0 rounded-sm bg-gradient-to-r from-blue-500 to-blue-600 translate-x-3 translate-y-3 opacity-60 group-hover:translate-x-0 group-hover:-translate-y-0 transition-all duration-300 ease-in-out delay-100"></span>
-              <span className="relative flex items-center justify-center">
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="relative flex items-center justify-center"
+              >
                 Browse Verified Professionals
                 <ArrowRight className="ml-3 h-6 w-6 transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
-              </span>
+              </button>
             </Button>
 
             <Button
