@@ -3,13 +3,18 @@ import axios from 'axios';
 // API URL configuration
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Ensure we have a clean base URL without trailing /api
-const cleanBaseUrl = BASE_URL.endsWith('/api') 
-    ? BASE_URL.slice(0, -4) // remove /api from the end
-    : BASE_URL;
+// Remove any trailing slashes and /api
+const cleanBaseUrl = BASE_URL.replace(/\/+$/, '').replace(/\/api$/, '');
 
 // Construct the final API URL
 const API_URL = `${cleanBaseUrl}/api`;
+
+// Debug URL construction
+console.log('URL Construction:', {
+    originalURL: BASE_URL,
+    cleanBaseUrl,
+    finalAPIURL: API_URL
+});
 
 // Log the API URL being used
 console.log('Using API URL:', API_URL);
