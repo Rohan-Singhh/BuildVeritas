@@ -3,18 +3,30 @@ import axios from 'axios';
 // API URL configuration
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Remove any trailing slashes and /api
-const cleanBaseUrl = BASE_URL.replace(/\/+$/, '').replace(/\/api$/, '');
+// Function to clean and validate URL
+function constructApiUrl(baseUrl) {
+    // Remove trailing slashes and /api
+    let cleanUrl = baseUrl.trim().replace(/\/+$/, '').replace(/\/api$/, '');
+    
+    // Replace buildveritas-backend with buildveritas in render.com URLs
+    cleanUrl = cleanUrl.replace('buildveritas-backend.onrender.com', 'buildveritas.onrender.com');
+    
+    // Construct final URL
+    const apiUrl = `${cleanUrl}/api`;
+    
+    // Debug logging
+    console.log('API URL Construction:', {
+        input: baseUrl,
+        cleaned: cleanUrl,
+        final: apiUrl,
+        environment: import.meta.env.MODE
+    });
+    
+    return apiUrl;
+}
 
-// Construct the final API URL
-const API_URL = `${cleanBaseUrl}/api`;
-
-// Debug URL construction
-console.log('URL Construction:', {
-    originalURL: BASE_URL,
-    cleanBaseUrl,
-    finalAPIURL: API_URL
-});
+// Construct the API URL
+const API_URL = constructApiUrl(BASE_URL);
 
 // Log the API URL being used
 console.log('Using API URL:', API_URL);
