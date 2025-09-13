@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const CallSection = () => {
+  const navigate = useNavigate();
   return (
     // Enhanced Call to Action Section
     <div className="relative overflow-hidden">
@@ -7,16 +10,17 @@ const CallSection = () => {
         <div className="space-y-6 sm:space-y-4">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight">
             Ready to Transform Your
-            <span className="block text-blue-400">
-              Construction Projects?
-            </span>
+            <span className="block text-blue-400">Construction Projects?</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
             Join thousands of construction professionals using BuildVeritas to
             build smarter and faster.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center pt-4">
-            <button className="group inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-white hover:bg-gray-50 text-blue-700 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl">
+            <button
+              onClick={() => navigate("/login")}
+              className="group inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-white hover:bg-gray-50 text-blue-700 font-bold text-sm sm:text-base rounded-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+            >
               Try Demo Login Now
               <svg
                 className="w-6 h-6 ml-3 transition-transform duration-300 group-hover:translate-x-1"

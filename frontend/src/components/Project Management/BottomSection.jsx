@@ -6,8 +6,10 @@ import {
   Shield,
   Star,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const BottomSection = () => {
+  const navigate = useNavigate();
   return (
     <section id="cta" className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -27,7 +29,10 @@ export const BottomSection = () => {
               <ArrowRight className="ml-3 h-6 w-6" />
             </button>
 
-            <button className="inline-flex items-center px-8 py-4 border-2 border-blue-600 text-blue-600 text-lg font-semibold rounded-lg hover:bg-blue-50 transition-all duration-200">
+            <button
+              onClick={() => navigate("/contact")}
+              className="inline-flex items-center px-8 py-4 border-2 border-blue-600 text-blue-600 text-lg font-semibold rounded-lg hover:bg-blue-50 transform hover:scale-105 transition-all duration-200"
+            >
               Schedule a Consultation
             </button>
           </div>

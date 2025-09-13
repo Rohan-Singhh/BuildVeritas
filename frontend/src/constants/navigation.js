@@ -5,6 +5,7 @@ import {
   BookOpen,
   Star,
   DollarSign,
+  LayoutDashboard,
 } from "lucide-react";
 
 export const NAV_ITEMS = [
@@ -49,5 +50,12 @@ export const NAV_ITEMS = [
     icon: Star,
     type: "link",
     path: "/testimonials",
+  },
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    type: "link",
+    path: "/dashboard",
   },
 ];

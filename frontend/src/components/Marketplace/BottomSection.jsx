@@ -61,7 +61,7 @@ export const BottomSection = () => {
             <Button
               variant="hero"
               size="lg"
-              className="text-xl px-8 py-3 h-auto hover-glow shadow-brutal group"
+              className="text-xl px-8 py-3 h-auto hover-glow shadow-brutal group border"
             >
               <span className="flex items-center">
                 Browse Our Verified Professionals Now
@@ -72,7 +72,7 @@ export const BottomSection = () => {
             <Button
               variant="outline-blue"
               size="lg"
-              className="text-xl px-8 py-3 h-auto border-white/40 text-white hover:bg-white hover:text-blue-500 backdrop-blur-sm hover:scale-105 transition-all duration-300"
+              className="text-xl px-8 py-3 h-auto border text-white hover:bg-white hover:text-blue-500 backdrop-blur-sm hover:scale-105 transition-all duration-300"
             >
               <Shield className="mr-3 h-6 w-6" />
               Learn More About Verification

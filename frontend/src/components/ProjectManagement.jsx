@@ -1,8 +1,8 @@
-import { BenefitsSection } from "./Product Management/BenefitsSection";
-import { BottomSection } from "./Product Management/BottomSection";
-import { FeaturesSection } from "./Product Management/FeaturesSection";
-import { HeroSection } from "./Product Management/HeroSection";
-import { ProblemSection } from "./Product Management/ProblemSection";
+import { BenefitsSection } from "./Project Management/BenefitsSection";
+import { BottomSection } from "./Project Management/BottomSection";
+import { FeaturesSection } from "./Project Management/FeaturesSection";
+import { HeroSection } from "./Project Management/HeroSection";
+import { ProblemSection } from "./Project Management/ProblemSection";
 
 const ProjectManagement = () => (
   <div>

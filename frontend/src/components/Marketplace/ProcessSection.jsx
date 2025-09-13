@@ -82,10 +82,10 @@ export const ProcessSection = () => {
             A professional can't simply buy their way onto our platform. They
             have to earn it. The{" "}
             <span className="font-semibold text-gray-900">
-              "BuildVeritas Verified"
+              "BuildVeritas Verified Badge"
             </span>{" "}
-            badge is a symbol of trust, signifying that a professional has
-            passed our rigorous, multi-point inspection.
+            is a symbol of trust, signifying that a professional has passed our
+            rigorous, multi-point inspection.
           </p>
         </div>
 
