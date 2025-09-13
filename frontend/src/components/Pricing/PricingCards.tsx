@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { plans } from "../../constants/PricingPlans";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight, Check, Star } from "lucide-react";
 
 export const PricingCards = () => {
-  const [selectedPlan, setSelectedPlan] = useState("Prime");
+  const [selectedPlan, setSelectedPlan] = useState("");
+  const navigate = useNavigate();
 
   return (
     <section className="py-24 bg-white relative">
@@ -34,7 +36,7 @@ export const PricingCards = () => {
               <div
                 className={`relative h-full ${
                   plan.bgColor
-                } rounded-3xl p-7 border-2 ${
+                } rounded-3xl p-5 border-2 ${
                   plan.popular
                     ? "border-purple-200 shadow-2xl"
                     : "border-gray-100 shadow-lg"
@@ -96,7 +98,7 @@ export const PricingCards = () => {
                         className="flex items-center space-x-3"
                       >
                         <div
-                          className={`flex-shrink-0 w-6 h-6 bg-gradient-to-br ${plan.color} rounded-full flex items-center justify-center`}
+                          className={`flex-shrink-0 w-5 h-5 bg-gradient-to-br ${plan.color} rounded-full flex items-center justify-center`}
                         >
                           <Check className="w-3 h-3 text-white" />
                         </div>
@@ -111,7 +113,8 @@ export const PricingCards = () => {
                 {/* CTA Button */}
                 <div className="relative z-10">
                   <button
-                    className={`w-full py-4 px-5 bg-gradient-to-r ${plan.color} text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group/btn`}
+                    className={`w-full py-3 px-5 bg-gradient-to-r ${plan.color} text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl group/btn`}
+                    onClick={() => navigate("/login")}
                   >
                     <span className="flex items-center justify-center">
                       {plan.buttonText}

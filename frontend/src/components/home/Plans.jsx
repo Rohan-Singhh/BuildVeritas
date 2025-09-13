@@ -1,25 +1,26 @@
-import { useState } from "react";
-import { usePageTransition } from "../../hooks/usePageTransition";
-import { plans } from "../../constants/PricingPlans";
+// import { useState } from "react";
+// import { usePageTransition } from "../../hooks/usePageTransition";
+// import { plans } from "../../constants/PricingPlans";
+import { PricingCards } from "../Pricing/PricingCards";
 
 const Plans = () => {
-  const { navigateWithTransition } = usePageTransition();
-  const [selectedPlan, setSelectedPlan] = useState("Prime"); // Default selected
+  // const { navigateWithTransition } = usePageTransition();
+  // const [selectedPlan, setSelectedPlan] = useState("Prime"); // Default selected
 
   return (
     <section
       id="pricing"
       className="bg-white py-24 scroll-mt-20 [&_*]:cursor-default"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 text-center">
           Choose Your Plan
         </h2>
-        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto text-center">
           Select the perfect plan that suits your business needs and scale with
           confidence
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {plans.map((plan) => (
             <div
               key={plan.name}
@@ -90,7 +91,8 @@ const Plans = () => {
               </button>
             </div>
           ))}
-        </div>
+        </div> */}
+        <PricingCards />
       </div>
     </section>
   );

@@ -18,13 +18,12 @@ import Contact from "./Contact";
 import Testimonials from "./Testimonials";
 import Pricing from "./Pricing";
 
-
 const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
-      {/* <ScrollToTop /> */}
+      <ScrollToTop />
       <Routes key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

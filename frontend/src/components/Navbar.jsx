@@ -115,8 +115,8 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop and Tablet Navigation Links */}
-          <div className="hidden md:block">
-            <div className="ml-4 lg:ml-10 flex items-baseline space-x-3 lg:space-x-6">
+          <div className="hidden lg:block">
+            <div className="ml-10 flex items-baseline lg:space-x-3 xl:space-x-6">
               {NAV_ITEMS.map((item) => (
                 <NavItem
                   key={item.id}
@@ -128,7 +128,7 @@ const Navbar = () => {
           </div>
 
           {/* Auth Buttons */}
-          <div className="hidden sm:flex items-center space-x-2 lg:space-x-4">
+          <div className="hidden lg:flex items-center space-x-2 lg:space-x-4">
             {isAuthenticated() ? (
               <>
                 <Link
@@ -156,7 +156,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="sm:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 hover:text-blue-400 focus:outline-none focus:text-blue-400"
@@ -172,7 +172,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation Menu */}
         {isMenuOpen && (
-          <div className="sm:hidden">
+          <div className="lg:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-blue-200">
               {NAV_ITEMS.map((item) => (
                 <NavItem
