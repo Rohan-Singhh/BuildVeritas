@@ -21,13 +21,14 @@ const corsOptions = {
     origin: [
         'http://localhost:5173',
         'http://127.0.0.1:5173',
-        'https://build-veritas.vercel.app',
-        'https://buildveritas.vercel.app'
+        'https://build-veritas.vercel.app'
     ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    maxAge: 86400 // 24 hours
 };
 
 const initializeMiddleware = (app) => {
