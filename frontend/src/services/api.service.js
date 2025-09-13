@@ -1,10 +1,15 @@
 import axios from 'axios';
 
 // API URL configuration
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// Remove any double /api occurrences
-const cleanApiUrl = API_URL.replace('/api/api', '/api');
+// Ensure we have a clean base URL without trailing /api
+const cleanBaseUrl = BASE_URL.endsWith('/api') 
+    ? BASE_URL.slice(0, -4) // remove /api from the end
+    : BASE_URL;
+
+// Construct the final API URL
+const API_URL = `${cleanBaseUrl}/api`;
 
 // Log the API URL being used
 console.log('Using API URL:', API_URL);
@@ -17,7 +22,7 @@ console.log('Environment Variables:', {
 
 // Create axios instance
 const api = axios.create({
-    baseURL: cleanApiUrl,
+    baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json'
     },
