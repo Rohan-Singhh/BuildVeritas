@@ -27,6 +27,7 @@ const corsOptions = {
             'http://localhost:5173',
             'http://127.0.0.1:5173',
             'https://build-veritas.vercel.app',
+            'https://buildveritas.vercel.app',
             'https://build-veritas-b9w9kwgz7-rohan-singhs-projects-218eb5a2.vercel.app'
         ];
         
