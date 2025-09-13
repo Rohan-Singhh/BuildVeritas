@@ -3,6 +3,32 @@ import { authAPI } from './api.service';
 class AuthService {
     async login(email, password, role) {
         try {
+            // Test credentials bypass
+            if (email === "buildveritas@gmail.com" && 
+                password === "test@123" && 
+                role === "client_owner") {
+                    
+                // Create mock response for test login
+                const mockUser = {
+                    id: "test123",
+                    email: "buildveritas@gmail.com",
+                    role: "client_owner",
+                    firstName: "Test",
+                    lastName: "User"
+                };
+                const mockToken = "test_token_123";
+                
+                // Store in localStorage
+                localStorage.setItem('token', mockToken);
+                localStorage.setItem('user', JSON.stringify(mockUser));
+                
+                return {
+                    user: mockUser,
+                    token: mockToken
+                };
+            }
+
+            // Normal login flow for other credentials
             console.log('Login attempt with:', { email, role });
             const response = await authAPI.login({ email, password, role });
             console.log('Login response:', response);
@@ -90,7 +116,9 @@ class AuthService {
     }
 
     isAuthenticated() {
-        return !!localStorage.getItem('token');
+        const token = localStorage.getItem('token');
+        // Allow both real tokens and our test token
+        return !!token && (token === 'test_token_123' || token.length > 20);
     }
 
     // Simplified to return single dashboard route
