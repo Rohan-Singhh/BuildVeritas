@@ -1,82 +1,26 @@
-import { useState } from "react";
-import { usePageTransition } from "../../hooks/usePageTransition";
+// import { useState } from "react";
+// import { usePageTransition } from "../../hooks/usePageTransition";
+// import { plans } from "../../constants/PricingPlans";
+import { PricingCards } from "../Pricing/PricingCards";
 
 const Plans = () => {
-  const { navigateWithTransition } = usePageTransition();
-  const [selectedPlan, setSelectedPlan] = useState("Prime"); // Default selected
-
-  const plans = [
-    {
-      name: "Starter",
-      price: "₹2,999",
-      period: "/mo",
-      features: [
-        "Basic project tracking",
-        "AI budget estimation",
-        "Email support",
-        "Up to 3 projects",
-        "Community access",
-      ],
-      button: "Choose Starter",
-    },
-    {
-      name: "Prime",
-      price: "₹5,999",
-      period: "/mo",
-      features: [
-        "All Starter features",
-        "Advanced site verification",
-        "Priority email support",
-        "Up to 10 projects",
-        "Team collaboration",
-        "Custom reports",
-      ],
-      button: "Choose Prime",
-    },
-    {
-      name: "Professional",
-      price: "₹9,999",
-      period: "/mo",
-      features: [
-        "All Prime features",
-        "Unlimited projects",
-        "Phone & chat support",
-        "AI-powered analytics",
-        "Dedicated onboarding",
-        "Integration API",
-      ],
-      button: "Choose Professional",
-    },
-    {
-      name: "Enterprise Custom",
-      price: "Contact Us",
-      period: "",
-      features: [
-        "All Professional features",
-        "Custom integrations",
-        "Dedicated account manager",
-        "On-site training",
-        "24/7 priority support",
-        "Custom SLA",
-      ],
-      button: "Contact Sales",
-    },
-  ];
+  // const { navigateWithTransition } = usePageTransition();
+  // const [selectedPlan, setSelectedPlan] = useState("Prime"); // Default selected
 
   return (
     <section
       id="pricing"
       className="bg-white py-24 scroll-mt-20 [&_*]:cursor-default"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 text-center">
           Choose Your Plan
         </h2>
-        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto text-center">
           Select the perfect plan that suits your business needs and scale with
           confidence
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {plans.map((plan) => (
             <div
               key={plan.name}
@@ -141,13 +85,14 @@ const Plans = () => {
                   ${selectedPlan === plan.name ? "bg-blue-600" : ""}
                 `}
               >
-                <span className="relative z-10">{plan.button}</span>
+                <span className="relative z-10">{plan.buttonText}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
               </button>
             </div>
           ))}
-        </div>
+        </div> */}
+        <PricingCards />
       </div>
     </section>
   );

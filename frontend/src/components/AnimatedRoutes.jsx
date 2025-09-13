@@ -16,14 +16,14 @@ import Analytics from "./Analytics";
 import BudgetEstimator from "./BudgetEstimator";
 import Contact from "./Contact";
 import Testimonials from "./Testimonials";
-
+import Pricing from "./Pricing";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
-      {/* <ScrollToTop /> */}
+      <ScrollToTop />
       <Routes key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -38,6 +38,7 @@ const AnimatedRoutes = () => {
         <Route path="/budget-estimator" element={<BudgetEstimator />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/testimonials" element={<Testimonials />} />
+        <Route path="/pricing" element={<Pricing />} />
         <Route
           path="/dashboard"
           element={
