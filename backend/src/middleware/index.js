@@ -18,7 +18,12 @@ const limiter = rateLimit({
 
 // CORS Configuration
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Vite's default port
+    origin: [
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        'https://build-veritas.vercel.app',
+        'https://buildveritas.vercel.app'
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
