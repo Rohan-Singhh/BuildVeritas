@@ -239,7 +239,7 @@
     width: 0%;
   }
   to {
-    width: var(--progress-width, 100%);
+    width: var(--progress, 100%);
   }
 }
 
