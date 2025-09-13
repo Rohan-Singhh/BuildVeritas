@@ -70,26 +70,41 @@ api.interceptors.response.use(
             config: {
                 url: error.config?.url,
                 baseURL: error.config?.baseURL,
-                method: error.config?.method,
-                headers: error.config?.headers
+                method: error.config?.method
             }
         });
 
         if (error.code === 'ECONNABORTED') {
-            return Promise.reject(new Error('Request timed out. Please try again.'));
+            return Promise.reject({
+                response: {
+                    data: { message: 'Request timed out. Please try again.' }
+                }
+            });
         }
 
         if (!error.response) {
-            return Promise.reject(new Error(`Network error. API URL: ${API_URL}. Please check your connection and API URL.`));
+            return Promise.reject({
+                response: {
+                    data: { message: `Network error. Please check your connection.` }
+                }
+            });
         }
 
-        // Return the error response data with more context
-        const errorMessage = error.response.data?.message || error.message || 'Unknown error occurred';
-        return Promise.reject({
-            message: errorMessage,
-            status: error.response.status,
-            data: error.response.data
-        });
+        // Format error response consistently
+        if (error.response?.data) {
+            console.log('API Error Response Data:', error.response.data);
+            return Promise.reject({
+                response: {
+                    status: error.response.status,
+                    data: {
+                        message: error.response.data.message || error.response.data.error,
+                        errors: error.response.data.errors || []
+                    }
+                }
+            });
+        }
+        
+        return Promise.reject(error);
     }
 );
 
@@ -97,11 +112,24 @@ api.interceptors.response.use(
 export const authAPI = {
     login: async (credentials) => {
         try {
+            console.log('Sending login request with:', credentials);
             const response = await api.post('/auth/login', credentials);
-            console.log('Login Response:', response);
-            return response.data;
+            console.log('Raw login response:', response);
+            
+            // Handle different response formats
+            const responseData = response.data;
+            console.log('Processed response data:', responseData);
+            
+            if (responseData.status === 'fail' || responseData.status === 'error') {
+                throw new Error(responseData.message || 'Login failed');
+            }
+            
+            return responseData;
         } catch (error) {
-            console.error('Login Error:', error);
+            console.error('Login Error in API:', error);
+            if (error.response?.data) {
+                throw error.response.data;
+            }
             throw error;
         }
     },

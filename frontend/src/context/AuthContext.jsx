@@ -20,22 +20,29 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, role) => {
     try {
+      console.log('AuthContext: Attempting login with:', { email, role });
       const response = await authService.login(email, password, role);
+      console.log('AuthContext: Login successful:', response);
       
-      // Verify response structure
-      if (!response?.user) {
-        throw new Error('Invalid response from server');
+      if (!response.user) {
+        throw new Error('Login response missing user data');
       }
-
+      
       setUser(response.user);
-      
-      // Use single dashboard route
       navigate('/dashboard');
-      
       return response;
+      
     } catch (error) {
-      console.error('Login Error:', error);
-      throw error;
+      console.error('AuthContext: Login Error:', error);
+      
+      // Ensure we always throw an Error object with a message
+      if (error instanceof Error) {
+        throw error;
+      } else if (typeof error === 'string') {
+        throw new Error(error);
+      } else {
+        throw new Error(error?.message || 'Login failed');
+      }
     }
   };
 
