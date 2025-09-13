@@ -19,22 +19,16 @@ const startServer = async () => {
     try {
         // Check environment
         checkEnvironmentVariables();
-
         // Initialize middleware
         initializeMiddleware(app);
-
         // Connect to database
         await config.database.connect();
-
         // Initialize routes
         initializeRoutes(app);
-
         // Initialize error handling
         initializeErrorHandling(app);
-
         // Initialize process handlers
         initializeProcessHandlers(config.database);
-
         // Start server
         const PORT = process.env.PORT || 5000;
         app.listen(PORT, () => {

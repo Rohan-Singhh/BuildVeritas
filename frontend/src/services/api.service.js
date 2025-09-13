@@ -1,13 +1,52 @@
 import axios from 'axios';
 
 // API URL configuration
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+// Function to clean and validate URL
+function constructApiUrl(baseUrl) {
+    // Remove trailing slashes and /api
+    let cleanUrl = baseUrl.trim().replace(/\/+$/, '').replace(/\/api$/, '');
+    
+    // Replace buildveritas-backend with buildveritas in render.com URLs
+    cleanUrl = cleanUrl.replace('buildveritas-backend.onrender.com', 'buildveritas.onrender.com');
+    
+    // Construct final URL
+    const apiUrl = `${cleanUrl}/api`;
+    
+    // Debug logging
+    console.log('API URL Construction:', {
+        input: baseUrl,
+        cleaned: cleanUrl,
+        final: apiUrl,
+        environment: import.meta.env.MODE
+    });
+    
+    return apiUrl;
+}
+
+// Construct the API URL
+const API_URL = constructApiUrl(BASE_URL);
+
+// Log the API URL being used
+console.log('Using API URL:', API_URL);
+console.log('Environment Variables:', {
+    VITE_API_URL: import.meta.env.VITE_API_URL,
+    MODE: import.meta.env.MODE,
+    DEV: import.meta.env.DEV,
+    PROD: import.meta.env.PROD
+});
 
 // Create axios instance
 const api = axios.create({
     baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json'
+    },
+    // Add timeout and other options
+    timeout: 10000,
+    validateStatus: function (status) {
+        return status >= 200 && status < 500; // Handle all responses
     }
 });
 
@@ -40,19 +79,49 @@ api.interceptors.response.use(
         return response;
     },
     (error) => {
-        // Log error in detail
-        console.error('API Error Response:', {
+        // Enhanced error logging
+        console.error('API Error Details:', {
             status: error.response?.status,
             data: error.response?.data,
-            message: error.message
+            message: error.message,
+            config: {
+                url: error.config?.url,
+                baseURL: error.config?.baseURL,
+                method: error.config?.method
+            }
         });
 
-        if (!error.response) {
-            return Promise.reject(new Error('Network error. Please check your connection.'));
+        if (error.code === 'ECONNABORTED') {
+            return Promise.reject({
+                response: {
+                    data: { message: 'Request timed out. Please try again.' }
+                }
+            });
         }
 
-        // Return the error response data
-        return Promise.reject(error.response.data);
+        if (!error.response) {
+            return Promise.reject({
+                response: {
+                    data: { message: `Network error. Please check your connection.` }
+                }
+            });
+        }
+
+        // Format error response consistently
+        if (error.response?.data) {
+            console.log('API Error Response Data:', error.response.data);
+            return Promise.reject({
+                response: {
+                    status: error.response.status,
+                    data: {
+                        message: error.response.data.message || error.response.data.error,
+                        errors: error.response.data.errors || []
+                    }
+                }
+            });
+        }
+        
+        return Promise.reject(error);
     }
 );
 
@@ -60,11 +129,24 @@ api.interceptors.response.use(
 export const authAPI = {
     login: async (credentials) => {
         try {
+            console.log('Sending login request with:', credentials);
             const response = await api.post('/auth/login', credentials);
-            console.log('Login Response:', response);
-            return response.data;
+            console.log('Raw login response:', response);
+            
+            // Handle different response formats
+            const responseData = response.data;
+            console.log('Processed response data:', responseData);
+            
+            if (responseData.status === 'fail' || responseData.status === 'error') {
+                throw new Error(responseData.message || 'Login failed');
+            }
+            
+            return responseData;
         } catch (error) {
-            console.error('Login Error:', error);
+            console.error('Login Error in API:', error);
+            if (error.response?.data) {
+                throw error.response.data;
+            }
             throw error;
         }
     },

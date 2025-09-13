@@ -6,11 +6,12 @@ class Database {
             throw new Error('MONGODB_URI not set');
         }
 
+        // Set strictQuery to false to prepare for Mongoose 7
+        mongoose.set('strictQuery', false);
+        
         const options = {
             useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true,
-            useFindAndModify: false
+            useUnifiedTopology: true
         };
 
         try {
