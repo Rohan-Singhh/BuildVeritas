@@ -41,6 +41,26 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    special: false
+  });
+
+  const checkPasswordRequirements = (password) => {
+    const requirements = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[!@#$%^&*]/.test(password)
+    };
+    setPasswordValidation(requirements);
+    return Object.values(requirements).every(Boolean);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,6 +68,12 @@ const Signup = () => {
       ...prev,
       [name]: value,
     }));
+
+    // Check password requirements in real-time
+    if (name === 'password') {
+      checkPasswordRequirements(value);
+    }
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
@@ -57,64 +83,85 @@ const Signup = () => {
     }
   };
 
+  const validateField = (name, value, role) => {
+    switch (name) {
+      case 'firstName':
+        return !value.trim() ? "First name is required" : "";
+      
+      case 'lastName':
+        return !value.trim() ? "Last name is required" : "";
+      
+      case 'email':
+        if (!value) return "Email is required";
+        if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value)) {
+          return "Please enter a valid email address";
+        }
+        return "";
+      
+      case 'password':
+        if (!value) return "Password is required";
+        if (value.length < 8) return "Password must be at least 8 characters";
+        if (!/\d/.test(value)) return "Password must contain at least one number";
+        if (!/[A-Z]/.test(value)) return "Password must contain at least one uppercase letter";
+        if (!/[a-z]/.test(value)) return "Password must contain at least one lowercase letter";
+        if (!/[!@#$%^&*]/.test(value)) return "Password must contain at least one special character (!@#$%^&*)";
+        return "";
+      
+      case 'confirmPassword':
+        if (!value) return "Please confirm your password";
+        if (value !== formData.password) return "Passwords do not match";
+        return "";
+      
+      case 'phone':
+        if (role !== 'client_owner') {
+          if (!value?.trim()) return "Phone number is required";
+          if (!/^[0-9]{10}$/.test(value.trim())) {
+            return "Please enter a valid 10-digit phone number";
+          }
+        }
+        return "";
+      
+      case 'companyName':
+        if (role === 'construction_firm') {
+          return !value.trim() ? "Company name is required" : "";
+        }
+        return "";
+      
+      case 'gstNumber':
+        if (role === 'construction_firm') {
+          if (!value.trim()) return "GST number is required";
+          const gstNumber = value.trim().toUpperCase();
+          if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(gstNumber)) {
+            return "Please enter a valid GST number (e.g., 27ABCDE1234F1Z5)";
+          }
+        }
+        return "";
+      
+      default:
+        return "";
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
-    // Basic validation
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "First name is required";
-    }
+    // Validate all fields
+    Object.keys(formData).forEach(field => {
+      const error = validateField(field, formData[field], formData.role);
+      if (error) newErrors[field] = error;
+    });
 
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Last name is required";
-    }
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
-    } else if (!/\d/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one number";
-    }
-
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
-    }
-
-    // Role-specific validation
-    if (formData.role === "vendor_supplier" || formData.role === "construction_firm") {
-      if (!formData.phone?.trim()) {
-        newErrors.phone = "Phone number is required";
-      } else if (!/^[0-9]{10}$/.test(formData.phone.trim())) {
-        newErrors.phone = "Please enter a valid 10-digit phone number";
-      }
-    } else {
-      // Clear phone field for client_owner
+    // Additional role-specific validation
+    if (formData.role === 'client_owner') {
+      // Clear unnecessary fields for client_owner
       formData.phone = '';
-    }
-
-    if (formData.role === "construction_firm") {
-      if (!formData.companyName.trim()) {
-        newErrors.companyName = "Company name is required";
-      }
-      if (!formData.gstNumber.trim()) {
-        newErrors.gstNumber = "GST number is required";
-      } else {
-        // Convert to uppercase for validation
-        const gstNumber = formData.gstNumber.trim().toUpperCase();
-        if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(gstNumber)) {
-          newErrors.gstNumber = "Please enter a valid GST number (e.g., 27ABCDE1234F1Z5)";
-        }
-      }
+      formData.companyName = '';
+      formData.gstNumber = '';
+    } else if (formData.role === 'vendor_supplier') {
+      // Clear construction firm specific fields
+      formData.companyName = '';
+      formData.gstNumber = '';
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -430,9 +477,6 @@ const Signup = () => {
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Password
-                <span className="ml-1 text-sm text-gray-500">
-                  (min. 8 characters, must include a number)
-                </span>
               </label>
               <div className="mt-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -444,11 +488,57 @@ const Signup = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
+                  onFocus={() => setShowPasswordRequirements(true)}
+                  onBlur={() => {
+                    // Only hide if all requirements are met
+                    if (Object.values(passwordValidation).every(Boolean)) {
+                      setShowPasswordRequirements(false);
+                    }
+                  }}
                   className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-400 focus:border-blue-400 sm:text-sm ${
                     errors.password ? "border-red-300" : "border-gray-300"
                   }`}
                   placeholder="Create password"
                 />
+                
+                {/* Password Requirements Popup */}
+                {(showPasswordRequirements || errors.password) && (
+                  <div className="absolute z-10 mt-2 w-full bg-white rounded-md shadow-lg border border-gray-200 p-4 transition-all duration-200 ease-in-out">
+                    <div className="text-sm font-medium text-gray-700 mb-2">Password Requirements:</div>
+                    <ul className="space-y-1 text-sm">
+                      <li className={`flex items-center ${passwordValidation.length ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`mr-2 ${passwordValidation.length ? 'text-green-500' : 'text-red-500'}`}>
+                          {passwordValidation.length ? '✓' : '×'}
+                        </span>
+                        At least 8 characters
+                      </li>
+                      <li className={`flex items-center ${passwordValidation.uppercase ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`mr-2 ${passwordValidation.uppercase ? 'text-green-500' : 'text-red-500'}`}>
+                          {passwordValidation.uppercase ? '✓' : '×'}
+                        </span>
+                        One uppercase letter
+                      </li>
+                      <li className={`flex items-center ${passwordValidation.lowercase ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`mr-2 ${passwordValidation.lowercase ? 'text-green-500' : 'text-red-500'}`}>
+                          {passwordValidation.lowercase ? '✓' : '×'}
+                        </span>
+                        One lowercase letter
+                      </li>
+                      <li className={`flex items-center ${passwordValidation.number ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`mr-2 ${passwordValidation.number ? 'text-green-500' : 'text-red-500'}`}>
+                          {passwordValidation.number ? '✓' : '×'}
+                        </span>
+                        One number
+                      </li>
+                      <li className={`flex items-center ${passwordValidation.special ? 'text-green-600' : 'text-red-600'}`}>
+                        <span className={`mr-2 ${passwordValidation.special ? 'text-green-500' : 'text-red-500'}`}>
+                          {passwordValidation.special ? '✓' : '×'}
+                        </span>
+                        One special character (!@#$%^&*)
+                      </li>
+                    </ul>
+                  </div>
+                )}
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
