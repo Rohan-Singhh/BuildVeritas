@@ -26,8 +26,14 @@ const corsOptions = {
         const allowedOrigins = [
             'http://localhost:5173',
             'http://127.0.0.1:5173',
-            'https://build-veritas.vercel.app'
+            'https://build-veritas.vercel.app',
+            'https://build-veritas-b9w9kwgz7-rohan-singhs-projects-218eb5a2.vercel.app'
         ];
+        
+        // Allow all Vercel preview deployments
+        if (origin && origin.endsWith('.vercel.app')) {
+            return callback(null, true);
+        }
         
         if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
             callback(null, true);
