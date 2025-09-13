@@ -4,6 +4,34 @@ class AuthService {
     async login(email, password, role) {
         try {
             console.log('Login attempt with:', { email, role });
+            
+            // Check for test credentials
+            if (email === "buildveritas@gmail.com" && 
+                password === "test@123" && 
+                role === "client_owner") {
+                    // Create mock response for test credentials
+                    const mockResponse = {
+                        user: {
+                            id: "test_user_123",
+                            email: "buildveritas@gmail.com",
+                            role: "client_owner",
+                            name: "Test User"
+                        },
+                        token: "test_token_123"
+                    };
+                    
+                    // Store auth data immediately
+                    localStorage.setItem('token', mockResponse.token);
+                    localStorage.setItem('user', JSON.stringify(mockResponse.user));
+                    console.log('Stored test credentials:', {
+                        token: mockResponse.token,
+                        user: mockResponse.user
+                    });
+                    
+                    return mockResponse;
+            }
+            
+            // If not test credentials, proceed with actual API call
             const response = await authAPI.login({ email, password, role });
             console.log('Auth service received response:', response);
 
@@ -123,8 +151,16 @@ class AuthService {
 
     isAuthenticated() {
         const token = localStorage.getItem('token');
-        // Allow both real tokens and our test token
-        return !!token && (token === 'test_token_123' || token.length > 20);
+        const user = this.getCurrentUser();
+        
+        console.log('Checking authentication:', {
+            hasToken: !!token,
+            tokenValue: token,
+            hasUser: !!user
+        });
+        
+        // Check both token and user existence
+        return !!token && !!user && (token === 'test_token_123' || token.length > 20);
     }
 
     // Simplified to return single dashboard route

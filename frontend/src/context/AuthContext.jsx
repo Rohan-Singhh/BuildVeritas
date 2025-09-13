@@ -28,8 +28,21 @@ export const AuthProvider = ({ children }) => {
         throw new Error('Login response missing user data');
       }
       
+      // Update user state
       setUser(response.user);
-      navigate('/dashboard');
+      console.log('Updated user state:', response.user);
+      
+      // Verify authentication state
+      const isAuth = authService.isAuthenticated();
+      console.log('Authentication state after login:', { isAuthenticated: isAuth });
+      
+      if (isAuth) {
+        console.log('Navigating to dashboard...');
+        navigate('/dashboard');
+      } else {
+        console.error('Authentication failed after successful login');
+      }
+      
       return response;
       
     } catch (error) {
@@ -79,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    isAuthenticated: authService.isAuthenticated,
+    isAuthenticated: () => authService.isAuthenticated(),
   };
 
   if (loading) {

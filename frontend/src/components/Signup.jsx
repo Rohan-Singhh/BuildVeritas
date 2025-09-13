@@ -91,15 +91,15 @@ const Signup = () => {
     }
 
     // Role-specific validation
-    if (
-      formData.role === "vendor_supplier" ||
-      formData.role === "construction_firm"
-    ) {
-      if (!formData.phone) {
+    if (formData.role === "vendor_supplier" || formData.role === "construction_firm") {
+      if (!formData.phone?.trim()) {
         newErrors.phone = "Phone number is required";
-      } else if (!/^[0-9]{10}$/.test(formData.phone)) {
+      } else if (!/^[0-9]{10}$/.test(formData.phone.trim())) {
         newErrors.phone = "Please enter a valid 10-digit phone number";
       }
+    } else {
+      // Clear phone field for client_owner
+      formData.phone = '';
     }
 
     if (formData.role === "construction_firm") {
@@ -108,12 +108,12 @@ const Signup = () => {
       }
       if (!formData.gstNumber.trim()) {
         newErrors.gstNumber = "GST number is required";
-      } else if (
-        !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(
-          formData.gstNumber
-        )
-      ) {
-        newErrors.gstNumber = "Please enter a valid GST number";
+      } else {
+        // Convert to uppercase for validation
+        const gstNumber = formData.gstNumber.trim().toUpperCase();
+        if (!/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/.test(gstNumber)) {
+          newErrors.gstNumber = "Please enter a valid GST number (e.g., 27ABCDE1234F1Z5)";
+        }
       }
     }
 
@@ -133,19 +133,34 @@ const Signup = () => {
       console.log("Submitting registration data:", userData); // Debug log
       await register(userData);
     } catch (error) {
+      console.error('Registration error:', error);
+      
       // Handle specific validation errors from backend
-      if (error.errors) {
+      if (error.errors && Array.isArray(error.errors)) {
         const newErrors = {};
-        Object.entries(error.errors).forEach(([field, error]) => {
-          newErrors[field] = error.message || "Invalid value";
+        error.errors.forEach(err => {
+          if (err.field && err.message) {
+            newErrors[err.field] = err.message;
+          }
         });
-        setErrors(newErrors);
-      } else {
-        // Handle general error
-        setErrors({
-          general: error.message || "Registration failed. Please try again.",
-        });
+        if (Object.keys(newErrors).length > 0) {
+          setErrors(newErrors);
+          return;
+        }
       }
+      
+      // Handle error message from backend
+      if (error.message) {
+        setErrors({
+          general: error.message
+        });
+        return;
+      }
+      
+      // Fallback error message
+      setErrors({
+        general: "Registration failed. Please try again later."
+      });
     } finally {
       setIsLoading(false);
     }
@@ -383,6 +398,9 @@ const Signup = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     GST Number
+                    <span className="ml-1 text-sm text-gray-500">
+                      (e.g., 27ABCDE1234F1Z5)
+                    </span>
                   </label>
                   <div className="mt-1 relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
