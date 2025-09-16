@@ -37,10 +37,9 @@ const NavItem = ({ item, onClick, isMobile }) => {
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  // const navigate = useNavigate();
   const { navigateWithTransition } = usePageTransition();
   const location = useLocation();
-  const { user, logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
 
   const scrollToSection = useCallback(
     (sectionId) => {
@@ -87,6 +86,11 @@ const Navbar = () => {
       setIsMenuOpen(false);
     }
   };
+
+  // Don't render navbar on dashboard
+  if (location.pathname === "/dashboard") {
+    return null;
+  }
 
   return (
     <nav

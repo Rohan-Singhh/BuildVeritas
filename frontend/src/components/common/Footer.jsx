@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 import { Building2, Mail, Phone } from "lucide-react";
 
 const Footer = () => {
+  const location = useLocation();
+  
+  // Don't render footer on dashboard
+  if (location.pathname === "/dashboard") {
+    return null;
+  }
   return (
     <footer className="bg-gradient-to-r from-blue-900 via-blue-900 to-blue-950 text-white relative overflow-hidden border-t border-gray-100">
       {/* Subtle Gradient Overlay */}

@@ -408,6 +408,22 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Dashboard styles */
+body.dashboard-active {
+  background-color: rgb(249, 250, 251); /* bg-gray-50 */
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+body.dashboard-active #root {
+  height: 100vh;
+}
+
+body:not(.dashboard-active) {
+  background-color: white;
+}
+
 /* Custom gradient text */
 .gradient-text {
   background: linear-gradient(135deg, #3b82f6, #8b5cf6);

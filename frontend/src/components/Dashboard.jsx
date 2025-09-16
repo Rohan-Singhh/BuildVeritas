@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import {
   FaProjectDiagram,
   FaStore,
@@ -10,6 +12,10 @@ import {
   FaUsers,
   FaCheckCircle,
   FaCamera,
+  FaHome,
+  FaUserCircle,
+  FaSignOutAlt,
+  FaChevronDown,
 } from "react-icons/fa";
 import { MdOutlineDashboard } from "react-icons/md";
 import { DashboardMain } from "./Dashboard/DashboardMain";
@@ -54,15 +60,84 @@ const sidebarItems = [
 
 const Dashboard = () => {
   const [selected, setSelected] = useState("Dashboard");
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const navigate = useNavigate();
+  const { logout, user } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    // Remove any dashboard-specific classes from body
+    document.body.classList.remove('dashboard-active');
+    // Reset scroll position
+    window.scrollTo(0, 0);
+    navigate('/');
+  };
+
+  // Add dashboard-specific class when mounted
+  React.useEffect(() => {
+    document.body.classList.add('dashboard-active');
+    return () => {
+      // Clean up when unmounting
+      document.body.classList.remove('dashboard-active');
+      window.scrollTo(0, 0);
+    };
+  }, []);
 
   return (
     <div
       id="dashboard-container"
-      className="flex min-h-screen bg-gray-50 py-16 animate-fade-in-up"
+      className="flex min-h-screen bg-gray-50 animate-fade-in-up relative"
     >
+      {/* Top Navigation Bar */}
+      <div className="absolute top-0 right-0 left-64 h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between z-10">
+        <div className="flex items-center gap-2">
+          <img
+            src="/BV_Logo_4.png"
+            alt="BuildVeritas"
+            className="w-8 h-8"
+          />
+          <span className="text-lg font-semibold text-gray-800">
+            <span className="text-blue-500">Build</span>Veritas
+          </span>
+        </div>
+        
+        {/* Profile Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setIsProfileOpen(!isProfileOpen)}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+          >
+            <FaUserCircle className="w-6 h-6 text-gray-600" />
+            <span className="text-sm font-medium text-gray-700">
+              {user?.name || 'User'}
+            </span>
+            <FaChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
+          </button>
+          
+          {isProfileOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 animate-fade-in-down">
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+              >
+                <FaUserCircle className="w-4 h-4" />
+                Profile
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
+              >
+                <FaSignOutAlt className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200">
-        <div className="py-6 px-4">
+        <div className="py-6 px-4 mt-16">
           {sidebarItems.map((section) => (
             <div key={section.section} className="mb-4">
               <div className="text-xs font-semibold text-gray-500 mb-2">
@@ -103,7 +178,7 @@ const Dashboard = () => {
       </aside>
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        <main className="p-8">
+        <main className="p-8 mt-16">
           <h1 className="text-2xl font-bold text-blue-600 mb-3">{selected}</h1>
           {selected === "Dashboard" && (
             <>
