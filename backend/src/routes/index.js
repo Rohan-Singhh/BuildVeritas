@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const initializeRoutes = (app) => {
     // API Routes
     app.use('/api/auth', require('./auth.routes'));
+    app.use('/api/budget-estimate', require('./budget.estimate.routes'));
     
     // Root route
     app.get('/', (req, res) => {
