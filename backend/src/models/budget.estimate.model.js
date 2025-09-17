@@ -12,10 +12,7 @@ const budgetEstimateSchema = new mongoose.Schema({
         enum: [
             'residential',
             'commercial',
-            'industrial',
-            'landscaping',
-            'renovation',
-            'interior'
+            'industrial'
         ]
     },
     location: {
@@ -28,120 +25,36 @@ const budgetEstimateSchema = new mongoose.Schema({
             type: String,
             required: [true, 'State is required'],
             trim: true
-        },
-        coordinates: {
-            latitude: Number,
-            longitude: Number
         }
     },
-    general: {
+    project_details: {
         area_sqm: {
             type: Number,
             required: [true, 'Area in square meters is required'],
             min: [10, 'Area must be at least 10 square meters']
         },
-        timeline_months: {
+        floors: {
             type: Number,
-            required: [true, 'Timeline in months is required'],
-            min: [1, 'Timeline must be at least 1 month']
+            required: [true, 'Number of floors is required'],
+            min: [1, 'Must have at least 1 floor']
         },
-        budget_range: {
-            min: {
-                type: Number,
-                required: [true, 'Minimum budget is required']
-            },
-            max: {
-                type: Number,
-                required: [true, 'Maximum budget is required']
-            }
-        },
-        current_role: {
+        quality_level: {
             type: String,
-            required: [true, 'Current role is required'],
-            enum: ['client', 'contractor', 'architect', 'consultant']
-        },
-        special_requirements: [{
-            type: String,
-            trim: true
-        }]
-    },
-    quality_option: {
-        type: String,
-        required: [true, 'Quality option is required'],
-        enum: ['basic', 'standard', 'premium', 'luxury']
-    },
-    details: {
-        // Residential specific
-        residential: {
-            floors: Number,
-            bedrooms: Number,
-            bathrooms: Number,
-            kitchen_type: String,
-            parking_spaces: Number,
-            balconies: Number,
-            elevator: Boolean,
-            swimming_pool: Boolean
-        },
-        // Commercial specific
-        commercial: {
-            floors: Number,
-            office_spaces: Number,
-            conference_rooms: Number,
-            reception_area: Boolean,
-            parking_spaces: Number,
-            elevator: Boolean,
-            cafeteria: Boolean
-        },
-        // Industrial specific
-        industrial: {
-            building_height: Number,
-            loading_docks: Number,
-            office_space_percentage: Number,
-            heavy_machinery_support: Boolean,
-            ventilation_type: String,
-            floor_load_capacity: Number
-        },
-        // Landscaping specific
-        landscaping: {
-            green_area_percentage: Number,
-            pavement_type: String,
-            irrigation_system: String,
-            lighting_type: String,
-            water_features: Boolean,
-            outdoor_structures: [String]
-        },
-        // Renovation specific
-        renovation: {
-            building_age: Number,
-            scope_areas: [String],
-            structural_changes: Boolean,
-            utility_upgrade: Boolean,
-            heritage_building: Boolean
-        },
-        // Interior specific
-        interior: {
-            rooms: Number,
-            style_theme: String,
-            custom_furniture: Boolean,
-            smart_home: Boolean,
-            lighting_plan: String
+            required: [true, 'Quality level is required'],
+            enum: ['standard', 'premium'],
+            default: 'standard'
         }
     },
-    cost_breakdown_preferences: [{
-        type: String,
-        enum: [
-            'materials',
-            'labor',
-            'equipment',
-            'permits',
-            'utilities',
-            'finishes',
-            'landscaping',
-            'technology',
-            'safety',
-            'management'
-        ]
-    }],
+    timeline_months: {
+        type: Number,
+        required: [true, 'Timeline in months is required'],
+        min: [1, 'Timeline must be at least 1 month']
+    },
+    budget_preference: {
+        type: Number,
+        required: [true, 'Budget preference is required'],
+        min: [100000, 'Budget must be at least 1 lakh INR']
+    },
     estimate_result: {
         total_cost: {
             min: {
@@ -151,14 +64,9 @@ const budgetEstimateSchema = new mongoose.Schema({
             max: {
                 type: Number,
                 required: false
-            },
-            currency: {
-                type: String,
-                default: 'INR'
             }
         },
         cost_breakdown: [{
-            _id: false,
             category: {
                 type: String,
                 required: false

@@ -10,22 +10,22 @@ const validateEstimateRequest = [
     body('project_type').notEmpty().isIn([
         'residential',
         'commercial',
-        'industrial',
-        'landscaping',
-        'renovation',
-        'interior'
+        'industrial'
     ]).withMessage('Invalid project type'),
     body('location.city').notEmpty().trim().withMessage('City is required'),
     body('location.state').notEmpty().trim().withMessage('State is required'),
-    body('general.area_sqm').isNumeric().withMessage('Area must be a number'),
-    body('general.timeline_months').isNumeric().withMessage('Timeline must be a number'),
-    body('general.budget_range.min').isNumeric().withMessage('Minimum budget must be a number'),
-    body('general.budget_range.max').isNumeric().withMessage('Maximum budget must be a number'),
-    body('general.current_role').isIn(['client', 'contractor', 'architect', 'consultant'])
-        .withMessage('Invalid role'),
-    body('quality_option').isIn(['basic', 'standard', 'premium', 'luxury'])
-        .withMessage('Invalid quality option'),
-    body('cost_breakdown_preferences').isArray().withMessage('Cost breakdown preferences must be an array')
+    body('project_details.area_sqm')
+        .isNumeric().withMessage('Area must be a number')
+        .isFloat({ min: 10 }).withMessage('Area must be at least 10 square meters'),
+    body('project_details.floors')
+        .isInt({ min: 1 }).withMessage('Number of floors must be at least 1'),
+    body('project_details.quality_level')
+        .isIn(['standard', 'premium']).withMessage('Invalid quality level'),
+    body('timeline_months')
+        .isInt({ min: 1 }).withMessage('Timeline must be at least 1 month'),
+    body('budget_preference')
+        .isNumeric().withMessage('Budget preference must be a number')
+        .isFloat({ min: 100000 }).withMessage('Budget must be at least 1 lakh INR')
 ];
 
 // All routes require authentication

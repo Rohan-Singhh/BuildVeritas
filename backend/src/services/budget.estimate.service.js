@@ -9,6 +9,9 @@ class BudgetEstimateService {
 
     async createEstimate(userId, estimateData) {
         try {
+            // Validate estimate data
+            this.validateEstimateData(estimateData);
+
             // Create initial estimate record
             const estimate = await BudgetEstimate.create({
                 ...estimateData,
@@ -23,6 +26,9 @@ class BudgetEstimateService {
 
             return completeEstimate;
         } catch (error) {
+            if (error instanceof ApiError) {
+                throw error;
+            }
             throw new ApiError(500, 'Error creating budget estimate', error);
         }
     }
@@ -54,7 +60,12 @@ class BudgetEstimateService {
             const structuredEstimate = this.parseAIResponse(aiResponse);
 
             // Update estimate with AI results
-            estimate.estimate_result = structuredEstimate;
+            estimate.estimate_result = {
+                total_cost: structuredEstimate.total_cost,
+                cost_breakdown: structuredEstimate.cost_breakdown,
+                factors_considered: structuredEstimate.factors_considered,
+                recommendations: structuredEstimate.recommendations
+            };
             estimate.status = 'completed';
             await estimate.save();
 
@@ -69,28 +80,18 @@ class BudgetEstimateService {
     }
 
     prepareAIPrompt(estimate) {
-        const projectDetails = this.getProjectTypeDetails(estimate);
-        
         return `Estimate the construction cost for the following project:
 
 Project Name: ${estimate.project_name}
 Project Type: ${estimate.project_type}
-Location: ${estimate.location.city}, ${estimate.location.state} (consider local labor and tax rates)
-Area: ${estimate.general.area_sqm} sq.m
-Timeline: ${estimate.general.timeline_months} months
-Budget Range: INR ${estimate.general.budget_range.min.toLocaleString()} - INR ${estimate.general.budget_range.max.toLocaleString()}
-Special Requirements: ${estimate.general.special_requirements.join(', ')}
-Current Role: ${estimate.general.current_role}
-Quality Option: ${estimate.quality_option}
+Location: ${estimate.location.city}, ${estimate.location.state}
+Area: ${estimate.project_details.area_sqm} sq.m
+Number of Floors: ${estimate.project_details.floors}
+Quality Level: ${estimate.project_details.quality_level}
+Timeline: ${estimate.timeline_months} months
+Budget Preference: INR ${estimate.budget_preference.toLocaleString()}
 
-Details:
-${projectDetails}
-
-Provide a detailed cost breakdown including:
-${estimate.cost_breakdown_preferences.join(', ')}
-Adjust costs for city-wise labor and tax rates.
-
-Response Format:
+Please provide a detailed cost estimate with the following format:
 {
     "total_cost": {
         "min": number,
@@ -98,7 +99,7 @@ Response Format:
     },
     "cost_breakdown": [
         {
-            "category": "string",
+            "category": string,
             "amount": {
                 "min": number,
                 "max": number
@@ -106,8 +107,8 @@ Response Format:
             "percentage": number,
             "details": [
                 {
-                    "item": "string",
-                    "quantity": "string",
+                    "item": string,
+                    "quantity": string,
                     "unit_cost": number,
                     "total_cost": number
                 }
@@ -116,28 +117,41 @@ Response Format:
     ],
     "factors_considered": [
         {
-            "factor": "string",
-            "impact": "string",
+            "factor": string,
+            "impact": string,
             "percentage_effect": number
         }
     ],
     "recommendations": [
         {
-            "type": "string",
-            "description": "string",
+            "type": string,
+            "description": string,
             "potential_savings": number
         }
     ]
 }`;
     }
 
-    getProjectTypeDetails(estimate) {
-        const details = estimate.details[estimate.project_type];
-        if (!details) return '';
+    // Helper method to validate estimate data
+    validateEstimateData(estimateData) {
+        const requiredFields = [
+            'project_name',
+            'project_type',
+            'location.city',
+            'location.state',
+            'project_details.area_sqm',
+            'project_details.floors',
+            'project_details.quality_level',
+            'timeline_months',
+            'budget_preference'
+        ];
 
-        return Object.entries(details)
-            .map(([key, value]) => `- ${key.replace(/_/g, ' ')}: ${value}`)
-            .join('\n');
+        for (const field of requiredFields) {
+            const value = field.split('.').reduce((obj, key) => obj?.[key], estimateData);
+            if (!value) {
+                throw new ApiError(400, `Missing required field: ${field}`);
+            }
+        }
     }
 
     async getAIResponse(prompt) {
