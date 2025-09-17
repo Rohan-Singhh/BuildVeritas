@@ -7,6 +7,7 @@ const initializeRoutes = (app) => {
     // API Routes
     app.use('/api/auth', require('./auth.routes'));
     app.use('/api/budget-estimate', require('./budget.estimate.routes'));
+    app.use('/api/vendor', require('./vendor.profile.routes'));
     
     // Root route
     app.get('/', (req, res) => {
