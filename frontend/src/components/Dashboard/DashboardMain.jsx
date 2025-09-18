@@ -181,7 +181,7 @@ export const DashboardMain = () => {
         </div> */}
 
         {/* Project Progress Chart */}
-        <div className="lg:col-span-2 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-300/50 p-5 hover:shadow-xl transition-all duration-300">
+        <div className="lg:col-span-2 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-300/50 p-5 hover:shadow-xl transition-all duration-300 animate-fade-in-up delay-400">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 rounded-lg bg-blue-50">
               <Calendar className="w-5 h-5 text-blue-500" />

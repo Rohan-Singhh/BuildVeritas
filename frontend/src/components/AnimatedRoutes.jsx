@@ -17,6 +17,7 @@ import BudgetEstimator from "./BudgetEstimator";
 import Contact from "./Contact";
 import Testimonials from "./Testimonials";
 import Pricing from "./Pricing";
+import Gallery from "./Gallery";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -39,6 +40,7 @@ const AnimatedRoutes = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/gallery" element={<Gallery />} />
         <Route
           path="/dashboard"
           element={
