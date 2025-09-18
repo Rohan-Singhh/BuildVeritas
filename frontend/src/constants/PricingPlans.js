@@ -63,7 +63,8 @@ export const plans = [
     name: "Starter",
     price: "₹2,999",
     period: "/mo",
-    description: "Perfect for clients, individual contractors, and small projects",
+    description:
+      "Perfect for clients, individual contractors, and small projects",
     color: "from-blue-400 to-blue-600",
     bgColor: "bg-gradient-to-br from-blue-50 to-blue-100",
     features: [
@@ -71,6 +72,7 @@ export const plans = [
       "AI budget estimation",
       "Email support",
       "Up to 3 projects",
+      "Limited Marketplace access",
       "Community access",
     ],
     buttonText: "Start with Starter",

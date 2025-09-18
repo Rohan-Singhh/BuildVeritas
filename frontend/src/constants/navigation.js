@@ -5,6 +5,7 @@ import {
   BookOpen,
   Star,
   DollarSign,
+  Camera,
 } from "lucide-react";
 
 export const NAV_ITEMS = [
@@ -49,5 +50,12 @@ export const NAV_ITEMS = [
     icon: Star,
     type: "link",
     path: "/testimonials",
+  },
+  {
+    id: "gallery",
+    label: "Gallery",
+    icon: Camera,
+    type: "link",
+    path: "/gallery",
   },
 ];

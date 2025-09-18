@@ -75,7 +75,7 @@ export const PricingCards = () => {
                     </div>
                   ) : (
                     <div className="flex items-baseline mb-2">
-                      <span className="text-2xl text-gray-600">₹</span>
+                      {/* <span className="text-2xl text-gray-600">₹</span> */}
                       <span className="text-4xl font-black text-gray-900">
                         {plan.price}
                       </span>

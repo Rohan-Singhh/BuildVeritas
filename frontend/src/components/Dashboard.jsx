@@ -67,18 +67,18 @@ const Dashboard = () => {
   const handleLogout = async () => {
     await logout();
     // Remove any dashboard-specific classes from body
-    document.body.classList.remove('dashboard-active');
+    document.body.classList.remove("dashboard-active");
     // Reset scroll position
     window.scrollTo(0, 0);
-    navigate('/');
+    navigate("/");
   };
 
   // Add dashboard-specific class when mounted
   React.useEffect(() => {
-    document.body.classList.add('dashboard-active');
+    document.body.classList.add("dashboard-active");
     return () => {
       // Clean up when unmounting
-      document.body.classList.remove('dashboard-active');
+      document.body.classList.remove("dashboard-active");
       window.scrollTo(0, 0);
     };
   }, []);
@@ -86,34 +86,41 @@ const Dashboard = () => {
   return (
     <div
       id="dashboard-container"
-      className="flex min-h-screen bg-gray-50 animate-fade-in-up relative"
+      className="flex min-h-screen bg-gray-50 relative"
     >
       {/* Top Navigation Bar */}
-      <div className="absolute top-0 right-0 left-64 h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between z-10">
-        <div className="flex items-center gap-2">
-          <img
-            src="/BV_Logo_4.png"
-            alt="BuildVeritas"
-            className="w-8 h-8"
-          />
-          <span className="text-lg font-semibold text-gray-800">
-            <span className="text-blue-500">Build</span>Veritas
-          </span>
+      <div className="absolute top-0 right-0 left-0 h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between z-10">
+        <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-3">
+          <div className="flex-shrink-0">
+            <img
+              src="/BV_Logo.png"
+              alt="BV"
+              className="w-10 h-9 md:w-15 md:h-13"
+            />
+          </div>
+          <div className="text-xl sm:text-xl lg:text-2xl font-bold text-gray-800 pt-2">
+            <span className="text-blue-500">Build</span>
+            <span className="text-gray-800">Veritas</span>
+          </div>
         </div>
-        
+
         {/* Profile Dropdown */}
         <div className="relative">
           <button
             onClick={() => setIsProfileOpen(!isProfileOpen)}
             className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
           >
-            <FaUserCircle className="w-6 h-6 text-gray-600" />
+            <FaUserCircle className="w-7 h-7 text-gray-600" />
             <span className="text-sm font-medium text-gray-700">
-              {user?.name || 'User'}
+              {user?.name || "User"}
             </span>
-            <FaChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
+            <FaChevronDown
+              className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+                isProfileOpen ? "rotate-180" : ""
+              }`}
+            />
           </button>
-          
+
           {isProfileOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 animate-fade-in-down">
               <Link
@@ -137,7 +144,7 @@ const Dashboard = () => {
 
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200">
-        <div className="py-6 px-4 mt-16">
+        <div className="py-6 px-4 mt-16 animate-fade-in-up">
           {sidebarItems.map((section) => (
             <div key={section.section} className="mb-4">
               <div className="text-xs font-semibold text-gray-500 mb-2">
@@ -178,7 +185,7 @@ const Dashboard = () => {
       </aside>
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        <main className="p-8 mt-16">
+        <main className="p-8 mt-16 animate-fade-in-up">
           <h1 className="text-2xl font-bold text-blue-600 mb-3">{selected}</h1>
           {selected === "Dashboard" && (
             <>
