@@ -48,19 +48,15 @@ export const GallerySection = () => {
     <section className="py-20 relative">
       <div className="max-w-7xl mx-auto px-6">
         {/* Phase Indicator */}
-        <div className="text-center mb-6 animate-fade-in-up">
+        <div className="text-center mb-8 animate-fade-in-up">
           <div
-            className={`inline-flex items-center px-6 py-3 bg-gradient-to-r ${getPhaseColor(
+            className={`inline-flex items-center px-6 py-2 bg-gradient-to-r ${getPhaseColor(
               GalleryPhotos[currentIndex]?.phase
-            )} text-white rounded-full font-semibold mb-4 shadow-lg`}
+            )} text-white rounded-full font-semibold mb-0 shadow-lg`}
           >
             <Sparkles className="w-4 h-4 mr-2" />
             {GalleryPhotos[currentIndex]?.phase}
           </div>
-          {/* <div className="text-sm text-gray-500">
-            Day {GalleryPhotos[currentIndex]?.day} of 350 • Photo{" "}
-            {currentIndex + 1} of {GalleryPhotos.length}
-          </div> */}
         </div>
 
         {/* Main Slider Container */}
@@ -95,7 +91,7 @@ export const GallerySection = () => {
           </button>
 
           {/* Image Container */}
-          <div className="relative h-[470px] overflow-hidden">
+          <div className="relative h-[480px] overflow-hidden">
             <div
               className="flex transition-transform duration-1000 ease-in-out h-full"
               style={{ transform: `translateX(-${currentIndex * 50}%)` }}
@@ -104,8 +100,6 @@ export const GallerySection = () => {
                 <div
                   key={index}
                   className="relative w-1/2 flex-shrink-0 h-full group"
-                  //   onMouseEnter={() => setHoveredImage(index)}
-                  //   onMouseLeave={() => setHoveredImage(null)}
                 >
                   <img
                     src={photo.url}
@@ -114,7 +108,7 @@ export const GallerySection = () => {
                   />
 
                   {/* Image Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-opacity duration-500">
+                  <div className="absolute inset-0 group-hover:scale-105 transition-opacity duration-500">
                     <div className="absolute bottom-0 left-0 right-0 p-8 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                       <div
                         className={`inline-flex items-center px-3 py-1 bg-gradient-to-r ${getPhaseColor(
@@ -124,14 +118,11 @@ export const GallerySection = () => {
                         Day {photo.day}
                       </div>
                       <h3 className="text-2xl font-bold">{photo.title}</h3>
-                      <p className="text-white/80 text-sm leading-relaxed">
+                      <p className="text-white/90 text-sm leading-relaxed">
                         {photo.description}
                       </p>
                     </div>
                   </div>
-
-                  {/* Hover Glow Effect */}
-                  {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div> */}
                 </div>
               ))}
             </div>
@@ -145,43 +136,6 @@ export const GallerySection = () => {
                 width: `${((currentIndex + 1) / GalleryPhotos.length) * 100}%`,
               }}
             ></div>
-          </div>
-        </div>
-
-        {/* Current Photo Details */}
-        <div className="mt-12 text-center animate-fade-in-up">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              {GalleryPhotos[currentIndex]?.title}
-            </h2>
-            <p className="text-xl text-gray-600 leading-relaxed mb-8">
-              {GalleryPhotos[currentIndex]?.description}
-            </p>
-
-            {/* Phase Progress */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-sm font-semibold text-gray-500">
-                  Construction Progress
-                </span>
-                <span className="text-sm font-bold text-blue-600">
-                  {Math.round(
-                    ((GalleryPhotos[currentIndex]?.day || 0) / 350) * 100
-                  )}
-                  % Complete
-                </span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-1000 ease-out"
-                  style={{
-                    width: `${
-                      ((GalleryPhotos[currentIndex]?.day || 0) / 350) * 100
-                    }%`,
-                  }}
-                ></div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -38,7 +38,7 @@ export const CallSection = () => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 animate-fade-in-up delay-400">
             <div className="text-center">
-              <div className="text-2xl font-bold mb-2">1M+</div>
+              <div className="text-2xl font-bold mb-2">1K+</div>
               <div className="text-sm text-blue-900">Images Analyzed</div>
             </div>
             <div className="text-center">
@@ -50,7 +50,7 @@ export const CallSection = () => {
               <div className="text-sm text-blue-900">Monitoring</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold mb-2">500+</div>
+              <div className="text-2xl font-bold mb-2">127+</div>
               <div className="text-sm text-blue-900">Projects Verified</div>
             </div>
           </div>
