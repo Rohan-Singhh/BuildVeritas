@@ -162,7 +162,7 @@ const Testimonials = () => {
   });
 
   const stats = [
-    { icon: Building2, value: "500+", label: "Projects Using BuildVeritas" },
+    { icon: Building2, value: "63+", label: "Projects Using BuildVeritas" },
     { icon: Users, value: "98%", label: "Client Satisfaction" },
     { icon: Star, value: "4.9/5", label: "Average Rating" },
     { icon: ArrowRight, value: "35%", label: "Faster Project Completion" },

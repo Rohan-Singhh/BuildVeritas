@@ -1,6 +1,8 @@
 import { Building } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const CallSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white relative overflow-hidden">
       <div className="absolute inset-0">
@@ -18,7 +20,10 @@ export const CallSection = () => {
             with the same precision and care.
           </p>
 
-          <button className="group px-8 py-4 bg-white text-gray-900 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+          <button
+            className="group px-8 py-4 bg-white text-gray-900 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            onClick={() => navigate("/dashboard")}
+          >
             <span className="flex items-center">
               Start Your Project
               <Building className="ml-3 w-6 h-6 group-hover:rotate-12 transition-transform" />

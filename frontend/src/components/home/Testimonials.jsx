@@ -7,7 +7,8 @@ const testimonials = [
     name: "Robert Chen",
     role: "Project Director",
     company: "Turner Construction",
-    image: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image:
+      "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=600",
     content:
       "BuildVeritas has revolutionized how we manage our construction projects. The AI-powered analytics have helped us reduce project delays by 35% and improve resource allocation significantly.",
     rating: 5,
@@ -17,7 +18,8 @@ const testimonials = [
     name: "Sarah Martinez",
     role: "Chief Operations Officer",
     company: "Green Build Solutions",
-    image: "https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image:
+      "https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=600",
     content:
       "The real-time monitoring and AI safety features have transformed our site safety protocols. We've seen a 45% reduction in safety incidents since implementing BuildVeritas.",
     rating: 5,
@@ -27,7 +29,8 @@ const testimonials = [
     name: "Michael Thompson",
     role: "Senior Project Manager",
     company: "Skanska USA",
-    image: "https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image:
+      "https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&w=600",
     content:
       "The vendor marketplace feature has streamlined our procurement process completely. We're saving both time and money while working with pre-vetted, reliable suppliers.",
     rating: 5,
@@ -36,7 +39,10 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section id="testimonials" className="bg-gradient-to-b from-white to-gray-50 py-24 scroll-mt-20">
+    <section
+      id="testimonials"
+      className="bg-gradient-to-b from-white to-gray-50 py-24 scroll-mt-20"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -44,8 +50,8 @@ const Testimonials = () => {
             Trusted by Industry Leaders
           </h2>
           <p className="text-lg text-gray-600">
-            See how construction professionals are transforming their projects with
-            BuildVeritas
+            See how construction professionals are transforming their projects
+            with BuildVeritas
           </p>
         </div>
 
@@ -89,9 +95,7 @@ const Testimonials = () => {
                   <h4 className="font-semibold text-gray-900">
                     {testimonial.name}
                   </h4>
-                  <p className="text-sm text-gray-600">
-                    {testimonial.role}
-                  </p>
+                  <p className="text-sm text-gray-600">{testimonial.role}</p>
                   <p className="text-sm text-blue-500 font-medium">
                     {testimonial.company}
                   </p>
@@ -105,7 +109,7 @@ const Testimonials = () => {
         <div className="mt-16 pt-8 border-t border-gray-200">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-blue-500 mb-2">500+</div>
+              <div className="text-4xl font-bold text-blue-500 mb-2">63+</div>
               <p className="text-gray-600">Active Projects</p>
             </div>
             <div>

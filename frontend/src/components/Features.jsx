@@ -134,8 +134,8 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {[
-              { number: "10K+", label: "Projects Completed" },
-              { number: "500+", label: "Active Companies" },
+              { number: "127+", label: "Projects Completed" },
+              { number: "50+", label: "Active Companies" },
               { number: "99.9%", label: "Uptime Guarantee" },
               { number: "24/7", label: "Expert Support" },
             ].map((stat, index) => (

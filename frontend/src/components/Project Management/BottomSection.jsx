@@ -23,7 +23,10 @@ export const BottomSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="inline-flex items-center px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl">
+            <button
+              className="inline-flex items-center px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl"
+              onClick={() => navigate("/dashboard")}
+            >
               <Eye className="mr-3 h-6 w-6" />
               See a Demo of the Live Dashboard
               <ArrowRight className="ml-3 h-6 w-6" />

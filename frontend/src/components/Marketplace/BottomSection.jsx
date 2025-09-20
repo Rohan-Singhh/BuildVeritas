@@ -1,7 +1,9 @@
 import { Button } from "../ui/button";
 import { ArrowRight, Shield, Star, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const BottomSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 relative overflow-hidden">
       {/* Background Elements */}
@@ -62,6 +64,7 @@ export const BottomSection = () => {
               variant="hero"
               size="lg"
               className="text-xl px-8 py-3 h-auto hover-glow shadow-brutal group border"
+              onClick={() => navigate("/dashboard")}
             >
               <span className="flex items-center">
                 Browse Our Verified Professionals Now
