@@ -75,4 +75,20 @@ router.get(
     vendorProfileController.searchVendors
 );
 
+// Delete profile (hard delete)
+router.delete(
+    '/delete',
+    authMiddleware,
+    roleAuth.vendorOnly,
+    vendorProfileController.deleteProfile
+);
+
+// Deactivate profile (soft delete)
+router.put(
+    '/deactivate',
+    authMiddleware,
+    roleAuth.vendorOnly,
+    vendorProfileController.softDeleteProfile
+);
+
 module.exports = router;
