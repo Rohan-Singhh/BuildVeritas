@@ -108,6 +108,30 @@ class VendorProfileService {
             }
         };
     }
+
+    async deleteProfile(userId) {
+        const profile = await VendorProfile.findOneAndDelete({ user: userId });
+        
+        if (!profile) {
+            throw new ApiError(404, 'Vendor profile not found');
+        }
+
+        return profile;
+    }
+
+    async softDeleteProfile(userId) {
+        const profile = await VendorProfile.findOneAndUpdate(
+            { user: userId },
+            { $set: { status: 'inactive' } },
+            { new: true }
+        );
+
+        if (!profile) {
+            throw new ApiError(404, 'Vendor profile not found');
+        }
+
+        return profile;
+    }
 }
 
 module.exports = new VendorProfileService();

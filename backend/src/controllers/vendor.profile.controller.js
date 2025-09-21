@@ -10,6 +10,8 @@ class VendorProfileController {
         this.getProfile = this.getProfile.bind(this);
         this.getAllVendors = this.getAllVendors.bind(this);
         this.searchVendors = this.searchVendors.bind(this);
+        this.deleteProfile = this.deleteProfile.bind(this);
+        this.softDeleteProfile = this.softDeleteProfile.bind(this);
     }
 
     async createProfile(req, res, next) {
@@ -90,6 +92,34 @@ class VendorProfileController {
 
             const results = await vendorProfileService.searchVendors(searchCriteria, page, limit);
             return ApiResponse.success(res, results, 'Search results retrieved successfully');
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async deleteProfile(req, res, next) {
+        try {
+            // Only allow vendors to delete their own profile
+            if (req.user.role !== 'vendor_supplier') {
+                throw new ApiError(403, 'Only vendors can delete their profiles');
+            }
+
+            const profile = await vendorProfileService.deleteProfile(req.user.id);
+            return ApiResponse.success(res, profile, 'Vendor profile deleted successfully');
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async softDeleteProfile(req, res, next) {
+        try {
+            // Only allow vendors to soft delete their own profile
+            if (req.user.role !== 'vendor_supplier') {
+                throw new ApiError(403, 'Only vendors can deactivate their profiles');
+            }
+
+            const profile = await vendorProfileService.softDeleteProfile(req.user.id);
+            return ApiResponse.success(res, profile, 'Vendor profile deactivated successfully');
         } catch (error) {
             next(error);
         }
