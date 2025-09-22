@@ -20,6 +20,11 @@ const initializeRoutes = (app) => {
         });
     });
 
+    // Simple ping endpoint for uptime monitoring
+    app.get('/ping', (req, res) => {
+        res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+    });
+
     // Health check with detailed status
     app.get('/health', async (req, res) => {
         try {
