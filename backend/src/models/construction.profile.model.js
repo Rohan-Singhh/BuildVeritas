@@ -13,11 +13,6 @@ const constructionProfileSchema = new mongoose.Schema({
         trim: true
     },
     location: {
-        address: {
-            type: String,
-            required: [true, 'Address is required'],
-            trim: true
-        },
         city: {
             type: String,
             required: [true, 'City is required'],
@@ -27,29 +22,6 @@ const constructionProfileSchema = new mongoose.Schema({
             type: String,
             required: [true, 'State is required'],
             trim: true
-        },
-        pincode: {
-            type: String,
-            required: [true, 'Pincode is required'],
-            match: [/^[1-9][0-9]{5}$/, 'Please enter a valid 6-digit pincode']
-        }
-    },
-    contactInfo: {
-        email: {
-            type: String,
-            required: [true, 'Email is required'],
-            trim: true,
-            lowercase: true,
-            match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
-        },
-        phone: {
-            type: String,
-            required: [true, 'Phone number is required'],
-            match: [/^[0-9]{10}$/, 'Please enter a valid 10-digit phone number']
-        },
-        alternatePhone: {
-            type: String,
-            match: [/^[0-9]{10}$/, 'Please enter a valid 10-digit phone number']
         }
     },
     experience: {
@@ -174,19 +146,10 @@ const constructionProfileSchema = new mongoose.Schema({
         }
     }],
     companyLogo: {
-        type: String,
-        required: [true, 'Company logo is required']
+        type: String
     },
     companyPhotos: [{
-        url: {
-            type: String,
-            required: true
-        },
-        description: String,
-        uploadedAt: {
-            type: Date,
-            default: Date.now
-        }
+        type: String
     }],
     ratings: {
         average: {
