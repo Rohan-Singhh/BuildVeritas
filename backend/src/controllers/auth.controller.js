@@ -76,15 +76,61 @@ class AuthController {
 
             const { email, password, role } = req.body;
 
-            // Validate required fields
-            if (!email || !password || !role) {
-                throw new ApiError(400, 'Email, password, and role are required');
+            // Validate required fields with detailed messages
+            if (!email?.trim()) {
+                throw new ApiError(400, 'Email is required');
+            }
+            if (!password?.trim()) {
+                throw new ApiError(400, 'Password is required');
+            }
+            if (!role?.trim()) {
+                throw new ApiError(400, 'Role is required');
             }
 
-            const authData = await this.authService.loginUser({ email, password, role });
+            // Validate role value
+            const validRoles = ['client_owner', 'vendor_supplier', 'construction_firm'];
+            if (!validRoles.includes(role)) {
+                throw new ApiError(400, 'Invalid role specified');
+            }
+
+            // Basic email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.trim())) {
+                throw new ApiError(400, 'Invalid email format');
+            }
+
+            // Log login attempt (but not the password)
+            console.log('Login attempt:', {
+                email: email.trim(),
+                role,
+                timestamp: new Date().toISOString()
+            });
+
+            const authData = await this.authService.loginUser({ 
+                email: email.trim(), 
+                password: password.trim(), 
+                role: role.trim() 
+            });
             
+            // Log successful login
+            console.log('Successful login:', {
+                email: email.trim(),
+                role,
+                userId: authData.user._id,
+                timestamp: new Date().toISOString()
+            });
+
             return ApiResponse.success(res, authData, 'Login successful');
         } catch (error) {
+            // Log failed login attempt
+            if (req.body.email) {
+                console.error('Failed login attempt:', {
+                    email: req.body.email.trim(),
+                    role: req.body.role,
+                    error: error.message,
+                    timestamp: new Date().toISOString()
+                });
+            }
             next(error);
         }
     };

@@ -3,9 +3,50 @@ const jwt = require('jsonwebtoken');
 const UserRepository = require('../repositories/user.repository');
 const { ApiError } = require('../utils/apiError');
 
+// Constants for performance optimization
+const SALT_ROUNDS = 12;
+const TOKEN_EXPIRY = '24h';
+const LOGIN_TIMEOUT = 30000; // 30 seconds
+
+// Cache for frequently accessed users
+const userCache = new Map();
+const USER_CACHE_MAX_SIZE = 1000;
+const USER_CACHE_EXPIRY = 5 * 60 * 1000; // 5 minutes
+
 class AuthService {
     constructor() {
         this.userRepository = new UserRepository();
+        
+        // Clean expired users from cache periodically
+        setInterval(() => {
+            const now = Date.now();
+            for (const [key, value] of userCache.entries()) {
+                if (now > value.expiresAt) {
+                    userCache.delete(key);
+                }
+            }
+        }, 60000); // Clean every minute
+    }
+
+    // Helper method to manage user cache
+    async getCachedUser(email) {
+        const cachedUser = userCache.get(email);
+        if (cachedUser && Date.now() <= cachedUser.expiresAt) {
+            return cachedUser.user;
+        }
+        return null;
+    }
+
+    // Helper method to cache user
+    cacheUser(email, user) {
+        if (userCache.size >= USER_CACHE_MAX_SIZE) {
+            const oldestKey = userCache.keys().next().value;
+            userCache.delete(oldestKey);
+        }
+        userCache.set(email, {
+            user,
+            expiresAt: Date.now() + USER_CACHE_EXPIRY
+        });
     }
 
     async registerUser(data) {
@@ -81,30 +122,76 @@ class AuthService {
     }
 
     async loginUser({ email, password, role }) {
-        // Find user
-        const user = await this.userRepository.findByEmail(email);
-        if (!user) {
-            throw new ApiError(404, 'No account found with this email. Please sign up first.');
+        try {
+            // Set timeout for login operation
+            const loginPromise = this._performLogin({ email, password, role });
+            const timeoutPromise = new Promise((_, reject) => {
+                setTimeout(() => reject(new ApiError(408, 'Login request timed out')), LOGIN_TIMEOUT);
+            });
+
+            return await Promise.race([loginPromise, timeoutPromise]);
+        } catch (error) {
+            if (error.statusCode === 408) {
+                console.error('Login timeout:', { email, role });
+            }
+            throw error;
         }
+    }
 
-        // Verify role matches
-        if (user.role !== role) {
-            throw new ApiError(401, 'Invalid role for this account');
+    async _performLogin({ email, password, role }) {
+        try {
+            // Normalize and clean email
+            const normalizedEmail = email?.trim().toLowerCase();
+            if (!normalizedEmail) {
+                throw new ApiError(400, 'Email is required');
+            }
+
+            // Clean password
+            if (!password?.trim()) {
+                throw new ApiError(400, 'Password is required');
+            }
+
+            // Check cache first
+            let user = await this.getCachedUser(normalizedEmail);
+            
+            if (!user) {
+                // Find user with normalized email if not in cache
+                user = await this.userRepository.findByEmail(normalizedEmail);
+                if (!user) {
+                    throw new ApiError(404, 'No account found with this email. Please sign up first.');
+                }
+                // Cache the user for future requests
+                this.cacheUser(normalizedEmail, user);
+            }
+
+            // Verify role matches
+            if (user.role !== role) {
+                throw new ApiError(401, 'Invalid role for this account');
+            }
+
+            // Verify password with cleaned input
+            const isPasswordValid = await bcrypt.compare(password.trim(), user.password);
+            if (!isPasswordValid) {
+                throw new ApiError(401, 'Incorrect password. Please try again.');
+            }
+
+            // Check if JWT_SECRET is properly set
+            if (!process.env.JWT_SECRET) {
+                throw new ApiError(500, 'Authentication service configuration error');
+            }
+
+            // Generate token
+            const token = this.generateToken(user);
+
+            return {
+                user: this.sanitizeUser(user),
+                token
+            };
+        } catch (error) {
+            // Log the error for debugging (but don't expose details to client)
+            console.error('Login error:', error);
+            throw error;
         }
-
-        // Verify password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            throw new ApiError(401, 'Incorrect password. Please try again.');
-        }
-
-        // Generate token
-        const token = this.generateToken(user);
-
-        return {
-            user: this.sanitizeUser(user),
-            token
-        };
     }
 
     async getUserProfile(userId) {
@@ -116,14 +203,22 @@ class AuthService {
     }
 
     generateToken(user) {
-        return jwt.sign(
-            { 
-                id: user._id,
-                role: user.role
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '24h' }
-        );
+        try {
+            return jwt.sign(
+                { 
+                    id: user._id,
+                    role: user.role
+                },
+                process.env.JWT_SECRET,
+                { 
+                    expiresIn: TOKEN_EXPIRY,
+                    algorithm: 'HS256' // Specify faster algorithm
+                }
+            );
+        } catch (error) {
+            console.error('Token generation error:', error);
+            throw new ApiError(500, 'Failed to generate authentication token');
+        }
     }
 
     sanitizeUser(user) {
