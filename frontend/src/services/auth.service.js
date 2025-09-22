@@ -1,4 +1,5 @@
 import { authAPI } from './api.service';
+import sessionService from './session.service';
 
 class AuthService {
     async login(email, password, role) {
@@ -62,6 +63,9 @@ class AuthService {
             // Store auth data
             localStorage.setItem('token', tokenData);
             localStorage.setItem('user', JSON.stringify(userData));
+
+            // Start session monitoring
+            sessionService.startSession();
 
             return {
                 user: userData,
@@ -135,6 +139,7 @@ class AuthService {
     logout() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        sessionService.clearSession();
     }
 
     getCurrentUser() {
