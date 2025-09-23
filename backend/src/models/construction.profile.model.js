@@ -128,6 +128,58 @@ const constructionProfileSchema = new mongoose.Schema({
             'other'
         ]
     }],
+    projectCapacity: {
+        budgetRange: {
+            minBudget: {
+                type: Number,
+                required: [true, 'Minimum project budget is required'],
+                min: [0, 'Minimum budget cannot be negative']
+            },
+            maxBudget: {
+                type: Number,
+                required: [true, 'Maximum project budget is required'],
+                min: [0, 'Maximum budget cannot be negative']
+            }
+        },
+        operationalRegions: [{
+            city: {
+                type: String,
+                required: true
+            },
+            state: {
+                type: String,
+                required: true
+            },
+            isMainBranch: {
+                type: Boolean,
+                default: false
+            }
+        }],
+        simultaneousProjects: {
+            current: {
+                type: Number,
+                default: 0,
+                min: 0
+            },
+            maximum: {
+                type: Number,
+                required: [true, 'Maximum simultaneous projects capacity is required'],
+                min: 1
+            }
+        },
+        projectSizeRange: {
+            minSquareFeet: {
+                type: Number,
+                required: [true, 'Minimum project size is required'],
+                min: 0
+            },
+            maxSquareFeet: {
+                type: Number,
+                required: [true, 'Maximum project size is required'],
+                min: 0
+            }
+        }
+    },
     certifications: [{
         name: {
             type: String,
@@ -205,5 +257,9 @@ constructionProfileSchema.index({ 'ratings.average': -1 });
 constructionProfileSchema.index({ 'experience.yearsInBusiness': -1 });
 constructionProfileSchema.index({ 'specializations': 1 });
 constructionProfileSchema.index({ 'activeProjects.status': 1 });
+constructionProfileSchema.index({ 'projectCapacity.budgetRange.minBudget': 1, 'projectCapacity.budgetRange.maxBudget': 1 });
+constructionProfileSchema.index({ 'projectCapacity.operationalRegions.city': 1, 'projectCapacity.operationalRegions.state': 1 });
+constructionProfileSchema.index({ 'projectCapacity.simultaneousProjects.current': 1 });
+constructionProfileSchema.index({ 'projectCapacity.projectSizeRange.minSquareFeet': 1, 'projectCapacity.projectSizeRange.maxSquareFeet': 1 });    
 
 module.exports = mongoose.model('ConstructionProfile', constructionProfileSchema);

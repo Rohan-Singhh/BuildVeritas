@@ -46,6 +46,33 @@ const vendorProfileSchema = new mongoose.Schema({
         type: String,
         required: [true, 'At least one service is required']
     }],
+    projectRange: {
+        minBudget: {
+            type: Number,
+            required: [true, 'Minimum project budget is required'],
+            min: [0, 'Minimum budget cannot be negative']
+        },
+        maxBudget: {
+            type: Number,
+            required: [true, 'Maximum project budget is required'],
+            min: [0, 'Maximum budget cannot be negative']
+        },
+        preferredLocations: [{
+            city: {
+                type: String,
+                required: true
+            },
+            state: {
+                type: String,
+                required: true
+            }
+        }],
+        preferredProjectTypes: [{
+            type: String,
+            enum: ['residential', 'commercial', 'industrial', 'infrastructure', 'interior', 'renovation'],
+            required: true
+        }]
+    },
     specializations: [{
         type: String
     }],
@@ -92,5 +119,8 @@ const vendorProfileSchema = new mongoose.Schema({
 vendorProfileSchema.index({ 'location.city': 1, 'location.state': 1 });
 vendorProfileSchema.index({ 'ratings.average': -1 });
 vendorProfileSchema.index({ 'experience.yearsInBusiness': -1 });
+vendorProfileSchema.index({ 'projectRange.minBudget': 1, 'projectRange.maxBudget': 1 });
+vendorProfileSchema.index({ 'projectRange.preferredLocations.city': 1, 'projectRange.preferredLocations.state': 1 });
+vendorProfileSchema.index({ 'projectRange.preferredProjectTypes': 1 });
 
 module.exports = mongoose.model('VendorProfile', vendorProfileSchema);
