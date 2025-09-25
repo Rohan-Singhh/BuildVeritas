@@ -22,17 +22,13 @@ const {
 const initializeMiddleware = (app) => {
     // Basic middleware
     app.use(helmet);
-    app.use(cors);
     app.use(morgan('dev'));
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
     app.use('/api', rateLimiter);
     
     // Security headers for all routes
     app.use(securityHeaders);
     
-    // Initialize error handling last
-    initializeErrorHandling(app);
+    // Error handling is initialized separately in app.js
 };
 
 module.exports = {

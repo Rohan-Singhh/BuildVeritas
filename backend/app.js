@@ -19,13 +19,23 @@ const startServer = async () => {
     try {
         // Check environment
         checkEnvironmentVariables();
-        // Initialize middleware
-        initializeMiddleware(app);
         // Connect to database
         await config.database.connect();
+        
+        // Enable CORS first, before any other middleware
+        app.use(config.cors);
+        
+        // Initialize basic middleware
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
+        
         // Initialize routes
         initializeRoutes(app);
-        // Initialize error handling
+        
+        // Initialize remaining middleware after routes
+        initializeMiddleware(app);
+        
+        // Initialize error handling last
         initializeErrorHandling(app);
         // Initialize process handlers
         initializeProcessHandlers(config.database);
