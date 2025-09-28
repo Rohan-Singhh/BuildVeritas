@@ -65,7 +65,7 @@ module.exports = {
     // Configurations
     rateLimitConfigs,
     passwordRules,
-    securityHeadersConfig,
+    securityHeadersConfig,  
     
     // Pre-configured limiters
     rateLimiters

@@ -2,7 +2,11 @@
  * Environment variable validation and configuration
  */
 
+let hasChecked = false;
+
 const checkEnvironmentVariables = () => {
+    if (hasChecked) return;
+    
     const criticalVars = {
         'MONGODB_URI': process.env.MONGODB_URI,
         'JWT_SECRET': process.env.JWT_SECRET,
@@ -22,6 +26,7 @@ const checkEnvironmentVariables = () => {
     }
     
     console.log('✅ All critical environment variables are set.');
+    hasChecked = true;
 };
 
 module.exports = {
