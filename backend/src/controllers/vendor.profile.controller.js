@@ -8,10 +8,20 @@ class VendorProfileController {
         this.createProfile = this.createProfile.bind(this);
         this.updateProfile = this.updateProfile.bind(this);
         this.getProfile = this.getProfile.bind(this);
+        this.getOwnProfile = this.getOwnProfile.bind(this);
         this.getAllVendors = this.getAllVendors.bind(this);
         this.searchVendors = this.searchVendors.bind(this);
         this.deleteProfile = this.deleteProfile.bind(this);
         this.softDeleteProfile = this.softDeleteProfile.bind(this);
+    }
+
+    async getOwnProfile(req, res, next) {
+        try {
+            const profile = await vendorProfileService.getProfileByUserId(req.user.id);
+            return ApiResponse.success(res, profile, 'Vendor profile retrieved successfully');
+        } catch (error) {
+            next(error);
+        }
     }
 
     async createProfile(req, res, next) {

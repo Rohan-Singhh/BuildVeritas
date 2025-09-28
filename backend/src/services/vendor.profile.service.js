@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const VendorProfile = require('../models/vendor.profile.model');
 const { ApiError } = require('../utils/apiError');
 
@@ -9,10 +10,16 @@ class VendorProfileService {
             throw new ApiError(400, 'Vendor profile already exists');
         }
 
-        // Create new profile
+        // Create new profile with default active status and verification
         const profile = new VendorProfile({
             user: userId,
-            ...profileData
+            ...profileData,
+            isVerified: true,  // Set verified by default
+            status: 'active',  // Set active by default
+            ratings: {
+                average: 0,
+                count: 0
+            }
         });
 
         return await profile.save();
@@ -38,6 +45,28 @@ class VendorProfileService {
 
         if (!profile) {
             throw new ApiError(404, 'Vendor profile not found');
+        }
+
+        return profile;
+    }
+
+    async getProfileByUserId(userId) {
+        console.log('Looking for vendor profile with userId:', userId);
+        
+        // First verify the user ID is valid
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            throw new ApiError(400, 'Invalid user ID format');
+        }
+
+        // Convert to ObjectId
+        const userObjectId = new mongoose.Types.ObjectId(userId);
+        
+        // Find the profile
+        const profile = await VendorProfile.findOne({ user: userObjectId });
+        console.log('Found vendor profile:', profile);
+
+        if (!profile) {
+            throw new ApiError(404, 'Vendor profile not found. Please create a profile first.');
         }
 
         return profile;

@@ -54,6 +54,15 @@ router.put(
     vendorProfileController.updateProfile
 );
 
+// Get own profile
+router.get(
+    '/profile',
+    authMiddleware,
+    roleAuth.vendorOnly,
+    vendorProfileController.getOwnProfile
+);
+
+// Get specific profile by ID
 router.get(
     '/profile/:id',
     authMiddleware,

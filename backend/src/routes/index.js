@@ -9,6 +9,8 @@ const initializeRoutes = (app) => {
     app.use('/api/budget-estimate', require('./budget.estimate.routes'));
     app.use('/api/vendor', require('./vendor.profile.routes'));
     app.use('/api/client', require('./client.profile.routes'));
+    app.use('/api/projects', require('./project.routes'));
+    app.use('/api/bids', require('./bid.routes'));
     
     // Root route
     app.get('/', (req, res) => {
