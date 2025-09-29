@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import authService from '../services/auth.service';
+import { createContext, useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import authService from "../services/auth.service";
 
 const AuthContext = createContext(null);
 
@@ -20,41 +20,48 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, role) => {
     try {
-      console.log('AuthContext: Attempting login with:', { email, role });
+      console.log("AuthContext: Attempting login with:", { email, role });
       const response = await authService.login(email, password, role);
-      console.log('AuthContext: Login successful:', response);
-      
+      console.log("AuthContext: Login successful:", response);
+
       if (!response.user) {
-        throw new Error('Login response missing user data');
+        throw new Error("Login response missing user data");
       }
-      
+
       // Update user state
       setUser(response.user);
-      console.log('Updated user state:', response.user);
-      
+      console.log("Updated user state:", response.user);
+
       // Verify authentication state
       const isAuth = authService.isAuthenticated();
-      console.log('Authentication state after login:', { isAuthenticated: isAuth });
-      
+      console.log("Authentication state after login:", {
+        isAuthenticated: isAuth,
+      });
+
       if (isAuth) {
-        console.log('Navigating to dashboard...');
-        navigate('/dashboard');
+        console.log("Navigating to dashboard...");
+        if (role === "vendor_supplier") {
+          navigate("/dashboard/vendor");
+        } else if (role === "construction_firm") {
+          navigate("/dashboard/firm");
+        } else {
+          navigate("/dashboard/client");
+        }
       } else {
-        console.error('Authentication failed after successful login');
+        console.error("Authentication failed after successful login");
       }
-      
+
       return response;
-      
     } catch (error) {
-      console.error('AuthContext: Login Error:', error);
-      
+      console.error("AuthContext: Login Error:", error);
+
       // Ensure we always throw an Error object with a message
       if (error instanceof Error) {
         throw error;
-      } else if (typeof error === 'string') {
+      } else if (typeof error === "string") {
         throw new Error(error);
       } else {
-        throw new Error(error?.message || 'Login failed');
+        throw new Error(error?.message || "Login failed");
       }
     }
   };
@@ -62,20 +69,20 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await authService.register(userData);
-      
+
       // Verify response structure
       if (!response?.user) {
-        throw new Error('Invalid response from server');
+        throw new Error("Invalid response from server");
       }
 
       setUser(response.user);
-      
+
       // Use single dashboard route
-      navigate('/dashboard');
-      
+      navigate("/dashboard");
+
       return response;
     } catch (error) {
-      console.error('Registration Error:', error);
+      console.error("Registration Error:", error);
       throw error;
     }
   };
@@ -83,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     authService.logout();
     setUser(null);
-    navigate('/login');
+    navigate("/login");
   };
 
   const value = {
@@ -105,7 +112,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

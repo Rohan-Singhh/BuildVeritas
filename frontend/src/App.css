@@ -315,7 +315,7 @@
 
 @layer utilities {
   .animate-fade-in {
-    animation: fade-in 1.5s ease-in-out;
+    animation: fade-in 1s ease-in-out;
   }
   .animate-fade-in-up {
     animation: fade-in-up 1s ease-out forwards;

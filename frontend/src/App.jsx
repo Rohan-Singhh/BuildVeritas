@@ -9,7 +9,7 @@ import Footer from "./components/common/Footer";
 
 const AppContent = () => {
   const location = useLocation();
-  const isDashboard = location.pathname === "/dashboard";
+  const isDashboard = location.pathname.startsWith("/dashboard/");
 
   return (
     <div className={`App ${isDashboard ? "" : "cursor-none"}`}>

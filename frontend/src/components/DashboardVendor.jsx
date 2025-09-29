@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { DashboardMain } from "./Dashboard/DashboardMain";
-import { ProjectSection } from "./Dashboard/ProjectSection";
+// import { DashboardMain } from "./Dashboard/DashboardMain";
+// import { ProjectSection } from "./Dashboard/ProjectSection";
 import { MarketplaceSection } from "./Dashboard/MarketplaceSection";
-import { AnalyticsSection } from "./Dashboard/AnalyticsSection";
+// import { AnalyticsSection } from "./Dashboard/AnalyticsSection";
 import { ProfileSection } from "./Dashboard/ProfileSection";
 import { Sidebar } from "./Dashboard/Sidebar";
 // import { Topbar } from "./Dashboard/Topbar";
+import { SearchBar } from "./Dashboard/SearchBar";
+import ProjectSection from "./Dashboard/Vendor/ProjectSection";
+import AnalyticsSection from "./Dashboard/Vendor/AnalyticsSection";
+import { DashboardMain } from "./Dashboard/Vendor/DashboardMain";
 
-const Dashboard = () => {
+const DashboardVendor = () => {
   const [selected, setSelected] = useState("Dashboard");
 
   // Add dashboard-specific class when mounted
@@ -50,6 +54,9 @@ const Dashboard = () => {
                 Discover verified construction professionals for your next
                 project
               </p>
+
+              <SearchBar />
+
               <MarketplaceSection />
             </>
           )}
@@ -63,4 +70,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardVendor;

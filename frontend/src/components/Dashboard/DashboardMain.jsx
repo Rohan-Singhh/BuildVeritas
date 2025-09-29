@@ -213,19 +213,19 @@ export const DashboardMain = () => {
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="planned"
-                  stroke="#3b82f6"
-                  strokeWidth={3}
-                  dot={{ fill: "#3b82f6", strokeWidth: 2, r: 5 }}
-                  name="Planned Progress (%)"
-                />
-                <Line
-                  type="monotone"
                   dataKey="actual"
                   stroke="#10b981"
                   strokeWidth={3}
                   dot={{ fill: "#10b981", strokeWidth: 2, r: 5 }}
                   name="Actual Progress (%)"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="planned"
+                  stroke="#3b82f6"
+                  strokeWidth={3}
+                  dot={{ fill: "#3b82f6", strokeWidth: 2, r: 5 }}
+                  name="Planned Progress (%)"
                 />
               </LineChart>
             </ResponsiveContainer>

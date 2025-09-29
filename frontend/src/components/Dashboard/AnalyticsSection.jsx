@@ -7,12 +7,13 @@ import {
 } from "lucide-react";
 import { analyticsData } from "../../constants/Dashboard/AnalyticsData";
 import { stepProgress } from "../../constants/Dashboard/StepProgress";
+import { SummaryCards } from "./ConstructionFirm/SummaryCards";
 
 export const AnalyticsSection = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Analytics Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate-fade-in-up">
           <div className="flex items-center justify-between">
             <div>
@@ -63,7 +64,8 @@ export const AnalyticsSection = () => {
             ↗ 2 completed this month
           </p>
         </div>
-      </div>
+      </div> */}
+      <SummaryCards />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Progress Chart */}

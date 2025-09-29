@@ -5,9 +5,10 @@ import { MarketplaceSection } from "./Dashboard/MarketplaceSection";
 import { AnalyticsSection } from "./Dashboard/AnalyticsSection";
 import { ProfileSection } from "./Dashboard/ProfileSection";
 import { Sidebar } from "./Dashboard/Sidebar";
-// import { Topbar } from "./Dashboard/Topbar";
+import { Topbar } from "./Dashboard/Topbar";
+import { SearchBar } from "./Dashboard/SearchBar";
 
-const Dashboard = () => {
+const DashboardClient = () => {
   const [selected, setSelected] = useState("Dashboard");
 
   // Add dashboard-specific class when mounted
@@ -50,6 +51,9 @@ const Dashboard = () => {
                 Discover verified construction professionals for your next
                 project
               </p>
+
+              <SearchBar />
+
               <MarketplaceSection />
             </>
           )}
@@ -63,4 +67,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardClient;
