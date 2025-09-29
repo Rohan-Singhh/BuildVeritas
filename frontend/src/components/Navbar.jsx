@@ -40,6 +40,7 @@ const Navbar = () => {
   const { navigateWithTransition } = usePageTransition();
   const location = useLocation();
   const { logout, isAuthenticated } = useAuth();
+  const isDashboard = location.pathname.startsWith("/dashboard/");
 
   const scrollToSection = useCallback(
     (sectionId) => {
@@ -87,11 +88,6 @@ const Navbar = () => {
     }
   };
 
-  // Don't render navbar on dashboard
-  if (location.pathname === "/dashboard") {
-    return null;
-  }
-
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -107,29 +103,35 @@ const Navbar = () => {
           >
             <div className="flex-shrink-0">
               <img
-                src="/BV_Logo.png"
+                src="/BV3.png"
                 alt="BV"
-                className="w-10 h-9 md:w-15 md:h-13"
+                className="w-10 h-9 md:w-16 md:h-10"
               />
             </div>
-            <div className="text-xl sm:text-xl lg:text-2xl font-bold text-gray-800 pt-2">
-              <span className="text-blue-500">Build</span>
-              <span className="text-gray-800">Veritas</span>
+            <div className="text-xl sm:text-xl lg:text-2xl font-bold text-gray-800">
+              <span className="bg-gradient-to-t from-sky-700 via-sky-500 to-sky-100 bg-clip-text text-transparent">
+                Build
+              </span>
+              <span className="bg-gradient-to-t from-orange-700 to-yellow-300 bg-clip-text text-transparent">
+                Veritas
+              </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:block">
-            <div className="flex items-center lg:space-x-1 xl:space-x-5 pt-2">
-              {NAV_ITEMS.map((item) => (
-                <NavItem
-                  key={item.id}
-                  item={item}
-                  onClick={() => handleNavItemClick(item)}
-                />
-              ))}
+          {!isDashboard && (
+            <div className="hidden lg:block">
+              <div className="flex items-center lg:space-x-1 xl:space-x-5 pt-2">
+                {NAV_ITEMS.map((item) => (
+                  <NavItem
+                    key={item.id}
+                    item={item}
+                    onClick={() => handleNavItemClick(item)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Auth Buttons */}
           <div className="hidden lg:flex items-center space-x-2 lg:space-x-4 pt-1">

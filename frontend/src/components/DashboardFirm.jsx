@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { DashboardMain } from "./Dashboard/DashboardMain";
-import { ProjectSection } from "./Dashboard/ProjectSection";
+// import { DashboardMain } from "./Dashboard/DashboardMain";
+// import { ProjectSection } from "./Dashboard/ProjectSection";
 import { MarketplaceSection } from "./Dashboard/MarketplaceSection";
-import { AnalyticsSection } from "./Dashboard/AnalyticsSection";
-import { ProfileSection } from "./Dashboard/ProfileSection";
+// import { AnalyticsSection } from "./Dashboard/AnalyticsSection";
+// import { ProfileSection } from "./Dashboard/ProfileSection";
 import { Sidebar } from "./Dashboard/Sidebar";
 // import { Topbar } from "./Dashboard/Topbar";
+import { SearchBar } from "./Dashboard/SearchBar";
+import FirmProfile from "./Dashboard/ConstructionFirm/FirmProfile";
+import FirmProject from "./Dashboard/ConstructionFirm/FirmProject";
+import FirmAnalytics from "./Dashboard/ConstructionFirm/FirmAnalytics";
+import DashboardMain from "./Dashboard/ConstructionFirm/DashboardMain";
 
-const Dashboard = () => {
+const DashboardFirm = () => {
   const [selected, setSelected] = useState("Dashboard");
 
   // Add dashboard-specific class when mounted
@@ -42,25 +47,28 @@ const Dashboard = () => {
             </>
           )}
 
-          {selected === "Projects" && <ProjectSection />}
+          {selected === "Projects" && <FirmProject />}
 
           {selected === "Marketplace" && (
-            <>
-              <p className="text-gray-500 mb-4">
+            <div id="marketplace">
+              <p className="text-gray-500 mb-6">
                 Discover verified construction professionals for your next
                 project
               </p>
+              
+              <SearchBar />
+
               <MarketplaceSection />
-            </>
+            </div>
           )}
 
-          {selected === "Analytics" && <AnalyticsSection />}
+          {selected === "Analytics" && <FirmAnalytics />}
 
-          {selected === "Profile" && <ProfileSection />}
+          {selected === "Profile" && <FirmProfile />}
         </main>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default DashboardFirm;

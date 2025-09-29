@@ -4,6 +4,9 @@ import Home from "./Home";
 import Login from "./Login";
 import Signup from "./Signup";
 import Dashboard from "./Dashboard";
+import DashboardClient from "./DashboardClient";
+import DashboardVendor from "./DashboardVendor";
+import DashboardFirm from "./DashboardFirm";
 import Features from "./Features";
 import About from "./About";
 import Blogs from "./Blogs";
@@ -42,10 +45,26 @@ const AnimatedRoutes = () => {
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route
-          path="/dashboard"
+          path="/dashboard/client"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <DashboardClient />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/vendor"
+          element={
+            <ProtectedRoute>
+              <DashboardVendor />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard/firm"
+          element={
+            <ProtectedRoute>
+              <DashboardFirm />
             </ProtectedRoute>
           }
         />
