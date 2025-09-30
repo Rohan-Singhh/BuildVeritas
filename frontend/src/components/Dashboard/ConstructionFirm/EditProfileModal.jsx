@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   X,
   Save,
@@ -10,19 +10,22 @@ import {
 } from "lucide-react";
 import { RiContactsBook3Line } from "react-icons/ri";
 
-const EditProfileModal = ({
-  isOpen,
-  onClose,
-  profileData,
-  onUpdateProfile,
-}) => {
+const EditProfileModal = ({ onClose, profileData, onUpdateProfile }) => {
   const [formData, setFormData] = useState(profileData);
   const [newSpecialization, setNewSpecialization] = useState("");
   const [newPhoto, setNewPhoto] = useState("");
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    if (modalRef.current) {
+      // Scroll modal into view when opened
+      modalRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, []);
 
   useEffect(() => {
     setFormData(profileData);
-  }, [profileData, isOpen]);
+  }, [profileData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -130,11 +133,16 @@ const EditProfileModal = ({
     return spec.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-3xl">
-      <div className="bg-white rounded-2xl shadow-2xl border border-blue-500/20 w-full max-w-4xl max-h-[100vh] overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 bg-opacity-50 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        ref={modalRef}
+        className="bg-white rounded-2xl shadow-2xl border border-blue-500/20 w-full max-w-4xl max-h-[85vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-blue-500/20 bg-gradient-to-r from-blue-500/5 to-blue-500/10">
           <div className="flex items-center gap-3">
@@ -150,7 +158,10 @@ const EditProfileModal = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+        <div
+          className="p-6 overflow-y-auto"
+          style={{ maxHeight: "calc(100vh - 252px)" }}
+        >
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Basic Information (Non-editable) */}
             <div className="space-y-4">
@@ -560,7 +571,7 @@ const EditProfileModal = ({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-4 p-4 border-t border-blue-500/20 bg-slate-300/10">
+        <div className="flex items-center rounded-b-2xl justify-end gap-4 p-4 border-t border-blue-500/20 bg-slate-300/10">
           <button
             type="button"
             onClick={onClose}

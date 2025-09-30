@@ -3,13 +3,14 @@ import React, { useState } from "react";
 // import { ProjectSection } from "./Dashboard/ProjectSection";
 import { MarketplaceSection } from "./Dashboard/MarketplaceSection";
 // import { AnalyticsSection } from "./Dashboard/AnalyticsSection";
-import { ProfileSection } from "./Dashboard/ProfileSection";
+// import { ProfileSection } from "./Dashboard/ProfileSection";
 import { Sidebar } from "./Dashboard/Sidebar";
 // import { Topbar } from "./Dashboard/Topbar";
 import { SearchBar } from "./Dashboard/SearchBar";
 import ProjectSection from "./Dashboard/Vendor/ProjectSection";
 import AnalyticsSection from "./Dashboard/Vendor/AnalyticsSection";
 import { DashboardMain } from "./Dashboard/Vendor/DashboardMain";
+import ProfileSection from "./Dashboard/Vendor/ProfileSection";
 
 const DashboardVendor = () => {
   const [selected, setSelected] = useState("Dashboard");

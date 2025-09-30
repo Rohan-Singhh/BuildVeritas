@@ -5,8 +5,40 @@ import { useAuth } from "../context/AuthContext";
 import { usePageTransition } from "../hooks/usePageTransition";
 import { NAV_ITEMS } from "../constants/navigation";
 
+// const NavItem = ({ item, onClick, isMobile }) => {
+//   const baseClasses = `group inline-flex items-center text-gray-700 hover:text-blue-400 transition-all duration-200 ${
+//     isMobile
+//       ? "px-3 py-2 rounded-md text-base font-medium w-full"
+//       : "px-2 lg:px-3 py-2 text-xs lg:text-sm font-bold whitespace-nowrap"
+//   }`;
+
+//   const IconComponent = item.icon;
+//   const iconClasses = `${
+//     isMobile ? "w-5 h-5 mr-3" : "w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2"
+//   } transition-transform group-hover:-rotate-12`;
+
+//   if (item.type === "scroll") {
+//     return (
+//       <button onClick={onClick} className={baseClasses}>
+//         <IconComponent className={iconClasses} />
+//         {item.label}
+//       </button>
+//     );
+//   }
+
+//   return (
+//     <Link to={item.path} className={baseClasses} onClick={onClick}>
+//       <IconComponent className={iconClasses} />
+//       {item.label}
+//     </Link>
+//   );
+// };
+
 const NavItem = ({ item, onClick, isMobile }) => {
-  const baseClasses = `group inline-flex items-center text-gray-700 hover:text-blue-400 transition-all duration-200 ${
+  const [animate, setAnimate] = useState(false);
+  const timerRef = React.useRef(null);
+
+  const baseClasses = `relative bubble-hover group inline-flex items-center text-gray-700 hover:text-blue-400 transition-all duration-200 ${
     isMobile
       ? "px-3 py-2 rounded-md text-base font-medium w-full"
       : "px-2 lg:px-3 py-2 text-xs lg:text-sm font-bold whitespace-nowrap"
@@ -17,17 +49,25 @@ const NavItem = ({ item, onClick, isMobile }) => {
     isMobile ? "w-5 h-5 mr-3" : "w-3 h-3 lg:w-4 lg:h-4 mr-1 lg:mr-2"
   } transition-transform group-hover:-rotate-12`;
 
-  if (item.type === "scroll") {
-    return (
-      <button onClick={onClick} className={baseClasses}>
-        <IconComponent className={iconClasses} />
-        {item.label}
-      </button>
-    );
-  }
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  const handleClick = (e) => {
+    // trigger bubble animation class for a short duration
+    setAnimate(true);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setAnimate(false), 900); // match CSS animation duration
+
+    if (onClick) onClick(e);
+  };
+
+  const finalClasses = `${baseClasses} ${animate ? "animate" : ""}`;
 
   return (
-    <Link to={item.path} className={baseClasses} onClick={onClick}>
+    <Link to={item.path} className={finalClasses} onClick={handleClick}>
       <IconComponent className={iconClasses} />
       {item.label}
     </Link>
