@@ -11,6 +11,7 @@ import ProjectSection from "./Dashboard/Vendor/ProjectSection";
 import AnalyticsSection from "./Dashboard/Vendor/AnalyticsSection";
 import { DashboardMain } from "./Dashboard/Vendor/DashboardMain";
 import ProfileSection from "./Dashboard/Vendor/ProfileSection";
+import BudgetEstimator from "./Dashboard/BudgetEstimator";
 
 const DashboardVendor = () => {
   const [selected, setSelected] = useState("Dashboard");
@@ -65,6 +66,8 @@ const DashboardVendor = () => {
           {selected === "Analytics" && <AnalyticsSection />}
 
           {selected === "Profile" && <ProfileSection />}
+
+          {selected === "AI Budget Estimator" && <BudgetEstimator />}
         </main>
       </div>
     </div>

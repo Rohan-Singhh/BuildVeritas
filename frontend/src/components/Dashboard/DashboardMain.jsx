@@ -49,7 +49,7 @@ export const DashboardMain = () => {
     <div className="bg-gray-50 min-h-screen">
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 animate-fade-in-up">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">
@@ -59,7 +59,7 @@ export const DashboardMain = () => {
                 {projectData.overallProgress}%
               </p>
             </div>
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-blue-200 rounded-lg flex items-center justify-center">
               <TrendingUp className="w-6 h-6 text-blue-600" />
             </div>
           </div>
@@ -73,7 +73,7 @@ export const DashboardMain = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate-fade-in-up delay-100">
+        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6 animate-fade-in-up delay-100">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Budget Used</p>
@@ -81,7 +81,7 @@ export const DashboardMain = () => {
                 ₹{(projectData.usedBudget / 100000).toFixed(1)}L
               </p>
             </div>
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-green-200 rounded-lg flex items-center justify-center">
               <IndianRupee className="w-6 h-6 text-green-600" />
             </div>
           </div>
@@ -94,7 +94,7 @@ export const DashboardMain = () => {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate-fade-in-up delay-200">
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6 animate-fade-in-up delay-200">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">
@@ -104,7 +104,7 @@ export const DashboardMain = () => {
                 {projectData.completionRate}%
               </p>
             </div>
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-purple-200 rounded-lg flex items-center justify-center">
               <CheckCircle2 className="w-6 h-6 text-purple-600" />
             </div>
           </div>
@@ -114,7 +114,7 @@ export const DashboardMain = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 animate-fade-in-up delay-300">
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6 animate-fade-in-up delay-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">
@@ -124,7 +124,7 @@ export const DashboardMain = () => {
                 {projectData.daysRemaining}
               </p>
             </div>
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-orange-200 rounded-lg flex items-center justify-center">
               <Clock className="w-6 h-6 text-orange-600" />
             </div>
           </div>

@@ -9,7 +9,7 @@ export const sections = [
     description:
       "Track construction projects with real-time updates and AI-powered insights for better decision making and efficiency. Monitor progress, manage resources, and ensure timely delivery with our comprehensive project management suite.",
     imageUrl:
-      "https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://res.cloudinary.com/dnzbzvfxn/image/upload/v1759324136/Project_Dashboard3_gtruyu.png",
     reverse: false,
   },
   {
@@ -20,7 +20,7 @@ export const sections = [
     description:
       "Connect with verified vendors and manage procurement seamlessly with our comprehensive marketplace solution. Access a network of pre-vetted suppliers, compare quotes, and streamline your supply chain operations.",
     imageUrl:
-      "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://res.cloudinary.com/dnzbzvfxn/image/upload/v1759328888/Marketplace5_akfgdz.png",
     reverse: true,
   },
   {
@@ -31,7 +31,7 @@ export const sections = [
     description:
       "Get predictive insights and budget optimization recommendations powered by advanced artificial intelligence. Leverage machine learning algorithms to forecast project outcomes and optimize resource allocation.",
     imageUrl:
-      "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://res.cloudinary.com/dnzbzvfxn/image/upload/v1759325456/AI_Analytics2_to603u.png",
     reverse: false,
   },
   {
@@ -42,7 +42,7 @@ export const sections = [
     description:
       "Computer vision-powered quality control and progress tracking for enhanced site safety and compliance. Automated inspection reports, safety monitoring, and real-time compliance tracking.",
     imageUrl:
-      "https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://res.cloudinary.com/dnzbzvfxn/image/upload/v1759322891/AI_Budget_Estimator_gp7cxl.png",
     reverse: true,
   },
 ];

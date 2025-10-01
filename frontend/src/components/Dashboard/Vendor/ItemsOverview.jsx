@@ -54,7 +54,7 @@ const ItemsOverview = () => {
   return (
     <div className="space-y-6">
       {/* Inventory Overview */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 animate-fade-in-up delay-200">
         {/* <div className="p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">
             Inventory Overview

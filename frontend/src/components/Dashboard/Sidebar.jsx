@@ -1,3 +1,4 @@
+import { Bot } from "lucide-react";
 import React from "react";
 import {
   FaProjectDiagram,
@@ -25,6 +26,7 @@ const sidebarItems = [
       { label: "Projects", icon: <FaProjectDiagram /> },
       { label: "Marketplace", icon: <FaStore /> },
       { label: "Analytics", icon: <FaChartBar /> },
+      { label: "AI Budget Estimator", icon: <Bot /> },
     ],
   },
   {

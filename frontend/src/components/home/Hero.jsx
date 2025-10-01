@@ -18,7 +18,7 @@ const Hero = () => {
             preload="auto"
             className="w-full h-full object-cover opacity-40"
           >
-            <source src="/construction.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dnzbzvfxn/video/upload/v1759325964/Hero_Video_tcitaw.mp4" type="video/mp4" />
           </video>
         </div>
         {/* Video overlay for better text readability */}
