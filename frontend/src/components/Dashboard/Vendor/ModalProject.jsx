@@ -109,7 +109,7 @@ const ModalProject = ({ project, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100">
+        <div className="flex items-center justify-between p-4 rounded-t-xl border-b border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100">
           <div className="flex items-center space-x-4">
             <div className="p-2 bg-blue-600 rounded-lg">
               <Building className="w-6 h-6 text-white" />

@@ -7,6 +7,7 @@ import { ProfileSection } from "./Dashboard/ProfileSection";
 import { Sidebar } from "./Dashboard/Sidebar";
 import { Topbar } from "./Dashboard/Topbar";
 import { SearchBar } from "./Dashboard/SearchBar";
+import BudgetEstimator from "./Dashboard/BudgetEstimator";
 
 const DashboardClient = () => {
   const [selected, setSelected] = useState("Dashboard");
@@ -61,6 +62,8 @@ const DashboardClient = () => {
           {selected === "Analytics" && <AnalyticsSection />}
 
           {selected === "Profile" && <ProfileSection />}
+
+          {selected === "AI Budget Estimator" && <BudgetEstimator />}
         </main>
       </div>
     </div>

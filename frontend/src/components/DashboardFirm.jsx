@@ -11,6 +11,7 @@ import FirmProfile from "./Dashboard/ConstructionFirm/FirmProfile";
 import FirmProject from "./Dashboard/ConstructionFirm/FirmProject";
 import FirmAnalytics from "./Dashboard/ConstructionFirm/FirmAnalytics";
 import DashboardMain from "./Dashboard/ConstructionFirm/DashboardMain";
+import BudgetEstimator from "./Dashboard/BudgetEstimator";
 
 const DashboardFirm = () => {
   const [selected, setSelected] = useState("Dashboard");
@@ -55,7 +56,7 @@ const DashboardFirm = () => {
                 Discover verified construction professionals for your next
                 project
               </p>
-              
+
               <SearchBar />
 
               <MarketplaceSection />
@@ -65,6 +66,8 @@ const DashboardFirm = () => {
           {selected === "Analytics" && <FirmAnalytics />}
 
           {selected === "Profile" && <FirmProfile />}
+
+          {selected === "AI Budget Estimator" && <BudgetEstimator />}
         </main>
       </div>
     </div>

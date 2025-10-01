@@ -109,7 +109,7 @@ const RecentOrders = () => {
   );
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 animate-fade-in-up delay-300">
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <div>

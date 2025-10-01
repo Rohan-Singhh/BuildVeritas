@@ -115,7 +115,7 @@ const DashboardMain = () => {
     <div className="mb-8">
       {/* Key Performance Indicators */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-shadow">
+        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-5 shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up delay-100">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm font-medium">
@@ -125,14 +125,12 @@ const DashboardMain = () => {
                 ${totalBudget.toFixed(1)}M
               </p>
               <div className="flex items-center mt-2">
-                  <ArrowUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-green-600 font-medium">
-                    +15%
-                  </span>
-                  <span className="text-xs text-gray-500 ml-1">
-                    from last quarter
-                  </span>
-                </div>
+                <ArrowUp className="w-4 h-4 text-green-500" />
+                <span className="text-sm text-green-600 font-medium">+15%</span>
+                <span className="text-xs text-gray-500 ml-1">
+                  from last quarter
+                </span>
+              </div>
               {/* <p className="text-gray-500 text-sm mt-1">
                 +15% from last quarter
               </p> */}
@@ -143,13 +141,15 @@ const DashboardMain = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
+        <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up delay-200">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm font-medium">
                 Active Projects
               </p>
-              <p className="text-2xl font-bold text-gray-900">{activeProjects}</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {activeProjects}
+              </p>
               <p className="text-gray-500 text-sm mt-1">
                 {completionRate}% completion rate
               </p>
@@ -160,16 +160,16 @@ const DashboardMain = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up delay-300">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-600 text-sm font-medium">
                 Total Workforce
               </p>
-              <p className="text-2xl font-bold text-gray-900">{totalWorkforce}</p>
-              <p className="text-gray-500 text-sm mt-1">
-                Across all projects
+              <p className="text-2xl font-bold text-gray-900">
+                {totalWorkforce}
               </p>
+              <p className="text-gray-500 text-sm mt-1">Across all projects</p>
             </div>
             <div className="p-3 bg-orange-200 rounded-lg">
               <Users className="w-5.5 h-5.5 text-orange-600" />
@@ -177,12 +177,10 @@ const DashboardMain = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow">
+        <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-5 text-white shadow-lg hover:shadow-xl transition-shadow animate-fade-in-up delay-400">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-gray-600 text-sm font-medium">
-                Avg Progress
-              </p>
+              <p className="text-gray-600 text-sm font-medium">Avg Progress</p>
               <p className="text-2xl font-bold text-gray-900">{avgProgress}%</p>
               <p className="text-gray-500 text-sm mt-1">Overall completion</p>
             </div>
@@ -196,7 +194,7 @@ const DashboardMain = () => {
       {/* Charts and Analytics Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Revenue by Project Type */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow animate-fade-in-up delay-300">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Revenue by Project Type
           </h3>
@@ -234,7 +232,7 @@ const DashboardMain = () => {
         </div>
 
         {/* Project Status Overview */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow animate-fade-in-up delay-300">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Project Status Overview
           </h3>
@@ -272,33 +270,10 @@ const DashboardMain = () => {
             ))}
           </div>
         </div>
-
-        {/* Monthly Performance */}
-        {/* <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Monthly Revenue Trend
-          </h3>
-          <div className="h-48">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={monthlyPerformance}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                <YAxis tick={{ fontSize: 12 }} />
-                <Tooltip formatter={(value) => [`$${value}M`, "Revenue"]} />
-                <Area
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#3B82F6"
-                  fill="#3B82F6"
-                  fillOpacity={0.3}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div> */}
       </div>
 
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow mb-8">
+      {/* Monthly Performance */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow mb-8 animate-fade-in-up delay-300">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           Monthly Revenue Trend
         </h3>
@@ -324,7 +299,7 @@ const DashboardMain = () => {
       {/* Business Metrics and Top Projects */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         {/* Business Health Metrics */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow animate-fade-in-up delay-400">
           <h3 className="text-lg font-semibold text-gray-900 mb-6">
             Business Health Metrics
           </h3>
@@ -402,7 +377,7 @@ const DashboardMain = () => {
         </div>
 
         {/* Top Performing Projects */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow animate-fade-in-up delay-400">
           <h3 className="text-lg font-semibold text-gray-900 mb-6">
             Top Projects by Value
           </h3>

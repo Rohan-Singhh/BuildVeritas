@@ -126,45 +126,10 @@ export const DashboardMain = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      {/* <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Dashboard Overview
-              </h1>
-              <p className="mt-1 text-sm text-gray-500">
-                Welcome back! Here's what's happening with your business
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-green-50 px-4 py-2 rounded-lg">
-                <TrendingUp className="w-5 h-5 text-green-600" />
-                <span className="text-green-900 font-medium">
-                  +{kpiData.revenueGrowth}% Growth
-                </span>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-500">Today's Date</p>
-                <p className="font-semibold text-gray-900">
-                  {new Date().toLocaleDateString("en-US", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       <div className="max-w-7xl mx-auto py-2">
         {/* Key Performance Indicators */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6 animate-fade-in-up delay-100">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">
@@ -189,7 +154,7 @@ export const DashboardMain = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6">
+          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6 animate-fade-in-up delay-200">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">
@@ -210,7 +175,7 @@ export const DashboardMain = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6">
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6 animate-fade-in-up delay-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Items Sold</p>
@@ -229,7 +194,7 @@ export const DashboardMain = () => {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6">
+          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg hover:shadow-xl border border-gray-200 p-6 animate-fade-in-up delay-400">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">
@@ -255,7 +220,7 @@ export const DashboardMain = () => {
         {/* Charts and Analytics */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
           {/* Revenue Trend */}
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 animate-fade-in-up delay-300">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
@@ -310,7 +275,7 @@ export const DashboardMain = () => {
           </div>
 
           {/* Project Status Distribution */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 animate-fade-in-up delay-400">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">
                 Project Status
@@ -366,7 +331,7 @@ export const DashboardMain = () => {
         {/* Bottom Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Top Selling Categories */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 animate-fade-in-up delay-400">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
@@ -430,7 +395,7 @@ export const DashboardMain = () => {
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 animate-fade-in-up delay-400">
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
@@ -488,7 +453,7 @@ export const DashboardMain = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-8 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6">
+        <div className="mt-8 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 animate-fade-in-up delay-400">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold text-gray-900">

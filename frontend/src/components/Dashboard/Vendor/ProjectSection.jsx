@@ -142,31 +142,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      {/* <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Vendor Dashboard
-              </h1>
-              <p className="mt-1 text-sm text-gray-500">
-                Manage your construction projects and inventory
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-blue-50 px-4 py-2 rounded-lg">
-                <BarChart3 className="w-5 h-5 text-blue-600" />
-                <span className="text-blue-900 font-medium">
-                  Active Projects:{" "}
-                  {projects.filter((p) => p.status === "in-progress").length}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       <div className="max-w-7xl mx-auto py-8">
         <SearchBar
           value={searchTerm}
@@ -178,7 +153,7 @@ const Dashboard = () => {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Projects Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 animate-fade-in-up delay-200">
               {/* <div className="p-6 border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
