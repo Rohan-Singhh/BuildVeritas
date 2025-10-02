@@ -1,5 +1,5 @@
 import { Bot } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import {
   FaProjectDiagram,
   FaStore,
@@ -17,6 +17,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import { MdOutlineDashboard } from "react-icons/md";
+import { CreateProjectForm } from "./CreateProjectForm";
 
 const sidebarItems = [
   {
@@ -47,17 +48,43 @@ const sidebarItems = [
   {
     section: "QUICK ACTIONS",
     items: [
-      { label: "New Project", icon: <FaPlus /> },
+      { label: "Add Project", icon: <FaPlus /> },
       { label: "Upload Documents", icon: <FaUpload /> },
     ],
   },
 ];
 
 export const Sidebar = ({ selected, setSelected }) => {
+  const [showCreateProject, setShowCreateProject] = useState(false);
+
+  const handleItemClick = (label) => {
+    if (label === "Add Project") {
+      setShowCreateProject(true);
+    } else {
+      setSelected(label);
+    }
+  };
+
+  const handleCreateProject = async (projectData) => {
+    try {
+      // TODO: Implement API call to create project
+      console.log("Creating project:", projectData);
+      
+      // Close the form
+      setShowCreateProject(false);
+      
+      // Switch to Projects view
+      setSelected("Projects");
+    } catch (error) {
+      console.error("Error creating project:", error);
+    }
+  };
+
   return (
-    <aside className="w-64 bg-gradient-to-tr from-blue-100 to-white border-r border-blue-200">
-      <div className="py-6 px-4 mt-16 animate-fade-in-up">
-        {sidebarItems.map((section) => (
+    <>
+      <aside className="w-64 bg-gradient-to-tr from-blue-100 to-white border-r border-blue-200">
+        <div className="py-6 px-4 mt-16 animate-fade-in-up">
+          {sidebarItems.map((section) => (
           <div key={section.section} className="mb-4">
             <div className="text-xs font-semibold text-blue-600 mb-2">
               {section.section}
@@ -75,7 +102,7 @@ export const Sidebar = ({ selected, setSelected }) => {
                             : "text-gary-700 hover:bg-blue-100 hover:text-blue-600"
                         }
                       `}
-                    onClick={() => setSelected(item.label)}
+                    onClick={() => handleItemClick(item.label)}
                   >
                     <span
                       className={`mr-3 text-lg ${
@@ -95,5 +122,12 @@ export const Sidebar = ({ selected, setSelected }) => {
         ))}
       </div>
     </aside>
+      {showCreateProject && (
+        <CreateProjectForm
+          onClose={() => setShowCreateProject(false)}
+          onSubmit={handleCreateProject}
+        />
+      )}
+    </>
   );
 };
