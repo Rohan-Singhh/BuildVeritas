@@ -121,6 +121,55 @@ class BidController {
     }
 
     /**
+     * Get multiple project bids (batch)
+     */
+    async getMultipleProjectBids(req, res, next) {
+        try {
+            const { projectIds, status } = req.body;
+            
+            if (!projectIds || !Array.isArray(projectIds)) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'Project IDs array is required'
+                });
+            }
+            
+            console.log('Getting bids for projects:', projectIds.length);
+            
+            // Fetch bids for all projects in parallel
+            const bidsPromises = projectIds.map(async (projectId) => {
+                try {
+                    const bids = await bidService.getProjectBids(projectId, status);
+                    return { projectId, bids: bids || [] };
+                } catch (error) {
+                    console.error(`Error fetching bids for project ${projectId}:`, error);
+                    return { projectId, bids: [] };
+                }
+            });
+            
+            const results = await Promise.all(bidsPromises);
+            
+            // Convert to object for easy lookup
+            const bidsMap = {};
+            results.forEach(({ projectId, bids }) => {
+                bidsMap[projectId] = bids;
+            });
+            
+            return ApiResponse.success(
+                res,
+                {
+                    bids: bidsMap,
+                    total: results.reduce((sum, { bids }) => sum + bids.length, 0)
+                },
+                'Multiple project bids retrieved successfully'
+            );
+        } catch (error) {
+            console.error('Error in getMultipleProjectBids:', error);
+            next(error);
+        }
+    }
+
+    /**
      * Get vendor's bids
      */
     async getVendorBids(req, res, next) {

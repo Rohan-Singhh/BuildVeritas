@@ -10,6 +10,7 @@ class BidService {
         this.bidCache = new Map();
         this.BID_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
         this.MAX_CACHE_SIZE = 1000;
+        this.cache = new Map(); // Simple in-memory cache for project bids
     }
 
     /**
@@ -697,7 +698,7 @@ class BidService {
     }
 
     /**
-     * Get all bids for a project
+     * Get all bids for a project (optimized with caching)
      * @param {string} projectId - Project ID
      * @param {string} status - Optional status filter
      * @returns {Promise<Array>} Array of bids
@@ -706,12 +707,11 @@ class BidService {
         try {
             console.log('Getting bids for project:', projectId);
             
-            // Verify project exists
-            const project = await Project.findById(projectId);
-            console.log('Found project:', project);
-            
-            if (!project) {
-                throw new ApiError(404, 'Project not found');
+            // Check cache first
+            const cacheKey = `project_bids_${projectId}_${status || 'all'}`;
+            if (this.cache && this.cache.has(cacheKey)) {
+                console.log('Returning cached bids for project:', projectId);
+                return this.cache.get(cacheKey);
             }
 
             // Build query
@@ -721,21 +721,23 @@ class BidService {
             }
             console.log('Query:', query);
 
-            // First check if any bids exist
-            const bidCount = await Bid.countDocuments(query);
-            console.log('Total bids found:', bidCount);
-
-            // Get bids with vendor details
+            // Get bids with vendor details in a single optimized query
             const bids = await Bid.find(query)
                 .populate({
                     path: 'vendor',
                     select: 'companyName location experience ratings services specializations certifications',
                     model: 'VendorProfile'
                 })
+                .select('-negotiations -previousWork') // Exclude heavy fields
                 .sort('-metadata.submittedAt')
                 .lean();
             
-            console.log('Retrieved bids:', bids);
+            console.log('Retrieved bids:', bids.length);
+
+            // Cache the result for 5 minutes
+            if (this.cache) {
+                this.cache.set(cacheKey, bids, 300000); // 5 minutes
+            }
 
             return bids;
         } catch (error) {

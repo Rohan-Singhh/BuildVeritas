@@ -42,12 +42,12 @@ const DashboardFirm = () => {
       />
 
       {/* Main Content */}
-      <div className={`flex-1 flex flex-col transition-all duration-300 ease-out ${
-        isCollapsed ? 'lg:ml-16' : 'lg:ml-64'
-      }`}>
+      <div className="flex-1 flex flex-col">
         {/* Top spacing to account for navbar */}
         <div className="h-16"></div>
-        <main className="p-8 animate-fade-in-up">
+        <main className={`p-3 md:p-4 animate-fade-in-up max-w-none transition-all duration-300 ease-out ${
+          isCollapsed ? 'md:ml-16' : 'md:ml-48'
+        }`}>
           <h1 className="text-2xl font-bold text-blue-600 mb-2">{selected}</h1>
           {selected === "Dashboard" && (
             <>

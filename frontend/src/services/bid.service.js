@@ -12,6 +12,22 @@ export const bidAPI = {
     }
   },
 
+  // Get multiple project bids (batch)
+  getMultipleProjectBids: async (projectIds, status) => {
+    try {
+      console.log('bidAPI.getMultipleProjectBids called for projectIds:', projectIds);
+      const response = await api.post('/bids/projects/batch', {
+        projectIds,
+        status
+      });
+      console.log('getMultipleProjectBids API response:', response);
+      return response.data;
+    } catch (error) {
+      console.error('Get Multiple Project Bids Error:', error);
+      throw error;
+    }
+  },
+
   // Get bid details
   getBidDetails: async (bidId) => {
     try {

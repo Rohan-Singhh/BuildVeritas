@@ -70,6 +70,13 @@ router.get(
     bidController.getProjectBids
 );
 
+// Get multiple project bids (batch)
+router.post(
+    '/projects/batch',
+    roleAuth.clientAndConstruction,
+    bidController.getMultipleProjectBids
+);
+
 router.get(
     '/vendor/bids',
     roleAuth.vendorOnly,

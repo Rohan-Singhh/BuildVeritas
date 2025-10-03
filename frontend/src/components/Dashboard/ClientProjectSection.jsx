@@ -45,46 +45,36 @@ const ClientProjectSection = () => {
     try {
       setLoading(true);
       console.log('Fetching client projects...');
-      const response = await projectAPI.getClientProjects();
-      console.log('Client projects response:', response);
       
-      // Handle different response structures
+      // Fetch projects first
+      const response = await projectAPI.getClientProjects();
       const projectsData = response.data?.projects || response.data || [];
-      console.log('Projects data:', projectsData);
+      console.log('Found projects:', projectsData.length);
+      
+      // Set projects immediately for better UX
       setProjects(projectsData);
       
-      // Fetch bids for each project
-      const bidsPromises = projectsData.map(async (project) => {
+      // Fetch all bids in a single batch request
+      if (projectsData.length > 0) {
         try {
-          const bidsResponse = await projectAPI.getProjectBids(project._id);
-          console.log(`Bids response for project ${project._id}:`, bidsResponse);
+          const projectIds = projectsData.map(project => project._id);
+          const bidsResponse = await bidAPI.getMultipleProjectBids(projectIds);
           
-          // Handle different response structures
-          let bids = [];
-          if (bidsResponse.data) {
-            if (Array.isArray(bidsResponse.data)) {
-              bids = bidsResponse.data;
-            } else if (bidsResponse.data.bids && Array.isArray(bidsResponse.data.bids)) {
-              bids = bidsResponse.data.bids;
-            } else if (bidsResponse.data.data && Array.isArray(bidsResponse.data.data)) {
-              bids = bidsResponse.data.data;
-            }
+          if (bidsResponse.data && bidsResponse.data.bids) {
+            setProjectBids(bidsResponse.data.bids);
+            console.log('Batch bids loaded:', Object.keys(bidsResponse.data.bids).length);
+          } else {
+            setProjectBids({});
           }
-          
-          console.log(`Processed bids for project ${project._id}:`, bids);
-          return { projectId: project._id, bids };
         } catch (error) {
-          console.error(`Error fetching bids for project ${project._id}:`, error);
-          return { projectId: project._id, bids: [] };
+          console.error('Error fetching batch bids:', error);
+          setProjectBids({});
         }
-      });
+      } else {
+        setProjectBids({});
+      }
       
-      const bidsResults = await Promise.all(bidsPromises);
-      const bidsMap = {};
-      bidsResults.forEach(({ projectId, bids }) => {
-        bidsMap[projectId] = bids;
-      });
-      setProjectBids(bidsMap);
+      console.log('All data loaded successfully');
     } catch (error) {
       console.error('Error fetching projects:', error);
       toast.error('Failed to fetch projects');
