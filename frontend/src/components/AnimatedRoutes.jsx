@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Home from "./Home";
 import Login from "./Login";
@@ -21,6 +21,26 @@ import Contact from "./Contact";
 import Testimonials from "./Testimonials";
 import Pricing from "./Pricing";
 import Gallery from "./Gallery";
+import { useAuth } from "../context/AuthContext";
+
+// Component to redirect to role-based dashboard
+const DashboardRedirect = () => {
+  const { user } = useAuth();
+  
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  switch (user.role) {
+    case "vendor_supplier":
+      return <Navigate to="/dashboard/vendor" replace />;
+    case "construction_firm":
+      return <Navigate to="/dashboard/firm" replace />;
+    case "client_owner":
+    default:
+      return <Navigate to="/dashboard/client" replace />;
+  }
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -44,6 +64,14 @@ const AnimatedRoutes = () => {
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardRedirect />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard/client"
           element={
