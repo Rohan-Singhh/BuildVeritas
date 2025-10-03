@@ -55,10 +55,10 @@ function ModalBudgetEstimator({ result, onClose }) {
     return colors[index % colors.length];
   };
 
-  const totalSavings = result.recommendations.reduce(
-    (acc, rec) => acc + rec.potential_savings,
+  const totalSavings = result.recommendations?.reduce(
+    (acc, rec) => acc + (rec.potential_savings || 0),
     0
-  );
+  ) || 0;
 
   return (
     <div
@@ -85,7 +85,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                   AI Generated Estimate
                 </span>
               </div> */}
-              <h2 className="text-3xl font-bold mb-2">{result.projectName}</h2>
+              <h2 className="text-3xl font-bold mb-2">{result.projectName || result.project_name}</h2>
               <p className="text-slate-300 text-sm">
                 Comprehensive budget breakdown and recommendations
               </p>
@@ -125,18 +125,18 @@ function ModalBudgetEstimator({ result, onClose }) {
                 <div className="flex items-baseline gap-3 mb-4">
                   <span className="text-2xl font-bold">
                     {formatCurrency(
-                      (result.total_cost.min + result.total_cost.max) / 2
+                      (result.total_cost?.min + result.total_cost?.max) / 2 || 0
                     )}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-slate-300">
                   <span>Range:</span>
                   <span className="font-semibold">
-                    {formatCurrency(result.total_cost.min)}
+                    {formatCurrency(result.total_cost?.min || 0)}
                   </span>
                   <span>-</span>
                   <span className="font-semibold">
-                    {formatCurrency(result.total_cost.max)}
+                    {formatCurrency(result.total_cost?.max || 0)}
                   </span>
                 </div>
               </div>
@@ -154,7 +154,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                 </div>
                 <p className="text-2xl font-bold">up to {totalSavings}%</p>
                 <p className="text-emerald-100 text-xs mt-2">
-                  {result.recommendations.length} optimization tips
+                  {result.recommendations?.length || 0} optimization tips
                 </p>
               </div>
             </div>
@@ -166,7 +166,7 @@ function ModalBudgetEstimator({ result, onClose }) {
               Cost Breakdown
             </h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-              {result.cost_breakdown.map((category, index) => {
+              {result.cost_breakdown?.map((category, index) => {
                 const colors = getCategoryColor(index);
                 return (
                   <div
@@ -186,7 +186,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                         </div>
                         <div className="flex items-center gap-2">
                           <span className={`${colors.text} text-2xl font-bold`}>
-                            {category.percentage}%
+                            {category.percentage || 0}%
                           </span>
                           <span className="text-slate-500 text-sm">
                             of budget
@@ -196,7 +196,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                       <div
                         className={`${colors.bg} text-white px-4 py-2 rounded-xl text-sm font-bold`}
                       >
-                        {formatCurrency(category.amount.min)}
+                        {formatCurrency(category.amount?.min || 0)}
                       </div>
                     </div>
 
@@ -204,13 +204,13 @@ function ModalBudgetEstimator({ result, onClose }) {
                     <div className="relative w-full h-2 bg-white rounded-full mb-4">
                       <div
                         className={`absolute top-0 left-0 h-full ${colors.bg} rounded-full transition-all duration-1000 ease-out`}
-                        style={{ width: `${category.percentage}%` }}
+                        style={{ width: `${category.percentage || 0}%` }}
                       ></div>
                     </div>
 
                     {/* Line Items */}
                     <div className="space-y-2">
-                      {category.details.slice(0, 2).map((detail, idx) => (
+                      {category.details?.slice(0, 2).map((detail, idx) => (
                         <div
                           key={idx}
                           className="bg-white rounded-lg p-3 border border-slate-100"
@@ -225,7 +225,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                               </p>
                             </div>
                             <span className="text-slate-800 font-bold text-sm whitespace-nowrap">
-                              {formatCurrency(detail.total_cost)}
+                              {formatCurrency(detail.total_cost || 0)}
                             </span>
                           </div>
                         </div>
@@ -237,108 +237,6 @@ function ModalBudgetEstimator({ result, onClose }) {
             </div>
           </div>
 
-          {/* Cement Breakdown Section */}
-          <div>
-            <h3 className="text-2xl font-bold text-slate-800 mb-6">
-              Cement Requirements Breakdown
-            </h3>
-            <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200 rounded-2xl p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                {result.cement_breakdown.map((cement, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="bg-white border-2 border-slate-200 rounded-xl p-5 hover:border-slate-300 hover:shadow-md transition-all"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="w-12 h-12 bg-slate-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <span className="text-white font-bold text-lg">
-                            {index + 1}
-                          </span>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-slate-500 text-xs mb-1">
-                            Total Cost
-                          </div>
-                          <div className="text-slate-900 font-bold text-lg">
-                            {formatCurrency(cement.total_cost)}
-                          </div>
-                        </div>
-                      </div>
-                      <h4 className="font-bold text-slate-800 mb-2 text-sm leading-tight">
-                        {cement.cement_type}
-                      </h4>
-                      <div className="space-y-2 mb-3">
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-slate-600">Quantity</span>
-                          <span className="font-semibold text-slate-800">
-                            {cement.quantity_bags} bags
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-slate-600">Rate/bag</span>
-                          <span className="font-semibold text-slate-800">
-                            {formatCurrency(cement.unit_cost)}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="pt-3 border-t border-slate-200">
-                        <p className="text-xs text-slate-600 leading-relaxed">
-                          {cement.usage}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Summary Bar */}
-              <div className="bg-slate-800 rounded-xl p-5 text-white">
-                <div className="flex items-center justify-around text-center gap-4">
-                  <div>
-                    <p className="text-slate-400 text-xs mb-1">
-                      Total Cement Bags
-                    </p>
-                    <p className="text-2xl font-bold">
-                      {result.cement_breakdown
-                        .reduce((acc, c) => acc + c.quantity_bags, 0)
-                        .toLocaleString()}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-xs mb-1">
-                      Total Cement Cost
-                    </p>
-                    <p className="text-2xl font-bold">
-                      {formatCurrency(
-                        result.cement_breakdown.reduce(
-                          (acc, c) => acc + c.total_cost,
-                          0
-                        )
-                      )}
-                    </p>
-                  </div>
-                  <div className="col-span-2 md:col-span-1">
-                    <p className="text-slate-400 text-xs mb-1">
-                      Average Rate/bag
-                    </p>
-                    <p className="text-2xl font-bold">
-                      {formatCurrency(
-                        result.cement_breakdown.reduce(
-                          (acc, c) => acc + c.total_cost,
-                          0
-                        ) /
-                          result.cement_breakdown.reduce(
-                            (acc, c) => acc + c.quantity_bags,
-                            0
-                          )
-                      )}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Factors & Recommendations Side by Side */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -348,7 +246,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                 Key Factors
               </h3>
               <div className="space-y-3">
-                {result.factors_considered.map((factor, index) => (
+                {result.factors_considered?.map((factor, index) => (
                   <div
                     key={index}
                     className="bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 transition"
@@ -356,7 +254,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                     <div className="flex items-start gap-3">
                       <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
                         <span className="text-amber-600 font-bold text-sm">
-                          +{factor.percentage_effect}%
+                          +{factor.percentage_effect || 0}%
                         </span>
                       </div>
                       <div className="flex-1">
@@ -379,7 +277,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                 Optimize Your Budget
               </h3>
               <div className="space-y-3">
-                {result.recommendations.map((rec, index) => (
+                {result.recommendations?.map((rec, index) => (
                   <div
                     key={index}
                     className="bg-gradient-to-br from-emerald-50 to-white border border-emerald-200 rounded-xl p-4 hover:shadow-md transition"
@@ -394,7 +292,7 @@ function ModalBudgetEstimator({ result, onClose }) {
                             {rec.type}
                           </h4>
                           <span className="bg-emerald-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-                            -{rec.potential_savings}%
+                            -{rec.potential_savings || 0}%
                           </span>
                         </div>
                         <p className="text-slate-600 text-sm">
