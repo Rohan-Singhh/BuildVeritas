@@ -101,9 +101,10 @@ class ProjectController {
                 sort = '-metadata.createdAt'
             } = req.query;
 
-            // Get user role from auth
-            const userRole = req.user.role;
-            console.log('User role:', userRole);
+            // Get user role from auth (if available)
+            const userRole = req.user?.role || 'vendor_supplier'; // Default to vendor for public access
+            const userId = req.user?.id;
+            console.log('User role:', userRole, 'User ID:', userId);
 
             const criteria = {
                 status,
@@ -114,7 +115,7 @@ class ProjectController {
                     max: parseFloat(budget.max)
                 } : undefined,
                 userRole, // Pass user role to service
-                userId: req.user.id // Pass user ID to service
+                userId // Pass user ID to service (may be undefined for public access)
             };
 
             const results = await projectService.searchProjects(criteria, {

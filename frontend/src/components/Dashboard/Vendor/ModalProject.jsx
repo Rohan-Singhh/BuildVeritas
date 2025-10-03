@@ -9,11 +9,11 @@ import {
   Clock,
   TrendingUp,
   FileText,
-  CheckCircle,
   IndianRupee,
+  DollarSign,
 } from "lucide-react";
 
-const ModalProject = ({ project, onClose }) => {
+const ModalProject = ({ project, onClose, onBidClick, hasUserBid }) => {
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -65,38 +65,6 @@ const ModalProject = ({ project, onClose }) => {
     }
   };
 
-  // Sample delivery data
-  const deliveries = [
-    {
-      item: "Portland Cement",
-      quantity: "50 bags",
-      date: "2024-01-20",
-      status: "delivered",
-    },
-    {
-      item: "Steel Rods",
-      quantity: "200 pieces",
-      date: "2024-01-18",
-      status: "delivered",
-    },
-    {
-      item: "Premium Paint",
-      quantity: "30 gallons",
-      date: "2024-01-25",
-      status: "pending",
-    },
-    {
-      item: "Ceramic Tiles",
-      quantity: "500 sq ft",
-      date: "2024-01-22",
-      status: "delivered",
-    },
-  ];
-
-  const totalDelivered = deliveries.filter(
-    (d) => d.status === "delivered"
-  ).length;
-  const totalPending = deliveries.filter((d) => d.status === "pending").length;
 
   return (
     <div
@@ -238,6 +206,85 @@ const ModalProject = ({ project, onClose }) => {
             </div>
           </div>
 
+          {/* Bid Action Section */}
+          {!hasUserBid ? (
+            <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 rounded-2xl p-8 shadow-2xl">
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="w-full h-full" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+                }}></div>
+              </div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                        <DollarSign className="w-8 h-8 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-white mb-2">
+                          Ready to Win This Project?
+                        </h3>
+                        <p className="text-blue-100 text-lg">
+                          Submit your competitive proposal and showcase your expertise
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-6 text-white/80 text-sm">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span>Open for Bidding</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                        <span>Competitive Market</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                        <span>Quality Focused</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="ml-8">
+                    <button
+                      onClick={() => onBidClick && onBidClick(project)}
+                      className="group relative px-8 py-4 bg-white text-blue-700 font-bold text-lg rounded-2xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 hover:bg-blue-50"
+                    >
+                      <div className="flex items-center space-x-3">
+                        <DollarSign className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                        <span>Submit Bid</span>
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-8">
+              <div className="flex items-center justify-center space-x-4">
+                <div className="p-4 bg-green-500 rounded-full">
+                  <div className="w-8 h-8 text-white flex items-center justify-center">
+                    ✓
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold text-green-800 mb-2">
+                    Bid Successfully Submitted!
+                  </h3>
+                  <p className="text-green-600 text-lg">
+                    We'll review your proposal and get back to you soon.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Timeline */}
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -279,90 +326,51 @@ const ModalProject = ({ project, onClose }) => {
             </div>
           </div>
 
-          {/* Materials */}
+          {/* Project Requirements */}
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Required Materials
+              Project Requirements
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-              {project.materials.map((material, index) => (
-                <div
-                  key={index}
-                  className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center"
-                >
-                  <Package className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-blue-900">
-                    {material}
-                  </p>
+            <div className="bg-gray-50 rounded-lg p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Project Specifications</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Area:</span>
+                      <span className="font-medium">{project.area || 'N/A'} sqft</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Floors:</span>
+                      <span className="font-medium">{project.floors || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Type:</span>
+                      <span className="font-medium">{project.type}</span>
+                    </div>
+                  </div>
                 </div>
-              ))}
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Timeline & Budget</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Duration:</span>
+                      <span className="font-medium">{project.timeline}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Budget:</span>
+                      <span className="font-medium">{formatCurrency(project.budget)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Status:</span>
+                      <span className="font-medium capitalize">{project.status}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Delivery Status */}
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Delivery Status
-              </h3>
-              <div className="flex items-center space-x-4 text-sm">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-4 h-4 text-green-600" />
-                  <span className="text-gray-600">
-                    Delivered: {totalDelivered}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Clock className="w-4 h-4 text-yellow-600" />
-                  <span className="text-gray-600">Pending: {totalPending}</span>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-50 rounded-lg overflow-hidden">
-              <div className="divide-y divide-gray-200">
-                {deliveries.map((delivery, index) => (
-                  <div
-                    key={index}
-                    className="p-3 hover:bg-white transition-colors duration-150"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div
-                          className={`w-3 h-3 rounded-full ${
-                            delivery.status === "delivered"
-                              ? "bg-green-500"
-                              : "bg-yellow-500"
-                          }`}
-                        ></div>
-                        <div>
-                          <p className="font-medium text-gray-900">
-                            {delivery.item}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {delivery.quantity}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm text-gray-600">
-                          {formatDate(delivery.date)}
-                        </p>
-                        <span
-                          className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            delivery.status === "delivered"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
-                          {delivery.status}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
         {/* </div> */}
       </div>

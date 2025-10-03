@@ -4,6 +4,34 @@ const { ApiResponse } = require('../utils/apiResponse');
 
 class BidController {
     /**
+     * Submit a new bid (public - for vendors without login)
+     */
+    async submitBidPublic(req, res, next) {
+        try {
+            const { projectId } = req.params;
+            const { vendorEmail, vendorName, vendorPhone } = req.body;
+            
+            console.log('Submitting public bid with:', {
+                projectId,
+                vendorEmail,
+                vendorName,
+                vendorPhone
+            });
+            
+            // Use the public bid submission method
+            const bid = await bidService.submitPublicBid(projectId, req.body);
+            
+            res.status(201).json(new ApiResponse(
+                201,
+                'Bid submitted successfully. We will contact you soon!',
+                bid
+            ));
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    /**
      * Submit a new bid
      */
     async submitBid(req, res, next) {

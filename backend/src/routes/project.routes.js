@@ -54,6 +54,13 @@ const searchValidation = [
     ]).withMessage('Invalid project type')
 ];
 
+// Public routes (no authentication required)
+router.get(
+    '/public/search',
+    searchValidation,
+    projectController.searchProjects
+);
+
 // Routes
 router.use(authMiddleware); // All routes require authentication
 

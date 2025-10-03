@@ -83,10 +83,17 @@ export const bidAPI = {
     }
   },
 
-  // Submit a bid (for vendors)
+  // Submit a bid (public - for vendors without login)
   submitBid: async (projectId, bidData) => {
     try {
-      const response = await api.post(`/bids/project/${projectId}`, bidData);
+      console.log('bidAPI.submitBid called for projectId:', projectId);
+      console.log('Bid data:', bidData);
+      
+      // Use the bid data as-is (should include vendor contact info from form)
+      const publicBidData = bidData;
+      
+      const response = await api.post(`/bids/public/project/${projectId}`, publicBidData);
+      console.log('submitBid API response:', response);
       return response.data;
     } catch (error) {
       console.error('Submit Bid Error:', error);

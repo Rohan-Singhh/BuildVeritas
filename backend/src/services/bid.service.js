@@ -122,13 +122,13 @@ class BidService {
                         },
                         {
                             role: 'supervisor',
-                            count: Math.ceil(bidData.teamSize / 5),
+                            count: Math.max(1, Math.ceil(bidData.teamSize / 5)),
                             expertise: ['construction', 'supervision'],
                             availability: 'full_time'
                         },
                         {
                             role: 'labor',
-                            count: bidData.teamSize - Math.ceil(bidData.teamSize / 5) - 1,
+                            count: Math.max(1, bidData.teamSize - Math.ceil(bidData.teamSize / 5) - 1),
                             expertise: ['construction'],
                             availability: 'full_time'
                         }
@@ -173,6 +173,158 @@ class BidService {
                 throw new ApiError(400, 'Invalid bid data', error.errors);
             }
             throw new ApiError(500, 'Error submitting bid', error);
+        } finally {
+            session.endSession();
+        }
+    }
+
+    /**
+     * Submit a public bid for a project (without vendor profile)
+     * @param {string} projectId - Project ID
+     * @param {Object} bidData - Bid data including vendor contact info
+     * @returns {Promise<Object>} Created bid
+     */
+    async submitPublicBid(projectId, bidData) {
+        const session = await mongoose.startSession();
+        session.startTransaction();
+
+        try {
+            console.log('Submitting public bid for projectId:', projectId);
+            
+            // Check project
+            const project = await Project.findById(projectId);
+            console.log('Found project:', project);
+
+            if (!project) {
+                throw new ApiError(404, 'Project not found');
+            }
+
+            // Validate project status
+            if (!['OPEN', 'IN_REVIEW'].includes(project.status.current)) {
+                throw new ApiError(400, 'Project is not open for bidding');
+            }
+
+            // Create simplified bid data for public submission
+            const simplifiedBidData = {
+                project: projectId,
+                vendor: new mongoose.Types.ObjectId(), // Create a temporary ObjectId for public bids
+                proposedCost: {
+                    total: bidData.proposedCost,
+                    currency: 'INR',
+                    breakdown: [
+                        {
+                            category: 'labor',
+                            description: 'Labor costs',
+                            amount: bidData.proposedCost * 0.4
+                        },
+                        {
+                            category: 'materials',
+                            description: 'Material costs',
+                            amount: bidData.proposedCost * 0.5
+                        },
+                        {
+                            category: 'overhead',
+                            description: 'Overhead and profit',
+                            amount: bidData.proposedCost * 0.1
+                        }
+                    ]
+                },
+                timeline: {
+                    proposedStartDate: new Date(bidData.startDate),
+                    estimatedDuration: {
+                        value: bidData.duration,
+                        unit: 'months'
+                    },
+                    milestones: [
+                        {
+                            title: 'Foundation',
+                            description: 'Foundation work completion',
+                            expectedCompletionDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+                            paymentPercentage: 20
+                        },
+                        {
+                            title: 'Structure',
+                            description: 'Structural work completion',
+                            expectedCompletionDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+                            paymentPercentage: 50
+                        },
+                        {
+                            title: 'Finishing',
+                            description: 'Finishing work completion',
+                            expectedCompletionDate: new Date(Date.now() + 150 * 24 * 60 * 60 * 1000),
+                            paymentPercentage: 30
+                        }
+                    ]
+                },
+                proposal: {
+                    summary: bidData.proposal.length >= 100 ? bidData.proposal.substring(0, 200) : bidData.proposal + ' ' + 'This is a comprehensive construction proposal with detailed approach and methodology. We ensure quality workmanship and timely completion.',
+                    approach: bidData.proposal,
+                    uniqueValue: 'Experienced team with quality materials',
+                    risks: []
+                },
+                team: {
+                    composition: [
+                        {
+                            role: 'project_manager',
+                            count: 1,
+                            expertise: ['construction', 'management'],
+                            availability: 'full_time'
+                        },
+                        {
+                            role: 'supervisor',
+                            count: Math.max(1, Math.ceil(bidData.teamSize / 5)),
+                            expertise: ['construction', 'supervision'],
+                            availability: 'full_time'
+                        },
+                        {
+                            role: 'labor',
+                            count: Math.max(1, bidData.teamSize - Math.ceil(bidData.teamSize / 5) - 1),
+                            expertise: ['construction'],
+                            availability: 'full_time'
+                        }
+                    ],
+                    projectManager: {
+                        name: 'Project Manager',
+                        experience: 5,
+                        certifications: ['Construction Management']
+                    }
+                },
+                previousWork: [],
+                status: {
+                    current: 'PENDING',
+                    history: [{
+                        status: 'PENDING',
+                        timestamp: new Date()
+                    }]
+                },
+                // Store vendor contact info for public bids
+                vendorContact: {
+                    name: bidData.vendorName,
+                    email: bidData.vendorEmail,
+                    phone: bidData.vendorPhone
+                }
+            };
+
+            // Create and save bid
+            const bid = new Bid(simplifiedBidData);
+            await bid.save({ session });
+
+            // Update project status if needed
+            if (project.status.current === 'OPEN') {
+                project.status.current = 'IN_REVIEW';
+                await project.save({ session });
+            }
+
+            await session.commitTransaction();
+
+            // Cache the new bid
+            this._cacheBid(bid);
+
+            return bid;
+        } catch (error) {
+            await session.abortTransaction();
+            if (error instanceof ApiError) throw error;
+            throw new ApiError(500, 'Error submitting public bid', error);
         } finally {
             session.endSession();
         }

@@ -30,7 +30,29 @@ const createBidValidation = [
         .withMessage('Team size must be at least 1')
 ];
 
+// Public bid validation (includes vendor contact info)
+const createPublicBidValidation = [
+    ...createBidValidation,
+    body('vendorEmail')
+        .isEmail()
+        .withMessage('Valid email is required'),
+    body('vendorName')
+        .trim()
+        .isLength({ min: 2 })
+        .withMessage('Vendor name must be at least 2 characters'),
+    body('vendorPhone')
+        .isMobilePhone('en-IN')
+        .withMessage('Valid phone number is required')
+];
+
 // Negotiation removed for simplicity
+
+// Public bid submission (for vendors without login)
+router.post(
+    '/public/project/:projectId',
+    createPublicBidValidation,
+    bidController.submitBidPublic
+);
 
 // Routes
 router.use(authMiddleware); // All routes require authentication
