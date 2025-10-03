@@ -9,6 +9,7 @@ import { Sidebar } from "./Dashboard/Sidebar";
 
 const Dashboard = () => {
   const [selected, setSelected] = useState("Dashboard");
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   // Add dashboard-specific class when mounted
   React.useEffect(() => {
@@ -27,11 +28,20 @@ const Dashboard = () => {
     >
       {/* <Topbar /> */}
 
-      <Sidebar selected={selected} setSelected={setSelected} />
+      <Sidebar 
+        selected={selected} 
+        setSelected={setSelected} 
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+      />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        <main className="p-8 mt-16 animate-fade-in-up">
+      <div className={`flex-1 flex flex-col transition-all duration-300 ease-out ${
+        isCollapsed ? 'lg:ml-16' : 'lg:ml-64'
+      }`}>
+        {/* Top spacing to account for navbar */}
+        <div className="h-16"></div>
+        <main className="p-8 animate-fade-in-up">
           <h1 className="text-2xl font-bold text-blue-600 mb-2">{selected}</h1>
           {selected === "Dashboard" && (
             <>
