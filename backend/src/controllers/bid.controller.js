@@ -169,6 +169,55 @@ class BidController {
     }
 
     /**
+     * Reject a bid
+     */
+    async rejectBid(req, res, next) {
+        try {
+            const clientId = req.user.id; // Using id from JWT token
+            const { bidId, projectId } = req.params;
+            const { reason } = req.body;
+            
+            console.log('Rejecting bid with:', { clientId, bidId, projectId, reason });
+            
+            const result = await bidService.rejectBid(bidId, projectId, clientId, reason);
+            
+            res.status(200).json(new ApiResponse(
+                200,
+                result.message || 'Bid rejected successfully',
+                result.bid
+            ));
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    /**
+     * Get detailed bid information
+     */
+    async getBidDetails(req, res, next) {
+        try {
+            const clientId = req.user.id; // Using id from JWT token
+            const { bidId } = req.params;
+            
+            console.log('Getting bid details with:', { clientId, bidId });
+            
+            const bid = await bidService.getBidDetails(bidId, clientId);
+            
+            console.log('Bid details from service:', bid);
+            
+            // Use the static method instead of constructor
+            return ApiResponse.success(
+                res,
+                bid,
+                'Bid details retrieved successfully'
+            );
+        } catch (error) {
+            console.error('Error in getBidDetails controller:', error);
+            next(error);
+        }
+    }
+
+    /**
      * Get bid competitive analysis
      */
     async getBidAnalysis(req, res, next) {

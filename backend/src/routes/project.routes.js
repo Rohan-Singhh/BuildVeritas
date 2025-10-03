@@ -6,7 +6,7 @@ const roleAuth = require('../middleware/roleAuth.middleware');
 
 const router = express.Router();
 
-// Validation middleware
+// Simplified validation middleware - only essential fields
 const createProjectValidation = [
     body('title')
         .trim()
@@ -16,38 +16,29 @@ const createProjectValidation = [
         .trim()
         .isLength({ min: 20 })
         .withMessage('Description must be at least 20 characters'),
-    body('budget.range.min')
+    body('budget')
         .isNumeric()
-        .withMessage('Minimum budget must be a number')
-        .custom((value, { req }) => value >= 0)
-        .withMessage('Minimum budget cannot be negative'),
-    body('budget.range.max')
-        .isNumeric()
-        .withMessage('Maximum budget must be a number')
-        .custom((value, { req }) => value > req.body.budget.range.min)
-        .withMessage('Maximum budget must be greater than minimum budget'),
-    body('location.city').trim().notEmpty().withMessage('City is required'),
-    body('location.state').trim().notEmpty().withMessage('State is required'),
-    body('location.pincode')
-        .matches(/^[1-9][0-9]{5}$/)
-        .withMessage('Please enter a valid 6-digit pincode'),
+        .withMessage('Budget must be a number')
+        .custom(value => value > 0)
+        .withMessage('Budget must be positive'),
+    body('location')
+        .trim()
+        .notEmpty()
+        .withMessage('Location is required'),
     body('projectType')
         .isIn(['residential', 'commercial', 'industrial', 'infrastructure'])
         .withMessage('Invalid project type'),
-    body('specifications.area.value')
+    body('area')
         .isNumeric()
         .withMessage('Area must be a number')
         .custom(value => value > 0)
         .withMessage('Area must be positive'),
-    body('specifications.floors')
-        .isInt({ min: 1 })
-        .withMessage('Number of floors must be at least 1'),
-    body('timeline.expectedStartDate')
+    body('startDate')
         .isISO8601()
         .withMessage('Invalid start date format')
         .custom(value => new Date(value) >= new Date())
         .withMessage('Start date cannot be in the past'),
-    body('timeline.expectedDuration.value')
+    body('duration')
         .isInt({ min: 1 })
         .withMessage('Duration must be at least 1')
 ];
@@ -68,13 +59,6 @@ router.use(authMiddleware); // All routes require authentication
 
 // Project Creation and Management
 router.post(
-    '/create',
-    roleAuth.clientOnly,
-    createProjectValidation,
-    projectController.createProject
-);
-
-router.post(
     '/create-and-publish',
     roleAuth.clientOnly,
     createProjectValidation,
@@ -88,10 +72,10 @@ router.put(
     projectController.updateProject
 );
 
-router.post(
-    '/:projectId/publish',
+router.delete(
+    '/:projectId',
     roleAuth.clientOnly,
-    projectController.publishProject
+    projectController.deleteProject
 );
 
 // Project Retrieval

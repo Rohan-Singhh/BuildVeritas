@@ -55,11 +55,90 @@ class BidService {
             // Validate vendor eligibility
             await this._validateVendorEligibility(vendor, project);
 
-            // Create and save bid
-            const bid = new Bid({
+            // Create simplified bid data
+            const simplifiedBidData = {
                 project: projectId,
                 vendor: vendorId,
-                ...bidData,
+                proposedCost: {
+                    total: bidData.proposedCost,
+                    currency: 'INR',
+                    breakdown: [
+                        {
+                            category: 'labor',
+                            description: 'Labor costs',
+                            amount: bidData.proposedCost * 0.6,
+                            quantity: bidData.teamSize
+                        },
+                        {
+                            category: 'materials',
+                            description: 'Materials and supplies',
+                            amount: bidData.proposedCost * 0.3
+                        },
+                        {
+                            category: 'overhead',
+                            description: 'Overhead and profit',
+                            amount: bidData.proposedCost * 0.1
+                        }
+                    ]
+                },
+                timeline: {
+                    proposedStartDate: new Date(bidData.startDate),
+                    estimatedDuration: {
+                        value: bidData.duration,
+                        unit: 'months'
+                    },
+                    milestones: [
+                        {
+                            title: 'Foundation Complete',
+                            expectedCompletionDate: new Date(new Date(bidData.startDate).getTime() + (bidData.duration * 30 * 24 * 60 * 60 * 1000 * 0.3)),
+                            paymentPercentage: 30
+                        },
+                        {
+                            title: 'Structure Complete',
+                            expectedCompletionDate: new Date(new Date(bidData.startDate).getTime() + (bidData.duration * 30 * 24 * 60 * 60 * 1000 * 0.7)),
+                            paymentPercentage: 40
+                        },
+                        {
+                            title: 'Project Complete',
+                            expectedCompletionDate: new Date(new Date(bidData.startDate).getTime() + (bidData.duration * 30 * 24 * 60 * 60 * 1000)),
+                            paymentPercentage: 30
+                        }
+                    ]
+                },
+                proposal: {
+                    summary: bidData.proposal,
+                    approach: 'We will follow industry best practices and ensure quality workmanship throughout the project.',
+                    uniqueValue: 'Experienced team with proven track record',
+                    risks: []
+                },
+                team: {
+                    composition: [
+                        {
+                            role: 'project_manager',
+                            count: 1,
+                            expertise: ['construction', 'management'],
+                            availability: 'full_time'
+                        },
+                        {
+                            role: 'supervisor',
+                            count: Math.ceil(bidData.teamSize / 5),
+                            expertise: ['construction', 'supervision'],
+                            availability: 'full_time'
+                        },
+                        {
+                            role: 'labor',
+                            count: bidData.teamSize - Math.ceil(bidData.teamSize / 5) - 1,
+                            expertise: ['construction'],
+                            availability: 'full_time'
+                        }
+                    ],
+                    projectManager: {
+                        name: 'Project Manager',
+                        experience: 5,
+                        certifications: ['Construction Management']
+                    }
+                },
+                previousWork: [],
                 status: {
                     current: 'PENDING',
                     history: [{
@@ -67,7 +146,10 @@ class BidService {
                         timestamp: new Date()
                     }]
                 }
-            });
+            };
+
+            // Create and save bid
+            const bid = new Bid(simplifiedBidData);
 
             await bid.save({ session });
 
@@ -252,10 +334,134 @@ class BidService {
             return { bid, project };
         } catch (error) {
             await session.abortTransaction();
+            console.error('Error in selectBid:', error);
             if (error instanceof ApiError) throw error;
             throw new ApiError(500, 'Error selecting bid', error);
         } finally {
             session.endSession();
+        }
+    }
+
+    /**
+     * Reject a bid
+     * @param {string} bidId - Bid ID
+     * @param {string} projectId - Project ID
+     * @param {string} clientId - Client ID
+     * @param {string} reason - Rejection reason
+     * @returns {Promise<Object>} Updated bid
+     */
+    async rejectBid(bidId, projectId, clientId, reason = 'Bid rejected by client') {
+        try {
+            console.log('Rejecting bid with:', { bidId, projectId, clientId, reason });
+            
+            // First get the client profile
+            const ClientProfile = mongoose.model('ClientProfile');
+            const clientProfile = await ClientProfile.findOne({ user: clientId });
+            
+            if (!clientProfile) {
+                throw new ApiError(404, 'Client profile not found');
+            }
+            
+            // Verify ownership and get bid
+            const [bid, project] = await Promise.all([
+                Bid.findById(bidId),
+                Project.findOne({ _id: projectId, client: clientProfile._id })
+            ]);
+            
+            if (!bid) {
+                throw new ApiError(404, 'Bid not found');
+            }
+            if (!project) {
+                throw new ApiError(404, 'Project not found or unauthorized');
+            }
+
+            // Validate status
+            if (bid.status.current === 'REJECTED') {
+                return {
+                    bid: await Bid.findById(bid._id)
+                        .populate('vendor', 'companyName location experience ratings')
+                        .lean(),
+                    message: 'Bid is already rejected'
+                };
+            }
+
+            if (bid.status.current === 'ACCEPTED') {
+                throw new ApiError(400, 'Cannot reject an accepted bid');
+            }
+
+            // Reject the bid
+            await bid.updateStatus('REJECTED', reason);
+
+            return {
+                bid: await Bid.findById(bid._id)
+                    .populate('vendor', 'companyName location experience ratings')
+                    .lean(),
+                message: 'Bid rejected successfully'
+            };
+        } catch (error) {
+            console.error('Error in rejectBid:', error);
+            if (error instanceof ApiError) throw error;
+            throw new ApiError(500, 'Error rejecting bid', error);
+        }
+    }
+
+    /**
+     * Get detailed bid information
+     * @param {string} bidId - Bid ID
+     * @param {string} clientId - Client ID (for authorization)
+     * @returns {Promise<Object>} Detailed bid information
+     */
+    async getBidDetails(bidId, clientId) {
+        try {
+            console.log('Getting bid details for:', { bidId, clientId });
+            
+            // First get the client profile
+            const ClientProfile = mongoose.model('ClientProfile');
+            const clientProfile = await ClientProfile.findOne({ user: clientId });
+            
+            if (!clientProfile) {
+                throw new ApiError(404, 'Client profile not found');
+            }
+            
+            console.log('Found client profile:', clientProfile._id);
+            
+            // Get bid first without population to check project ownership
+            const bid = await Bid.findById(bidId).lean();
+            
+            if (!bid) {
+                throw new ApiError(404, 'Bid not found');
+            }
+            
+            console.log('Found bid:', bid._id);
+            console.log('Bid project ID:', bid.project);
+            
+            // Check if the project belongs to this client
+            const Project = mongoose.model('Project');
+            const project = await Project.findOne({ 
+                _id: bid.project, 
+                client: clientProfile._id 
+            }).lean();
+            
+            if (!project) {
+                console.log('Project not found or not owned by client');
+                throw new ApiError(403, 'Unauthorized to view this bid');
+            }
+            
+            console.log('Project ownership verified');
+            
+            // Now get the full bid details with population
+            const populatedBid = await Bid.findById(bidId)
+                .populate('vendor', 'companyName location experience ratings phone email')
+                .populate('project', 'title description budget location specifications timeline')
+                .lean();
+            
+            console.log('Authorization successful, returning bid details');
+            console.log('Populated bid data:', JSON.stringify(populatedBid, null, 2));
+            return populatedBid;
+        } catch (error) {
+            console.error('Error in getBidDetails:', error);
+            if (error instanceof ApiError) throw error;
+            throw new ApiError(500, 'Error getting bid details', error);
         }
     }
 
@@ -334,10 +540,8 @@ class BidService {
             throw new ApiError(400, 'Vendor account is not active');
         }
 
-        // Check vendor verification
-        if (!vendor.isVerified) {
-            throw new ApiError(400, 'Vendor is not verified');
-        }
+        // Note: Verification requirement removed - unverified vendors can now bid
+        // This allows all active vendors to participate in bidding regardless of verification status
 
         // Check project type matches vendor services
         if (!vendor.services.includes(project.projectType)) {

@@ -11,47 +11,6 @@ class ProjectService {
      */
     async createAndPublish(clientId, projectData) {
         try {
-            // Create project first
-            const project = await this.createProject(clientId, projectData);
-            
-            // Update status to OPEN directly
-            project.status = {
-                current: 'OPEN',
-                history: [
-                    {
-                        status: 'DRAFT',
-                        timestamp: project.createdAt
-                    },
-                    {
-                        status: 'OPEN',
-                        timestamp: new Date(),
-                        reason: 'Project published on creation'
-                    }
-                ]
-            };
-
-            await project.save();
-            return project;
-        } catch (error) {
-            if (error instanceof ApiError) throw error;
-            throw new ApiError(500, 'Error creating and publishing project', error);
-        }
-    }
-    constructor() {
-        // Cache frequently accessed data
-        this.projectCache = new Map();
-        this.PROJECT_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-        this.MAX_CACHE_SIZE = 1000;
-    }
-
-    /**
-     * Create a new project
-     * @param {string} clientId - The client's ID
-     * @param {Object} projectData - The project data
-     * @returns {Promise<Object>} Created project
-     */
-    async createProject(clientId, projectData) {
-        try {
             // Validate client exists and get profile
             console.log('Searching for client profile with user ID:', clientId);
             const ClientProfile = mongoose.model('ClientProfile');
@@ -75,39 +34,82 @@ class ProjectService {
             console.log('Creating project with client profile ID:', clientProfile._id);
             console.log('Project data:', projectData);
             
-            // Prepare project data
+            // Prepare simplified project data
             const projectDataWithDefaults = {
-                ...projectData,
                 client: clientProfile._id,
+                title: projectData.title,
+                description: projectData.description,
+                budget: {
+                    range: {
+                        min: projectData.budget,
+                        max: projectData.budget * 1.2 // Add 20% buffer
+                    },
+                    currency: 'INR',
+                    flexibility: 'flexible'
+                },
                 location: {
-                    ...projectData.location,
-                    coordinates: projectData.location.coordinates || undefined
+                    address: projectData.location,
+                    city: projectData.location.split(',')[0]?.trim() || projectData.location,
+                    state: 'Maharashtra', // Default state
+                    pincode: '400001' // Default pincode
+                },
+                projectType: projectData.projectType,
+                subType: {
+                    residential: projectData.projectType === 'residential' ? 'villa' : undefined,
+                    commercial: projectData.projectType === 'commercial' ? 'office' : undefined
+                },
+                specifications: {
+                    area: {
+                        value: projectData.area,
+                        unit: 'sqft'
+                    },
+                    floors: 1, // Default to 1 floor
+                    requirements: []
+                },
+                timeline: {
+                    expectedStartDate: new Date(projectData.startDate),
+                    expectedDuration: {
+                        value: projectData.duration,
+                        unit: 'months'
+                    },
+                    preferredWorkingHours: {
+                        start: '09:00',
+                        end: '18:00'
+                    }
+                },
+                preferences: {
+                    vendorRequirements: {
+                        minExperience: 0,
+                        minRating: 0
+                    },
+                    communicationPreference: 'both'
+                },
+                visibility: 'public',
+                status: {
+                    current: 'OPEN', // Directly set to OPEN for create-and-publish
+                    history: [{
+                        status: 'OPEN',
+                        timestamp: new Date(),
+                        reason: 'Project published on creation'
+                    }]
                 }
             };
 
             // Create project
-            const project = new Project({
-                ...projectDataWithDefaults,
-                status: {
-                    current: 'DRAFT',
-                    history: [{
-                        status: 'DRAFT',
-                        timestamp: new Date()
-                    }]
-                }
-            });
+            const project = new Project(projectDataWithDefaults);
 
             console.log('Project model before save:', project);
 
             try {
                 // Save project
                 await project.save();
-            } catch (error) {
-                console.error('Project save error:', error);
-                if (error.code === 16755) {
+                console.log('Project saved successfully:', project._id);
+            } catch (saveError) {
+                console.error('Project save error:', saveError);
+                if (saveError.code === 16755) {
                     throw new ApiError(400, 'Invalid project structure');
                 }
-                throw error;
+                throw saveError;
             }
 
             // Cache the new project
@@ -119,9 +121,17 @@ class ProjectService {
             if (error.name === 'ValidationError') {
                 throw new ApiError(400, 'Invalid project data', error.errors);
             }
-            throw new ApiError(500, 'Error creating project', error);
+            throw new ApiError(500, 'Error creating and publishing project', error);
         }
     }
+    constructor() {
+        // Cache frequently accessed data
+        this.projectCache = new Map();
+        this.PROJECT_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+        this.MAX_CACHE_SIZE = 1000;
+    }
+
+    // Removed createProject method - only using createAndPublish now
 
     /**
      * Get project by ID
@@ -142,6 +152,55 @@ class ProjectService {
         }
 
         return project;
+    }
+
+    /**
+     * Update a project
+     */
+    async updateProject(projectId, clientId, updateData) {
+        try {
+            const project = await Project.findOneAndUpdate(
+                { _id: projectId, client: clientId },
+                updateData,
+                { new: true, runValidators: true }
+            );
+
+            if (!project) {
+                throw new ApiError(404, 'Project not found or access denied');
+            }
+
+            // Clear cache
+            this._clearProjectCache(projectId);
+
+            return project;
+        } catch (error) {
+            if (error instanceof ApiError) throw error;
+            throw new ApiError(500, 'Error updating project', error);
+        }
+    }
+
+    /**
+     * Delete a project
+     */
+    async deleteProject(projectId, clientId) {
+        try {
+            const project = await Project.findOneAndDelete({
+                _id: projectId,
+                client: clientId
+            });
+
+            if (!project) {
+                throw new ApiError(404, 'Project not found or access denied');
+            }
+
+            // Clear cache
+            this._clearProjectCache(projectId);
+
+            return { message: 'Project deleted successfully' };
+        } catch (error) {
+            if (error instanceof ApiError) throw error;
+            throw new ApiError(500, 'Error deleting project', error);
+        }
     }
 
     /**
@@ -176,6 +235,9 @@ class ProjectService {
                     .lean(), // Convert to plain JavaScript objects
                 Project.countDocuments(query)
             ]);
+            
+            console.log('searchProjects - found projects:', projects.length);
+            console.log('searchProjects - total count:', total);
 
             // Format the response
             const formattedProjects = projects.map(project => {
@@ -282,6 +344,8 @@ class ProjectService {
 
     _buildSearchQuery(criteria) {
         const query = {};
+        
+        console.log('_buildSearchQuery - criteria:', criteria);
 
         // Handle role-based visibility
         if (criteria.userRole === 'vendor_supplier') {
@@ -294,6 +358,7 @@ class ProjectService {
             }
             // Only show projects owned by this client
             query.client = criteria.userId;
+            console.log('_buildSearchQuery - client query set to:', criteria.userId);
         }
 
         // Handle project type

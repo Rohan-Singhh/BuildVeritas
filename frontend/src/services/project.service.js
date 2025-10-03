@@ -1,10 +1,9 @@
 import api from './api.service';
 
 export const projectAPI = {
-    // Create a new project
+    // Create and publish project in one step (immediately visible to vendors)
     createProject: async (projectData) => {
         try {
-            // Using create-and-publish endpoint to directly publish the project
             const response = await api.post('/projects/create-and-publish', projectData);
             return response.data;
         } catch (error) {
@@ -20,6 +19,17 @@ export const projectAPI = {
             return response.data;
         } catch (error) {
             console.error('Get Projects Error:', error);
+            throw error;
+        }
+    },
+
+    // Get client's projects
+    getClientProjects: async () => {
+        try {
+            const response = await api.get('/projects/client/projects');
+            return response.data;
+        } catch (error) {
+            console.error('Get Client Projects Error:', error);
             throw error;
         }
     },
@@ -53,6 +63,17 @@ export const projectAPI = {
             return response.data;
         } catch (error) {
             console.error('Delete Project Error:', error);
+            throw error;
+        }
+    },
+
+    // Get project bids
+    getProjectBids: async (projectId) => {
+        try {
+            const response = await api.get(`/bids/project/${projectId}`);
+            return response.data;
+        } catch (error) {
+            console.error('Get Project Bids Error:', error);
             throw error;
         }
     },

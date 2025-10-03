@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DashboardMain } from "./Dashboard/DashboardMain";
-import { ProjectSection } from "./Dashboard/ProjectSection";
+import ClientProjectSection from "./Dashboard/ClientProjectSection";
 import { MarketplaceSection } from "./Dashboard/MarketplaceSection";
 import { AnalyticsSection } from "./Dashboard/AnalyticsSection";
 import { ProfileSection } from "./Dashboard/ProfileSection";
@@ -44,7 +44,7 @@ const DashboardClient = () => {
             </>
           )}
 
-          {selected === "Projects" && <ProjectSection />}
+          {selected === "Projects" && <ClientProjectSection />}
 
           {selected === "Marketplace" && (
             <>

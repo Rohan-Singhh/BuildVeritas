@@ -6,62 +6,31 @@ const roleAuth = require('../middleware/roleAuth.middleware');
 
 const router = express.Router();
 
-// Validation middleware
+// Simplified bid validation - only essential fields
 const createBidValidation = [
-    body('proposedCost.total')
+    body('proposedCost')
         .isNumeric()
-        .withMessage('Total cost must be a number')
+        .withMessage('Proposed cost must be a number')
         .custom(value => value > 0)
-        .withMessage('Total cost must be positive'),
-    body('timeline.proposedStartDate')
+        .withMessage('Proposed cost must be positive'),
+    body('startDate')
         .isISO8601()
         .withMessage('Invalid start date format')
         .custom(value => new Date(value) >= new Date())
         .withMessage('Start date cannot be in the past'),
-    body('timeline.estimatedDuration.value')
+    body('duration')
         .isInt({ min: 1 })
         .withMessage('Duration must be at least 1'),
-    body('timeline.milestones')
-        .isArray()
-        .withMessage('Milestones must be an array')
-        .custom(milestones => {
-            const totalPercentage = milestones.reduce(
-                (sum, m) => sum + (m.paymentPercentage || 0), 0
-            );
-            return totalPercentage === 100;
-        })
-        .withMessage('Milestone payment percentages must total 100%'),
-    body('proposal.summary')
+    body('proposal')
         .trim()
-        .isLength({ min: 100 })
-        .withMessage('Proposal summary must be at least 100 characters'),
-    body('proposal.approach')
-        .trim()
-        .notEmpty()
-        .withMessage('Project approach is required'),
-    body('team.composition')
-        .isArray({ min: 1 })
-        .withMessage('At least one team member is required'),
-    body('team.composition.*.role')
-        .isIn(['project_manager', 'architect', 'engineer', 'supervisor', 'labor', 'specialist'])
-        .withMessage('Invalid team member role'),
-    body('team.composition.*.count')
+        .isLength({ min: 50 })
+        .withMessage('Proposal must be at least 50 characters'),
+    body('teamSize')
         .isInt({ min: 1 })
-        .withMessage('Team member count must be at least 1')
+        .withMessage('Team size must be at least 1')
 ];
 
-const negotiationValidation = [
-    body('type')
-        .isIn(['cost', 'timeline', 'scope', 'other'])
-        .withMessage('Invalid negotiation type'),
-    body('proposedValue')
-        .notEmpty()
-        .withMessage('Proposed value is required'),
-    body('message')
-        .trim()
-        .notEmpty()
-        .withMessage('Negotiation message is required')
-];
+// Negotiation removed for simplicity
 
 // Routes
 router.use(authMiddleware); // All routes require authentication
@@ -88,6 +57,13 @@ router.post(
     bidController.selectBid
 );
 
+// Bid Rejection
+router.post(
+    '/:bidId/reject/:projectId',
+    roleAuth.clientOnly,
+    bidController.rejectBid
+);
+
 // Bid Retrieval
 router.get(
     '/project/:projectId',
@@ -100,11 +76,13 @@ router.get(
     bidController.getVendorBids
 );
 
-// Bid Negotiation
-router.post(
-    '/:bidId/negotiate',
-    negotiationValidation,
-    bidController.negotiateBid
+// Bid Negotiation - REMOVED for simplicity
+
+// Bid Details
+router.get(
+    '/:bidId/details',
+    roleAuth.clientOnly,
+    bidController.getBidDetails
 );
 
 // Bid Analysis

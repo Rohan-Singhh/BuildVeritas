@@ -24,6 +24,7 @@ const sidebarItems = [
     section: "MAIN",
     items: [
       { label: "Dashboard", icon: <MdOutlineDashboard /> },
+      { label: "Add Project", icon: <FaPlus /> },
       { label: "Projects", icon: <FaProjectDiagram /> },
       { label: "Marketplace", icon: <FaStore /> },
       { label: "Analytics", icon: <FaChartBar /> },
@@ -48,7 +49,6 @@ const sidebarItems = [
   {
     section: "QUICK ACTIONS",
     items: [
-      { label: "Add Project", icon: <FaPlus /> },
       { label: "Upload Documents", icon: <FaUpload /> },
     ],
   },
@@ -67,8 +67,7 @@ export const Sidebar = ({ selected, setSelected }) => {
 
   const handleCreateProject = async (projectData) => {
     try {
-      // TODO: Implement API call to create project
-      console.log("Creating project:", projectData);
+      console.log("Project created successfully:", projectData);
       
       // Close the form
       setShowCreateProject(false);
